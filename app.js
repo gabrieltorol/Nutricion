@@ -171,11 +171,12 @@ const setBar = (sel, pct) => { const el = $(sel); if (el) { el.style.width = pct
 
 /* ---------- Distribución totals ---------- */
 function calcDistribucion() {
-  const cols = ['cer', 'vcg', 'fru', 'car', 'lac', 'arl'];
+  // Discover all columns currently in the table (data-col on thead cells)
+  const cols = $$('#dist-table thead th[data-col]').map(th => th.dataset.col);
   cols.forEach(col => {
     let sum = 0;
-    $$(`input[data-dist="${col}"]`).forEach(inp => sum += num(inp.value));
-    const tot = $(`#tot-${col}`);
+    $$(`#dist-table tbody input[data-dist="${col}"]`).forEach(inp => sum += num(inp.value));
+    const tot = $(`#dist-table tfoot td[data-col="${col}"]`);
     if (tot) tot.textContent = sum || '';
   });
 }
@@ -510,6 +511,200 @@ function initEditableLists() {
       col.appendChild(btn);
     }
   });
+
+  // Distribution table — delete-row per row + add-row buttons above/below
+  initDistTable();
+}
+
+/* ---------- Distribution table dynamic rows ---------- */
+function attachDistDeleteBtn(tr) {
+  const actionsCell = tr.querySelector('.dist-actions-col');
+  if (!actionsCell || actionsCell.querySelector('.dist-row-delete')) return;
+  const btn = document.createElement('button');
+  btn.className = 'dist-row-delete';
+  btn.type = 'button';
+  btn.title = 'Eliminar fila';
+  btn.innerHTML = '×';
+  btn.setAttribute('contenteditable', 'false');
+  btn.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    tr.remove();
+    calcDistribucion();
+    saveDistTable();
+  });
+  actionsCell.appendChild(btn);
+}
+
+function makeDistRow(label) {
+  const tr = document.createElement('tr');
+  const cols = $$('#dist-table thead th[data-col]').map(th => th.dataset.col);
+  let html = `<td class="label" contenteditable="true">${label || 'Comida · hora'}</td>`;
+  cols.forEach(c => html += `<td><input class="field" type="number" data-dist="${c}"></td>`);
+  html += '<td class="dist-actions-col"></td>';
+  tr.innerHTML = html;
+  return tr;
+}
+
+function addDistRow(position /* 'top' | 'bottom' */) {
+  const tbody = $('#dist-table tbody');
+  if (!tbody) return;
+  const tr = makeDistRow('Comida · hora');
+  if (position === 'top') tbody.insertBefore(tr, tbody.firstChild);
+  else tbody.appendChild(tr);
+  attachDistDeleteBtn(tr);
+  // Focus first cell so user can rename
+  const label = tr.querySelector('.label');
+  label.focus();
+  const range = document.createRange();
+  range.selectNodeContents(label);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  calcDistribucion();
+  saveDistTable();
+}
+
+function initDistTable() {
+  const tbody = $('#dist-table tbody');
+  if (!tbody) return;
+  tbody.querySelectorAll('tr').forEach(attachDistDeleteBtn);
+
+  // Column delete buttons on each <th data-col>
+  $$('#dist-table thead th[data-col]').forEach(attachDistColDeleteBtn);
+
+  const table = $('#dist-table');
+  // Add buttons above + below the table
+  if (!$('#dist-add-top')) {
+    const top = document.createElement('div');
+    top.id = 'dist-add-top';
+    top.className = 'dist-row-actions';
+    top.innerHTML = `<button class="add-row" type="button">+ Agregar fila arriba</button>`;
+    top.querySelector('button').addEventListener('click', () => addDistRow('top'));
+    table.parentNode.insertBefore(top, table);
+  }
+  if (!$('#dist-add-bottom')) {
+    const bot = document.createElement('div');
+    bot.id = 'dist-add-bottom';
+    bot.className = 'dist-row-actions';
+    bot.innerHTML = `<button class="add-row" type="button">+ Agregar fila abajo</button>`;
+    bot.querySelector('button').addEventListener('click', () => addDistRow('bottom'));
+    table.parentNode.insertBefore(bot, table.nextSibling);
+  }
+  if (!$('#dist-add-col')) {
+    const colAct = document.createElement('div');
+    colAct.id = 'dist-add-col';
+    colAct.className = 'dist-col-actions';
+    colAct.innerHTML = `<button class="add-row" type="button">+ Agregar columna</button>`;
+    colAct.querySelector('button').addEventListener('click', addDistCol);
+    table.parentNode.insertBefore(colAct, table);
+  }
+}
+
+/* ---------- Distribution columns ---------- */
+function attachDistColDeleteBtn(th) {
+  if (th.querySelector('.dist-col-delete')) return;
+  const btn = document.createElement('button');
+  btn.className = 'dist-col-delete';
+  btn.type = 'button';
+  btn.title = 'Eliminar columna';
+  btn.innerHTML = '×';
+  btn.setAttribute('contenteditable', 'false');
+  btn.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const col = th.dataset.col;
+    if (!col) return;
+    // Remove the th + matching cells in tbody rows and tfoot
+    th.remove();
+    $$(`#dist-table tbody td input[data-dist="${col}"]`).forEach(inp => inp.closest('td').remove());
+    $$(`#dist-table tfoot td[data-col="${col}"]`).forEach(td => td.remove());
+    calcDistribucion();
+    saveDistTable();
+  });
+  th.appendChild(btn);
+}
+
+function addDistCol() {
+  const table = $('#dist-table');
+  if (!table) return;
+  // Generate a unique key
+  let i = 1;
+  const existing = new Set($$('#dist-table thead th[data-col]').map(th => th.dataset.col));
+  while (existing.has('col' + i)) i++;
+  const key = 'col' + i;
+
+  // Add <th> in thead before the actions column
+  const headerRow = table.querySelector('thead tr');
+  const actionsTh = headerRow.querySelector('.dist-actions-col');
+  const th = document.createElement('th');
+  th.className = 'num';
+  th.dataset.col = key;
+  th.innerHTML = `<span contenteditable="true">Nuevo</span>`;
+  headerRow.insertBefore(th, actionsTh);
+  attachDistColDeleteBtn(th);
+
+  // Add a matching <td> in each tbody row, before the row's actions cell
+  $$('#dist-table tbody tr').forEach(tr => {
+    const actionsTd = tr.querySelector('.dist-actions-col');
+    const td = document.createElement('td');
+    td.innerHTML = `<input class="field" type="number" data-dist="${key}">`;
+    tr.insertBefore(td, actionsTd);
+  });
+
+  // Add a matching <td> in tfoot
+  const footRow = table.querySelector('tfoot tr');
+  const footActionsTd = footRow.querySelector('.dist-actions-col');
+  const footTd = document.createElement('td');
+  footTd.className = 'num';
+  footTd.dataset.col = key;
+  footTd.textContent = '—';
+  footRow.insertBefore(footTd, footActionsTd);
+
+  // Focus the new header so the user can rename
+  const span = th.querySelector('span[contenteditable]');
+  span.focus();
+  const range = document.createRange();
+  range.selectNodeContents(span);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  calcDistribucion();
+  saveDistTable();
+}
+
+function saveDistTable() {
+  try {
+    const table = $('#dist-table');
+    if (!table) return;
+    // Clean clones (strip dynamic buttons)
+    const head = table.querySelector('thead').cloneNode(true);
+    head.querySelectorAll('.dist-col-delete').forEach(b => b.remove());
+    const body = table.querySelector('tbody').cloneNode(true);
+    body.querySelectorAll('.dist-row-delete').forEach(b => b.remove());
+    const foot = table.querySelector('tfoot').cloneNode(true);
+    localStorage.setItem(KEY + '-dist', JSON.stringify({
+      head: head.innerHTML,
+      body: body.innerHTML,
+      foot: foot.innerHTML,
+    }));
+  } catch(e) { console.warn(e); }
+}
+
+function loadDistTable() {
+  try {
+    const raw = localStorage.getItem(KEY + '-dist');
+    if (!raw) return;
+    const table = $('#dist-table');
+    if (!table) return;
+    let parsed;
+    try { parsed = JSON.parse(raw); }
+    catch { parsed = { body: raw }; /* migration from old format */ }
+    if (parsed.head) table.querySelector('thead').innerHTML = parsed.head;
+    if (parsed.body) table.querySelector('tbody').innerHTML = parsed.body;
+    if (parsed.foot) table.querySelector('tfoot').innerHTML = parsed.foot;
+  } catch(e) { console.warn(e); }
 }
 
 function saveStructure() {
@@ -623,6 +818,7 @@ function loadState() {
    ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
+  loadDistTable();
   loadStructure();
   initEditableLists();
   setGender(GENDER);
@@ -644,6 +840,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Persist structure when user edits any contenteditable in dynamic lists
     if (t.closest && (t.closest('#objectives-list') || t.closest('.meal-col'))) {
       saveStructure();
+    }
+    // Persist distribution table edits (labels + values)
+    if (t.closest && t.closest('#dist-table tbody')) {
+      saveDistTable();
     }
   });
 
