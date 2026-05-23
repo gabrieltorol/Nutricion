@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Plan Nutricional · Angélica Pinilla</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+</head>
+<body data-bodymode="pliegues">
+
+<!-- Botanical ornament SVG (reused) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="leaf-corner" viewBox="0 0 100 100">
+      <g fill="none" stroke="#C98AA0" stroke-width="0.8" stroke-linecap="round">
+        <path d="M5 5 Q 35 12 50 30 T 95 60" opacity="0.7"/>
+        <path d="M15 8 Q 22 14 18 22 Q 12 18 15 8 Z" fill="#E5BFCD" opacity="0.8" stroke="none"/>
+        <path d="M30 14 Q 38 20 33 30 Q 25 24 30 14 Z" fill="#A8B89E" opacity="0.6" stroke="none"/>
+        <path d="M50 25 Q 60 30 56 42 Q 46 36 50 25 Z" fill="#E5BFCD" opacity="0.7" stroke="none"/>
+        <path d="M72 42 Q 82 46 80 58 Q 70 54 72 42 Z" fill="#A8B89E" opacity="0.55" stroke="none"/>
+        <circle cx="25" cy="6" r="1.5" fill="#C98AA0"/>
+        <circle cx="62" cy="34" r="1.2" fill="#C98AA0"/>
+        <circle cx="88" cy="56" r="1.5" fill="#C98AA0"/>
+      </g>
+    </symbol>
+    <symbol id="ico-heart" viewBox="0 0 24 24">
+      <path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 5.65-7 10-7 10z" fill="none" stroke="#8E3B52" stroke-width="1.4"/>
+    </symbol>
+    <symbol id="ico-leaf" viewBox="0 0 24 24">
+      <path d="M5 19c8 0 14-6 14-14-8 0-14 6-14 14z" fill="none" stroke="#6E8267" stroke-width="1.4"/>
+      <path d="M5 19c4-4 8-8 13-13" fill="none" stroke="#6E8267" stroke-width="1.4"/>
+    </symbol>
+    <symbol id="ico-scale" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#8E3B52" stroke-width="1.4"/>
+      <path d="M12 3v18M3 12h18" stroke="#8E3B52" stroke-width="1" opacity="0.4"/>
+      <circle cx="12" cy="12" r="1.5" fill="#8E3B52"/>
+    </symbol>
+
+    <!-- ===== Botanical / fruit illustrations for cover ===== -->
+    <symbol id="flora-corner-tl" viewBox="0 0 200 160">
+      <!-- Top-left: eucalyptus + strawberry + small berries -->
+      <g fill="none" stroke="#A8B89E" stroke-width="0.9" stroke-linecap="round" opacity="0.7">
+        <path d="M 0 0 Q 40 30 70 70 T 130 130"/>
+      </g>
+      <!-- eucalyptus leaves -->
+      <g fill="#A8B89E" opacity="0.7">
+        <ellipse cx="22" cy="12"  rx="9" ry="5" transform="rotate(-30 22 12)"/>
+        <ellipse cx="38" cy="28"  rx="9" ry="5" transform="rotate(-20 38 28)"/>
+        <ellipse cx="54" cy="46"  rx="9" ry="5" transform="rotate(-10 54 46)"/>
+        <ellipse cx="68" cy="64"  rx="9" ry="5" transform="rotate(0 68 64)"/>
+        <ellipse cx="80" cy="84"  rx="9" ry="5" transform="rotate(10 80 84)"/>
+      </g>
+      <g fill="#6E8267" opacity="0.5">
+        <ellipse cx="32" cy="20"  rx="6" ry="3.5" transform="rotate(-30 32 20)"/>
+        <ellipse cx="48" cy="38"  rx="6" ry="3.5" transform="rotate(-20 48 38)"/>
+        <ellipse cx="62" cy="56"  rx="6" ry="3.5" transform="rotate(-10 62 56)"/>
+      </g>
+      <!-- strawberry -->
+      <g transform="translate(90 88)">
+        <path d="M 22 0 Q 44 10 38 38 Q 22 56 8 38 Q 0 10 22 0 Z" fill="#C98AA0" opacity="0.92"/>
+        <path d="M 10 -4 L 18 4 L 22 -3 L 26 4 L 34 -4 Q 36 6 22 8 Q 8 6 10 -4 Z" fill="#6E8267" opacity="0.85"/>
+        <g fill="#fff" opacity="0.6">
+          <circle cx="16" cy="16" r="1"/>
+          <circle cx="26" cy="20" r="1"/>
+          <circle cx="20" cy="28" r="1"/>
+          <circle cx="14" cy="34" r="1"/>
+          <circle cx="30" cy="32" r="1"/>
+        </g>
+      </g>
+      <!-- berries -->
+      <g fill="#8E3B52" opacity="0.85">
+        <circle cx="148" cy="118" r="5.5"/>
+        <circle cx="156" cy="128" r="4.5"/>
+        <circle cx="142" cy="132" r="4"/>
+      </g>
+    </symbol>
+
+    <symbol id="flora-corner-br" viewBox="0 0 220 180">
+      <!-- Bottom-right: apple slice + leaves + pomegranate seeds -->
+      <!-- soft stems -->
+      <g fill="none" stroke="#A8B89E" stroke-width="0.9" stroke-linecap="round" opacity="0.65">
+        <path d="M 220 180 Q 180 140 160 100 T 130 30"/>
+        <path d="M 220 180 Q 170 170 140 150"/>
+      </g>
+      <!-- apple whole -->
+      <g transform="translate(110 88)">
+        <path d="M 40 12 Q 70 8 78 38 Q 82 70 62 86 Q 50 92 40 86 Q 30 92 18 86 Q -2 70 2 38 Q 10 8 40 12 Z" fill="#E5BFCD" opacity="0.95"/>
+        <path d="M 40 12 Q 44 0 52 -4 Q 56 4 50 12" fill="#6E8267" opacity="0.9"/>
+        <ellipse cx="34" cy="22" rx="14" ry="5" fill="#fff" opacity="0.45" transform="rotate(-20 34 22)"/>
+        <!-- leaf -->
+        <path d="M 52 0 Q 70 -4 76 12 Q 60 14 52 0 Z" fill="#A8B89E" opacity="0.9"/>
+      </g>
+      <!-- branch with small leaves -->
+      <g fill="#6E8267" opacity="0.6">
+        <ellipse cx="60" cy="60" rx="6" ry="11" transform="rotate(40 60 60)"/>
+        <ellipse cx="48" cy="78" rx="6" ry="11" transform="rotate(50 48 78)"/>
+        <ellipse cx="32" cy="100" rx="6" ry="11" transform="rotate(60 32 100)"/>
+      </g>
+      <!-- mint sprig -->
+      <g transform="translate(10 130)">
+        <path d="M 0 40 Q 30 30 50 0" fill="none" stroke="#6E8267" stroke-width="1" opacity="0.65"/>
+        <ellipse cx="14" cy="36" rx="7" ry="4" fill="#A8B89E" opacity="0.7" transform="rotate(-20 14 36)"/>
+        <ellipse cx="26" cy="24" rx="7" ry="4.5" fill="#6E8267" opacity="0.65" transform="rotate(-30 26 24)"/>
+        <ellipse cx="38" cy="12" rx="6" ry="4" fill="#A8B89E" opacity="0.75" transform="rotate(-40 38 12)"/>
+      </g>
+      <!-- berry cluster -->
+      <g fill="#8E3B52" opacity="0.85">
+        <circle cx="60"  cy="170" r="6"/>
+        <circle cx="72"  cy="166" r="5"/>
+        <circle cx="80"  cy="174" r="6.5"/>
+        <circle cx="92"  cy="170" r="4.5"/>
+      </g>
+      <g fill="#C98AA0" opacity="0.5">
+        <circle cx="60"  cy="169" r="1.5"/>
+        <circle cx="80"  cy="173" r="1.8"/>
+      </g>
+    </symbol>
+
+    <symbol id="flora-accent-tr" viewBox="0 0 100 100">
+      <!-- top-right small accent: lemon slice + leaf -->
+      <g transform="translate(20 30)">
+        <circle cx="30" cy="30" r="28" fill="#FBEEF2" stroke="#C98AA0" stroke-width="1.2"/>
+        <circle cx="30" cy="30" r="20" fill="none" stroke="#E5BFCD" stroke-width="0.8"/>
+        <g stroke="#C98AA0" stroke-width="0.8" opacity="0.6" fill="none">
+          <line x1="30" y1="12" x2="30" y2="48"/>
+          <line x1="12" y1="30" x2="48" y2="30"/>
+          <line x1="17" y1="17" x2="43" y2="43"/>
+          <line x1="43" y1="17" x2="17" y2="43"/>
+        </g>
+        <path d="M 25 0 Q 38 -4 44 8 Q 30 10 25 0 Z" fill="#A8B89E" opacity="0.85"/>
+      </g>
+    </symbol>
+
+    <symbol id="flora-accent-bl" viewBox="0 0 100 100">
+      <!-- bottom-left small accent: blueberry trio -->
+      <g transform="translate(20 30)">
+        <circle cx="20" cy="30" r="14" fill="#8E3B52" opacity="0.88"/>
+        <circle cx="40" cy="22" r="11" fill="#A8B89E" opacity="0.55"/>
+        <circle cx="44" cy="42" r="12" fill="#C98AA0" opacity="0.85"/>
+        <circle cx="20" cy="30" r="3"  fill="#C98AA0" opacity="0.5"/>
+        <circle cx="44" cy="42" r="3"  fill="#fff" opacity="0.4"/>
+        <path d="M 20 14 Q 24 8 32 8" fill="none" stroke="#6E8267" stroke-width="1" opacity="0.7"/>
+        <ellipse cx="28" cy="6" rx="6" ry="3" fill="#A8B89E" opacity="0.85" transform="rotate(-20 28 6)"/>
+      </g>
+    </symbol>
+
+    <symbol id="ico-leaf-small" viewBox="0 0 20 20">
+      <path d="M 2 18 Q 18 18 18 2 Q 2 2 2 18 Z M 2 18 Q 10 10 18 2" fill="#A8B89E" opacity="0.8" stroke="#6E8267" stroke-width="0.5"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="gender-toggle">
+    <button data-g="F" type="button"><span class="ico">♀</span> Mujer</button>
+    <button data-g="M" type="button"><span class="ico">♂</span> Hombre</button>
+  </div>
+  <button class="tb-btn" id="btn-settings" type="button">⚙ Plantilla</button>
+  <button class="tb-btn" id="btn-preview" type="button">👁 Vista cliente</button>
+  <button class="tb-btn" id="btn-reset" type="button">Reiniciar</button>
+  <button class="tb-btn primary" id="btn-print" type="button">↓ Descargar PDF</button>
+</div>
+
+<!-- Settings panel (Plantilla, marca, secciones) -->
+<aside id="settings-panel" hidden>
+  <div class="sp-header">
+    <h3>Configuración</h3>
+    <button class="sp-close" id="sp-close" type="button" aria-label="Cerrar">×</button>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Plantilla</div>
+    <div class="sp-templates">
+      <label class="sp-template">
+        <input type="radio" name="template" value="rose" checked>
+        <div class="sp-template-card rose">
+          <div class="sp-swatches"><span style="background:#8E3B52"></span><span style="background:#C98AA0"></span><span style="background:#A8B89E"></span><span style="background:#FBF7EE"></span></div>
+          <div class="sp-template-name">Rosé Garden</div>
+          <div class="sp-template-sub">Rosa empolvado · salvia</div>
+        </div>
+      </label>
+      <label class="sp-template">
+        <input type="radio" name="template" value="tierra">
+        <div class="sp-template-card tierra">
+          <div class="sp-swatches"><span style="background:#A04A2B"></span><span style="background:#C97350"></span><span style="background:#8FA070"></span><span style="background:#FCF6EA"></span></div>
+          <div class="sp-template-name">Tierra Cálida</div>
+          <div class="sp-template-sub">Terracota · oliva · crema</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Marca personal</div>
+    <label class="sp-field"><span>Nombre nutricionista</span>
+      <input id="sp-brand-name" type="text" placeholder="Angélica Pinilla">
+    </label>
+    <label class="sp-field"><span>Título / subtítulo</span>
+      <input id="sp-brand-title" type="text" placeholder="Nutricionista">
+    </label>
+    <div class="sp-field">
+      <span>Logo personalizado</span>
+      <div class="sp-logo-row">
+        <div class="sp-logo-preview"><img id="sp-logo-preview" src="assets/logo-angelica.png" alt=""></div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+          <label class="sp-btn">Subir nuevo
+            <input id="sp-logo-input" type="file" accept="image/*" hidden>
+          </label>
+          <button class="sp-btn ghost" id="sp-logo-reset" type="button">Logo original</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Secciones en el PDF</div>
+    <p class="sp-help">Marca las secciones que quieras incluir. Cuando una página queda vacía, se oculta automáticamente.</p>
+    <label class="sp-toggle"><input type="checkbox" id="chk-include-chart" checked><span>Gráfico de evolución</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="objetivos" checked><span>Objetivos y metas</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="grupos" checked><span>Grupos de alimentos</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="distribucion" checked><span>Distribución diaria</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="ejemplos" checked><span>Ejemplos de comidas</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="tips" checked><span>Tips de compras</span></label>
+  </div>
+
+  <button class="sp-btn primary" id="sp-apply" type="button">Listo</button>
+</aside>
+
+<div class="doc">
+
+  <!-- ================================
+       PAGE 1 — Portada
+  ================================= -->
+  <section class="page">
+    <!-- Botanical illustrations -->
+    <svg class="cover-flora tl" viewBox="0 0 200 160"><use href="#flora-corner-tl"/></svg>
+    <svg class="cover-flora br" viewBox="0 0 220 180"><use href="#flora-corner-br"/></svg>
+    <svg class="cover-flora tr" viewBox="0 0 100 100"><use href="#flora-accent-tr"/></svg>
+    <svg class="cover-flora bl" viewBox="0 0 100 100"><use href="#flora-accent-bl"/></svg>
+
+    <div class="cover">
+      <div class="cover-frame"></div>
+
+      <img class="cover-logo brand-logo" src="assets/logo-angelica.png" alt="Logo">
+
+      <div class="eyebrow">consulta nutricional · 2026</div>
+      <h1>Plan Nutricional</h1>
+      <div class="subtitle">Diseñado con cariño y a tu medida</div>
+
+      <div class="cover-divider">
+        <span class="line"></span>
+        <svg class="leaf" viewBox="0 0 20 20"><path d="M 2 18 Q 18 18 18 2 Q 2 2 2 18 Z" fill="#A8B89E"/></svg>
+        <span class="dot"></span>
+        <svg class="leaf" viewBox="0 0 20 20" style="transform:scaleX(-1)"><path d="M 2 18 Q 18 18 18 2 Q 2 2 2 18 Z" fill="#A8B89E"/></svg>
+        <span class="line"></span>
+      </div>
+
+      <dl class="cover-info">
+        <dt>Paciente</dt>
+        <dd><input id="patient-name" class="field" placeholder="Nombre completo" style="font-size:14pt;color:var(--rose-deep);border:none;background:transparent;border-bottom:1px dashed var(--rose-soft);width:280px;"></dd>
+        <dt>Fecha</dt>
+        <dd><input id="patient-date" class="field" type="text" placeholder="dd / mm / aaaa" style="font-size:14pt;color:var(--rose-deep);border:none;background:transparent;border-bottom:1px dashed var(--rose-soft);width:280px;"></dd>
+        <dt>Consulta</dt>
+        <dd><input class="field" data-k="ev-consulta" placeholder="Inicial · Control · Seguimiento" style="font-size:14pt;color:var(--rose-deep);border:none;background:transparent;border-bottom:1px dashed var(--rose-soft);width:280px;"></dd>
+      </dl>
+
+      <div style="margin-top:14px;position:relative;z-index:2;">
+        <span class="gender-pill"><span data-bind="gender">Mujer</span></span>
+      </div>
+
+      <div class="cover-footer">
+        « Cuidar tu alimentación es un acto de amor propio »
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================
+       PAGE 2 — Beneficios
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tr"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-title">
+      <span class="num">01</span>
+      <h2>Beneficios de una alimentación equilibrada</h2>
+    </div>
+    <p style="color:var(--ink-soft);max-width:520px;margin-bottom:8px;">Antes de comenzar, recordemos por qué una alimentación cuidada cambia tu vida — no solo por fuera, también por dentro.</p>
+
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-icon"><svg><use href="#ico-scale"/></svg></div>
+        <div>
+          <h3>Mantener un peso saludable</h3>
+          <p contenteditable="true" data-k="ben-1">Una dieta equilibrada, variada y adaptada a tus necesidades nutricionales previene la malnutrición por exceso o por déficit, y contribuye a mantener un peso adecuado y estable en el tiempo.</p>
+        </div>
+      </div>
+
+      <div class="benefit sage">
+        <div class="benefit-icon"><svg><use href="#ico-leaf"/></svg></div>
+        <div>
+          <h3>Prevención de enfermedades crónicas</h3>
+          <p contenteditable="true" data-k="ben-2">Una buena alimentación ayuda a disminuir los factores de riesgo para desarrollar patologías como obesidad, enfermedades cardiovasculares, hipertensión, osteoporosis y diabetes, mejorando notablemente tu calidad de vida.</p>
+        </div>
+      </div>
+
+      <div class="benefit">
+        <div class="benefit-icon"><svg><use href="#ico-heart"/></svg></div>
+        <div>
+          <h3>Mejora el estado de ánimo</h3>
+          <p contenteditable="true" data-k="ben-3">Adoptar hábitos y un estilo de vida saludable influye positivamente en tu autoestima, en cómo te sientes contigo misma y en el equilibrio general de tu organismo.</p>
+        </div>
+      </div>
+
+      <div class="benefit sage">
+        <div class="benefit-icon"><svg><use href="#ico-leaf"/></svg></div>
+        <div>
+          <h3>Energía y bienestar diario</h3>
+          <p contenteditable="true" data-k="ben-4">Comer bien te permite rendir mejor en el día a día, descansar profundo en la noche y mantener un metabolismo activo, con piel y cabello más luminosos.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <span><span data-bind="brandName">Angélica Pinilla</span> · <span data-bind="brandTitle">Nutricionista</span></span>
+      <span class="center">— Bienestar femenino —</span>
+      <span>02</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 3 — Evaluación + Antropometría
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-title">
+      <span class="num">02</span>
+      <h2>Evaluación Nutricional</h2>
+    </div>
+
+    <div class="eval-grid">
+      <div class="field-block"><label>Nombre</label><input class="field" data-k="ev-nombre" placeholder="Nombre completo"></div>
+      <div class="field-block"><label>Edad</label><input id="in-edad" class="field" type="number" placeholder="años"></div>
+      <div class="field-block"><label>Fecha</label><input class="field" data-k="ev-fecha" placeholder="dd/mm/aaaa"></div>
+      <div class="field-block"><label>Ocupación</label><input class="field" data-k="ev-ocup" placeholder="—"></div>
+      <div class="field-block full"><label>Diagnóstico / Motivo de consulta</label><input class="field" data-k="ev-diag" placeholder="Describir motivo y antecedentes relevantes"></div>
+      <div class="field-block"><label>Ciclo menstrual</label><input class="field" data-k="ev-ciclo" placeholder="Regular / Irreg."></div>
+      <div class="field-block"><label>Alergias</label><input class="field" data-k="ev-alergia" placeholder="—"></div>
+    </div>
+
+    <h3>Evaluación antropométrica <span class="formula">Plan calculado para <span data-bind="gender">Mujer</span></span></h3>
+    <table class="nice">
+      <thead><tr>
+        <th>Medición</th><th class="num">Valor</th><th>Unidad</th><th>Referencia</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="label">Peso</td>
+          <td><input id="in-peso" class="field" type="number" step="0.1" placeholder="0,0"></td>
+          <td>kg</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="label">Talla</td>
+          <td><input id="in-talla" class="field" type="number" step="0.01" placeholder="0,00"></td>
+          <td>m</td>
+          <td style="color:var(--ink-soft);font-style:italic">Estatura en metros (ej. 1,65)</td>
+        </tr>
+        <tr>
+          <td class="label">IMC</td>
+          <td><input id="out-imc" class="field calc" readonly></td>
+          <td>kg/m²</td>
+          <td><span id="imc-interpret"></span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Resultados rápidos</h3>
+    <div class="metrics">
+      <div class="metric">
+        <div class="label">IMC</div>
+        <div class="value" id="card-imc">—</div>
+        <div class="unit">kg/m²</div>
+        <div class="interpret" id="card-imc-i">—</div>
+      </div>
+      <div class="metric sage">
+        <div class="label">% Grasa</div>
+        <div class="value" id="card-grasa">—</div>
+        <div class="unit">corporal</div>
+        <div class="interpret" id="card-grasa-i"></div>
+      </div>
+      <div class="metric">
+        <div class="label">Masa Magra</div>
+        <div class="value" id="card-magra">—</div>
+        <div class="unit">kg</div>
+        <div class="interpret">a preservar</div>
+      </div>
+      <div class="metric sage">
+        <div class="label">ICC</div>
+        <div class="value" id="card-icc">—</div>
+        <div class="unit">cintura/cadera</div>
+        <div class="interpret" id="card-icc-i"></div>
+      </div>
+    </div>
+
+    <p style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;margin-top:12px;">
+      Los valores se actualizan automáticamente al completar los campos en las siguientes páginas.
+    </p>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Evaluación inicial —</span>
+      <span>03</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 4 — Pliegues + Circunferencias
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tr"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-title">
+      <span class="num">03</span>
+      <h2>Composición corporal</h2>
+    </div>
+
+    <div class="mode-header">
+      <span style="font-family:'Karla',sans-serif;font-size:9pt;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage-deep);">Método de medición:</span>
+      <div class="mode-toggle">
+        <button data-mode="pliegues" type="button" class="active">Pliegues cutáneos</button>
+        <button data-mode="bia"      type="button">Bioimpedancia</button>
+      </div>
+    </div>
+
+    <!-- ===== PLIEGUES MODE ===== -->
+    <div class="mode-pliegues">
+    <h3>Pliegues cutáneos <span class="formula pro-only" data-formula-f="Yuhasz mujer · %G = (Σ6 × 0,1429) + 4,56" data-formula-m="Yuhasz hombre · %G = (Σ6 × 0,1051) + 2,585">Yuhasz mujer · %G = (Σ6 × 0,1429) + 4,56</span></h3>
+    <table class="nice">
+      <thead><tr><th>Pliegue</th><th class="num">mm</th><th>Pliegue</th><th class="num">mm</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Tríceps</td><td><input id="pl-tri" class="field" type="number" step="0.1"></td>
+            <td class="label">Subescapular</td><td><input id="pl-sub" class="field" type="number" step="0.1"></td></tr>
+        <tr><td class="label">Supraespinal</td><td><input id="pl-sup" class="field" type="number" step="0.1"></td>
+            <td class="label">Abdominal</td><td><input id="pl-abd" class="field" type="number" step="0.1"></td></tr>
+        <tr><td class="label">Muslo anterior</td><td><input id="pl-mus" class="field" type="number" step="0.1"></td>
+            <td class="label">Pierna medial</td><td><input id="pl-pie" class="field" type="number" step="0.1"></td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Σ 6 pliegues</td>
+          <td class="num" id="pl-suma">— mm</td>
+          <td>% Grasa corporal</td>
+          <td><input id="out-grasa" class="field calc" readonly></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 16px;">
+      <div class="metric">
+        <div class="label">Masa Grasa</div>
+        <div class="value" id="out-masa-grasa">— kg</div>
+        <div class="interpret">peso × %G</div>
+      </div>
+      <div class="metric sage">
+        <div class="label">Masa Magra</div>
+        <div class="value" id="out-masa-magra">— kg</div>
+        <div class="interpret" id="grasa-interpret"></div>
+      </div>
+    </div>
+    </div><!-- /mode-pliegues -->
+
+    <!-- ===== BIOIMPEDANCIA MODE ===== -->
+    <div class="mode-bia">
+      <h3>Bioimpedancia <span class="formula pro-only">Ingreso directo de valores BIA</span></h3>
+      <p style="color:var(--ink-soft);font-size:10pt;margin-bottom:10px;">Ingresa los valores que entrega la balanza/equipo de bioimpedancia. Estos reemplazan al cálculo por pliegues.</p>
+
+      <table class="nice">
+        <thead><tr>
+          <th>Componente</th>
+          <th class="num">Valor</th>
+          <th>Unidad</th>
+          <th>Interpretación</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="label">% Grasa corporal</td>
+            <td><input id="bia-grasa" class="field" type="number" step="0.1" placeholder="0,0"></td>
+            <td>%</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">Masa muscular</td>
+            <td><input id="bia-musc" class="field" type="number" step="0.1" placeholder="0,0"></td>
+            <td>kg</td>
+            <td><span style="color:var(--ink-soft);font-style:italic;">tejido magro total</span></td>
+          </tr>
+          <tr>
+            <td class="label">Grasa visceral</td>
+            <td><input id="bia-visc" class="field" type="number" step="0.1" placeholder="0"></td>
+            <td>nivel</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="label">% Agua corporal</td>
+            <td><input id="bia-agua" class="field" type="number" step="0.1" placeholder="0,0"></td>
+            <td>%</td>
+            <td><span style="color:var(--ink-soft);font-style:italic;">hidratación</span></td>
+          </tr>
+          <tr>
+            <td class="label">Masa ósea</td>
+            <td><input id="bia-oso" class="field" type="number" step="0.1" placeholder="0,0"></td>
+            <td>kg</td>
+            <td><span style="color:var(--ink-soft);font-style:italic;">opcional</span></td>
+          </tr>
+          <tr>
+            <td class="label">Edad metabólica</td>
+            <td><input id="bia-meta" class="field" type="number" placeholder="—"></td>
+            <td>años</td>
+            <td><span style="color:var(--ink-soft);font-style:italic;">opcional</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0 14px;">
+        <div class="metric">
+          <div class="label">% Grasa</div>
+          <div class="value" id="bia-card-grasa">—</div>
+          <div class="unit">corporal total</div>
+          <div class="interpret" id="bia-card-grasa-i"></div>
+        </div>
+        <div class="metric sage">
+          <div class="label">Masa muscular</div>
+          <div class="value" id="bia-card-musc">— kg</div>
+          <div class="interpret">a preservar</div>
+        </div>
+        <div class="metric">
+          <div class="label">Grasa visceral</div>
+          <div class="value" id="bia-card-visc">—</div>
+          <div class="unit">nivel</div>
+          <div class="interpret" id="bia-card-visc-i"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /mode-bia -->
+
+    <h3>Circunferencias <span class="formula pro-only">ICC = cintura ÷ cadera</span></h3>
+    <table class="nice">
+      <thead class="sage"><tr><th>Sitio</th><th class="num">cm</th><th>Sitio</th><th class="num">cm</th></tr></thead>
+      <tbody>
+        <tr><td class="label">Brazo relajado</td><td><input class="field" type="number" data-k="cir-br" step="0.1"></td>
+            <td class="label">Brazo flexionado</td><td><input class="field" type="number" data-k="cir-bf" step="0.1"></td></tr>
+        <tr><td class="label">Cintura</td><td><input id="cir-cin" class="field" type="number" step="0.1"></td>
+            <td class="label">Cadera</td><td><input id="cir-cad" class="field" type="number" step="0.1"></td></tr>
+        <tr><td class="label">Muslo</td><td><input class="field" type="number" data-k="cir-mu" step="0.1"></td>
+            <td class="label">Pierna</td><td><input class="field" type="number" data-k="cir-pi" step="0.1"></td></tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>ICC</td>
+          <td><input id="out-icc" class="field calc" readonly></td>
+          <td>Interpretación</td>
+          <td style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose-deep);font-size:12pt;" id="icc-interpret">—</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p class="pro-only" style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">
+      Referencia <span data-bind="gender">mujer</span> · ICC bajo · moderado · elevado según punto de corte por sexo
+    </p>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Antropometría —</span>
+      <span>04</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 4.5 — Evolución de pliegues
+  ================================= -->
+  <section class="page chart-page">
+    <svg class="ornament tr"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-title">
+      <span class="num">⏳</span>
+      <h2>Evolución mensual</h2>
+    </div>
+    <p style="color:var(--ink-soft);max-width:560px;margin-bottom:10px;">Registra las mediciones mes a mes para visualizar el avance. Activa las series que quieras destacar en el gráfico.</p>
+
+    <div class="chart-card">
+      <div id="chart-controls" class="chart-controls">
+        <span style="font-family:'Karla',sans-serif;font-size:8.5pt;letter-spacing:0.25em;text-transform:uppercase;color:var(--sage-deep);margin-right:6px;">Series:</span>
+        <button class="chip on" data-k="peso"  type="button" style="color:#8E3B52"><span class="swatch"></span>Peso</button>
+        <button class="chip on" data-k="grasa" type="button" style="color:#C98AA0"><span class="swatch"></span>% Grasa</button>
+        <button class="chip"    data-k="tri"   type="button" style="color:#6E8267"><span class="swatch"></span>Tríceps</button>
+        <button class="chip"    data-k="sub"   type="button" style="color:#A8B89E"><span class="swatch"></span>Subescap.</button>
+        <button class="chip"    data-k="sup"   type="button" style="color:#B7945A"><span class="swatch"></span>Supraesp.</button>
+        <button class="chip"    data-k="abd"   type="button" style="color:#D97757"><span class="swatch"></span>Abdominal</button>
+        <button class="chip"    data-k="mus"   type="button" style="color:#7E6A91"><span class="swatch"></span>Muslo</button>
+        <button class="chip"    data-k="pie"   type="button" style="color:#5C8A9A"><span class="swatch"></span>Pierna</button>
+      </div>
+      <svg id="evo-chart" class="chart-svg" viewBox="0 0 720 260" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <h3 style="margin-top:14px;">Registro mensual</h3>
+    <table id="evo-table" class="nice evo-table">
+      <thead><tr>
+        <th>Medición</th>
+        <th class="num" data-month="Mes 1"><input data-k="evo-h-0" value="Mes 1" placeholder="Mes 1"></th>
+        <th class="num" data-month="Mes 2"><input data-k="evo-h-1" value="Mes 2" placeholder="Mes 2"></th>
+        <th class="num" data-month="Mes 3"><input data-k="evo-h-2" value="Mes 3" placeholder="Mes 3"></th>
+        <th class="num" data-month="Mes 4"><input data-k="evo-h-3" value="Mes 4" placeholder="Mes 4"></th>
+        <th class="num" data-month="Mes 5"><input data-k="evo-h-4" value="Mes 5" placeholder="Mes 5"></th>
+        <th class="num" data-month="Mes 6"><input data-k="evo-h-5" value="Mes 6" placeholder="Mes 6"></th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="label">Peso (kg)</td>
+          <td><input id="evo-peso-0" class="field" type="number" step="0.1" data-k="evo-peso-0"></td>
+          <td><input id="evo-peso-1" class="field" type="number" step="0.1" data-k="evo-peso-1"></td>
+          <td><input id="evo-peso-2" class="field" type="number" step="0.1" data-k="evo-peso-2"></td>
+          <td><input id="evo-peso-3" class="field" type="number" step="0.1" data-k="evo-peso-3"></td>
+          <td><input id="evo-peso-4" class="field" type="number" step="0.1" data-k="evo-peso-4"></td>
+          <td><input id="evo-peso-5" class="field" type="number" step="0.1" data-k="evo-peso-5"></td>
+        </tr>
+        <tr><td class="label">% Grasa</td>
+          <td><input id="evo-grasa-0" class="field" type="number" step="0.1" data-k="evo-grasa-0"></td>
+          <td><input id="evo-grasa-1" class="field" type="number" step="0.1" data-k="evo-grasa-1"></td>
+          <td><input id="evo-grasa-2" class="field" type="number" step="0.1" data-k="evo-grasa-2"></td>
+          <td><input id="evo-grasa-3" class="field" type="number" step="0.1" data-k="evo-grasa-3"></td>
+          <td><input id="evo-grasa-4" class="field" type="number" step="0.1" data-k="evo-grasa-4"></td>
+          <td><input id="evo-grasa-5" class="field" type="number" step="0.1" data-k="evo-grasa-5"></td>
+        </tr>
+        <tr><td class="label">Tríceps (mm)</td>
+          <td><input id="evo-tri-0" class="field" type="number" step="0.1" data-k="evo-tri-0"></td>
+          <td><input id="evo-tri-1" class="field" type="number" step="0.1" data-k="evo-tri-1"></td>
+          <td><input id="evo-tri-2" class="field" type="number" step="0.1" data-k="evo-tri-2"></td>
+          <td><input id="evo-tri-3" class="field" type="number" step="0.1" data-k="evo-tri-3"></td>
+          <td><input id="evo-tri-4" class="field" type="number" step="0.1" data-k="evo-tri-4"></td>
+          <td><input id="evo-tri-5" class="field" type="number" step="0.1" data-k="evo-tri-5"></td>
+        </tr>
+        <tr><td class="label">Subescapular</td>
+          <td><input id="evo-sub-0" class="field" type="number" step="0.1" data-k="evo-sub-0"></td>
+          <td><input id="evo-sub-1" class="field" type="number" step="0.1" data-k="evo-sub-1"></td>
+          <td><input id="evo-sub-2" class="field" type="number" step="0.1" data-k="evo-sub-2"></td>
+          <td><input id="evo-sub-3" class="field" type="number" step="0.1" data-k="evo-sub-3"></td>
+          <td><input id="evo-sub-4" class="field" type="number" step="0.1" data-k="evo-sub-4"></td>
+          <td><input id="evo-sub-5" class="field" type="number" step="0.1" data-k="evo-sub-5"></td>
+        </tr>
+        <tr><td class="label">Supraespinal</td>
+          <td><input id="evo-sup-0" class="field" type="number" step="0.1" data-k="evo-sup-0"></td>
+          <td><input id="evo-sup-1" class="field" type="number" step="0.1" data-k="evo-sup-1"></td>
+          <td><input id="evo-sup-2" class="field" type="number" step="0.1" data-k="evo-sup-2"></td>
+          <td><input id="evo-sup-3" class="field" type="number" step="0.1" data-k="evo-sup-3"></td>
+          <td><input id="evo-sup-4" class="field" type="number" step="0.1" data-k="evo-sup-4"></td>
+          <td><input id="evo-sup-5" class="field" type="number" step="0.1" data-k="evo-sup-5"></td>
+        </tr>
+        <tr><td class="label">Abdominal</td>
+          <td><input id="evo-abd-0" class="field" type="number" step="0.1" data-k="evo-abd-0"></td>
+          <td><input id="evo-abd-1" class="field" type="number" step="0.1" data-k="evo-abd-1"></td>
+          <td><input id="evo-abd-2" class="field" type="number" step="0.1" data-k="evo-abd-2"></td>
+          <td><input id="evo-abd-3" class="field" type="number" step="0.1" data-k="evo-abd-3"></td>
+          <td><input id="evo-abd-4" class="field" type="number" step="0.1" data-k="evo-abd-4"></td>
+          <td><input id="evo-abd-5" class="field" type="number" step="0.1" data-k="evo-abd-5"></td>
+        </tr>
+        <tr><td class="label">Muslo</td>
+          <td><input id="evo-mus-0" class="field" type="number" step="0.1" data-k="evo-mus-0"></td>
+          <td><input id="evo-mus-1" class="field" type="number" step="0.1" data-k="evo-mus-1"></td>
+          <td><input id="evo-mus-2" class="field" type="number" step="0.1" data-k="evo-mus-2"></td>
+          <td><input id="evo-mus-3" class="field" type="number" step="0.1" data-k="evo-mus-3"></td>
+          <td><input id="evo-mus-4" class="field" type="number" step="0.1" data-k="evo-mus-4"></td>
+          <td><input id="evo-mus-5" class="field" type="number" step="0.1" data-k="evo-mus-5"></td>
+        </tr>
+        <tr><td class="label">Pierna</td>
+          <td><input id="evo-pie-0" class="field" type="number" step="0.1" data-k="evo-pie-0"></td>
+          <td><input id="evo-pie-1" class="field" type="number" step="0.1" data-k="evo-pie-1"></td>
+          <td><input id="evo-pie-2" class="field" type="number" step="0.1" data-k="evo-pie-2"></td>
+          <td><input id="evo-pie-3" class="field" type="number" step="0.1" data-k="evo-pie-3"></td>
+          <td><input id="evo-pie-4" class="field" type="number" step="0.1" data-k="evo-pie-4"></td>
+          <td><input id="evo-pie-5" class="field" type="number" step="0.1" data-k="evo-pie-5"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Evolución mensual —</span>
+      <span>05</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 5 — Requerimientos calóricos
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+    <svg class="ornament br"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-title">
+      <span class="num">04</span>
+      <h2>Requerimientos calóricos</h2>
+    </div>
+
+    <div class="req-card">
+      <div class="req-row">
+        <div class="label">Tasa Metabólica Basal<span class="sub">Mifflin-St Jeor · <span data-bind="gender">Mujer</span></span></div>
+        <div class="formula-box pro-only" data-formula-f="10·P + 6,25·T(cm) − 5·E − 161" data-formula-m="10·P + 6,25·T(cm) − 5·E + 5">10·P + 6,25·T(cm) − 5·E − 161</div>
+        <div class="result"><span id="out-tmb">—</span><span class="unit">kcal/día</span></div>
+      </div>
+
+      <div class="req-row">
+        <div class="label">Nivel de actividad<span class="sub">factor NEAT</span></div>
+        <div class="formula-box" style="padding:0;background:transparent;">
+          <select id="in-actividad" class="field">
+            <option value="1.2">Sedentario · 1,20</option>
+            <option value="1.375">Ligero · 1,375</option>
+            <option value="1.55" selected>Moderado · 1,55</option>
+            <option value="1.725">Activo · 1,725</option>
+            <option value="1.9">Muy activo · 1,90</option>
+          </select>
+        </div>
+        <div class="result" style="font-size:13pt;color:var(--sage-deep);font-style:italic;">factor seleccionado</div>
+      </div>
+
+      <div class="req-row" style="background:var(--rose-blush);margin:8px -22px -18px;padding:14px 22px;border-radius:0 0 8px 8px;">
+        <div class="label" style="color:var(--rose-deep);font-size:15pt;"><strong>Gasto Energético Total</strong><span class="sub">TMB × factor NEAT</span></div>
+        <div class="formula-box pro-only" style="background:#fff;">TMB × FA</div>
+        <div class="result" style="font-size:28pt;"><span id="out-get">—</span><span class="unit">kcal/día</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:18px;">Plan según objetivo</h3>
+    <p class="pro-only" style="color:var(--ink-soft);font-size:10pt;margin-top:-4px;">Selecciona el objetivo para destacar. En la versión PDF solo aparece el plan elegido.</p>
+
+    <div class="objective-tabs">
+      <div class="objective-tab active" data-obj="mant">
+        <div class="lbl">Mantención</div>
+        <div class="sub">peso estable</div>
+        <div class="adj pro-only">GET</div>
+      </div>
+      <div class="objective-tab" data-obj="plus">
+        <div class="lbl">Aumento masa</div>
+        <div class="sub">plus calórico</div>
+        <div class="adj pro-only">+ <input id="in-plus" class="field" type="number" value="200" style="width:50px;text-align:center;"> kcal</div>
+      </div>
+      <div class="objective-tab" data-obj="def">
+        <div class="lbl">Pérdida grasa</div>
+        <div class="sub">déficit calórico</div>
+        <div class="adj pro-only">− <input id="in-def" class="field" type="number" value="300" style="width:50px;text-align:center;"> kcal</div>
+      </div>
+    </div>
+
+    <!-- Mantención macros -->
+    <table class="nice macros-table" data-for="mant">
+      <thead><tr>
+        <th>Macronutriente — Mantención</th>
+        <th class="num">g/kg</th>
+        <th class="num">g/día</th>
+        <th class="num">kcal</th>
+        <th class="num">Calorías totales</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="label">Proteínas</td>
+          <td class="field-config"><input id="in-mant-prot" class="field" type="number" step="0.1" value="1.8" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-mant-prot-g">— g</td>
+          <td class="num" id="o-mant-prot-kcal">—</td>
+          <td class="num" rowspan="3" style="font-family:'Cormorant Garamond',serif;font-size:24pt;color:var(--rose-deep);vertical-align:middle;text-align:center;"><span id="o-mant-tot">—</span><div style="font-family:'Karla',sans-serif;font-size:8.5pt;color:var(--ink-soft);letter-spacing:0.18em;margin-top:2px;">KCAL/DÍA</div></td>
+        </tr>
+        <tr>
+          <td class="label">Grasas</td>
+          <td class="field-config"><input id="in-mant-gra" class="field" type="number" step="0.1" value="0.9" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-mant-gra-g">— g</td>
+          <td class="num" id="o-mant-gra-kcal">—</td>
+        </tr>
+        <tr>
+          <td class="label">Carbohidratos</td>
+          <td class="field-config" style="font-style:italic;color:var(--ink-soft);font-size:9pt;">restantes</td>
+          <td class="num" id="o-mant-cho-g">— g</td>
+          <td class="num" id="o-mant-cho-kcal">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="macro-bar" data-for="mant">
+      <div class="seg prot" id="bar-mant-prot" style="width:0%;"></div>
+      <div class="seg cho"  id="bar-mant-cho"  style="width:0%;"></div>
+      <div class="seg gra"  id="bar-mant-gra"  style="width:0%;"></div>
+    </div>
+
+    <!-- Aumento macros -->
+    <table class="nice macros-table" data-for="plus">
+      <thead><tr>
+        <th>Macronutriente — Aumento masa</th>
+        <th class="num">g/kg</th>
+        <th class="num">g/día</th>
+        <th class="num">kcal</th>
+        <th class="num">Calorías totales</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="label">Proteínas</td>
+          <td class="field-config"><input id="in-plus-prot" class="field" type="number" step="0.1" value="2.0" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-plus-prot-g">— g</td>
+          <td class="num" id="o-plus-prot-kcal">—</td>
+          <td class="num" rowspan="3" style="font-family:'Cormorant Garamond',serif;font-size:24pt;color:var(--rose-deep);vertical-align:middle;text-align:center;"><span id="o-plus-tot">—</span><div style="font-family:'Karla',sans-serif;font-size:8.5pt;color:var(--ink-soft);letter-spacing:0.18em;margin-top:2px;">KCAL/DÍA</div></td>
+        </tr>
+        <tr>
+          <td class="label">Grasas</td>
+          <td class="field-config"><input id="in-plus-gra" class="field" type="number" step="0.1" value="1.0" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-plus-gra-g">— g</td>
+          <td class="num" id="o-plus-gra-kcal">—</td>
+        </tr>
+        <tr>
+          <td class="label">Carbohidratos</td>
+          <td class="field-config" style="font-style:italic;color:var(--ink-soft);font-size:9pt;">restantes</td>
+          <td class="num" id="o-plus-cho-g">— g</td>
+          <td class="num" id="o-plus-cho-kcal">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="macro-bar" data-for="plus">
+      <div class="seg prot" id="bar-plus-prot" style="width:0%;"></div>
+      <div class="seg cho"  id="bar-plus-cho"  style="width:0%;"></div>
+      <div class="seg gra"  id="bar-plus-gra"  style="width:0%;"></div>
+    </div>
+
+    <!-- Déficit macros -->
+    <table class="nice macros-table" data-for="def">
+      <thead><tr>
+        <th>Macronutriente — Pérdida de grasa</th>
+        <th class="num">g/kg</th>
+        <th class="num">g/día</th>
+        <th class="num">kcal</th>
+        <th class="num">Calorías totales</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="label">Proteínas</td>
+          <td class="field-config"><input id="in-def-prot" class="field" type="number" step="0.1" value="1.7" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-def-prot-g">— g</td>
+          <td class="num" id="o-def-prot-kcal">—</td>
+          <td class="num" rowspan="3" style="font-family:'Cormorant Garamond',serif;font-size:24pt;color:var(--rose-deep);vertical-align:middle;text-align:center;"><span id="o-def-tot">—</span><div style="font-family:'Karla',sans-serif;font-size:8.5pt;color:var(--ink-soft);letter-spacing:0.18em;margin-top:2px;">KCAL/DÍA</div></td>
+        </tr>
+        <tr>
+          <td class="label">Grasas</td>
+          <td class="field-config"><input id="in-def-gra" class="field" type="number" step="0.1" value="0.9" style="width:60px;text-align:center;"></td>
+          <td class="num" id="o-def-gra-g">— g</td>
+          <td class="num" id="o-def-gra-kcal">—</td>
+        </tr>
+        <tr>
+          <td class="label">Carbohidratos</td>
+          <td class="field-config" style="font-style:italic;color:var(--ink-soft);font-size:9pt;">restantes</td>
+          <td class="num" id="o-def-cho-g">— g</td>
+          <td class="num" id="o-def-cho-kcal">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="macro-bar" data-for="def">
+      <div class="seg prot" id="bar-def-prot" style="width:0%;"></div>
+      <div class="seg cho"  id="bar-def-cho"  style="width:0%;"></div>
+      <div class="seg gra"  id="bar-def-gra"  style="width:0%;"></div>
+    </div>
+
+    <div class="macro-legend">
+      <span><span class="sw" style="background:var(--rose-deep)"></span>Proteínas</span>
+      <span><span class="sw" style="background:var(--rose)"></span>Carbohidratos</span>
+      <span><span class="sw" style="background:var(--sage)"></span>Grasas</span>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Requerimientos —</span>
+      <span>05</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 6 — Objetivos & Grupos de alimentos
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tr"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="objetivos">
+    <div class="section-title">
+      <span class="num">05</span>
+      <h2>Objetivos y metas nutricionales</h2>
+    </div>
+
+    <div class="objectives">
+      <ul id="objectives-list">
+        <li contenteditable="true" data-k="obj-1">Buscaremos pérdida de grasa corporal mediante un déficit calórico no invasivo (300 cal), medido a través de pliegues corporales.</li>
+        <li contenteditable="true" data-k="obj-2">Lograr la mantención de la masa muscular y tono femenino.</li>
+        <li contenteditable="true" data-k="obj-3">Priorizar en todas las comidas el aporte de proteínas y disminuir el consumo de grasas saturadas.</li>
+        <li contenteditable="true" data-k="obj-4">Incluir ensalada y verduras en cada comida para aumentar el volumen y obtener mayor saciedad.</li>
+        <li contenteditable="true" data-k="obj-5">Ordenar los horarios de comida y regular las porciones de alimentos.</li>
+        <li contenteditable="true" data-k="obj-6">Evitar el consumo de alcohol (aún casual), ya que enlentece la pérdida de grasa.</li>
+        <li contenteditable="true" data-k="obj-7">Hidratación: mínimo 2 litros de agua al día.</li>
+      </ul>
+    </div>
+    </div>
+
+    <div class="section-block" data-section="grupos">
+    <div class="section-title" style="margin-top:18px;">
+      <span class="num">06</span>
+      <h2>Grupos de alimentos · porciones diarias</h2>
+    </div>
+
+    <table class="nice" style="font-size:9pt;">
+      <thead><tr>
+        <th>Grupo</th><th class="num">Porc.</th><th class="num">Kcal</th><th>Alimentos y equivalencias</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="label">Cereales</td><td><input class="field" type="number" value="5" data-k="g-cer"></td><td class="num">140</td>
+            <td contenteditable="true" data-k="ga-cer">Arroz, fideos, quínoa, choclo ¾ tz cocido (100 g) · Avena ½ tz (40 g) · Papa cocida 1 und (150 g)</td></tr>
+        <tr><td class="label">Verduras G.</td><td><input class="field" type="number" value="2" data-k="g-vg"></td><td class="num">30</td>
+            <td contenteditable="true" data-k="ga-vg">Betarraga ½ tz · Brócoli 1 tz · Coliflor 1 tz · Zanahoria ½ tz · Zapallo italiano ½ tz</td></tr>
+        <tr><td class="label">Verduras libres</td><td>libre</td><td class="num">10</td>
+            <td contenteditable="true" data-k="ga-vl">Apio, pepino, lechuga, repollo, espinaca, rabanito · 1 taza</td></tr>
+        <tr><td class="label">Frutas</td><td><input class="field" type="number" value="2" data-k="g-fr"></td><td class="num">65</td>
+            <td contenteditable="true" data-k="ga-fr">Manzana, pera 1 und chica · Durazno, naranja 1 und reg. · Frutilla, frambuesa 1 tz · Uvas 15 und</td></tr>
+        <tr><td class="label">Carnes magras</td><td><input class="field" type="number" value="14" data-k="g-cm"></td><td class="num">65</td>
+            <td contenteditable="true" data-k="ga-cm">Vacuno magro, pollo o pavo sin piel (50 g) · Reineta, merluza (80 g) · Huevo 1 und · ½ lata atún</td></tr>
+        <tr><td class="label">Leguminosas</td><td>1 cereal</td><td class="num">175</td>
+            <td contenteditable="true" data-k="ga-lg">Arveja, poroto, garbanzo, habas, lentejas · 1 tz cocida (200 g) · reemplaza 1 cereal</td></tr>
+        <tr><td class="label">Lácteos descr.</td><td><input class="field" type="number" value="2" data-k="g-ld"></td><td class="num">70</td>
+            <td contenteditable="true" data-k="ga-ld">Leche descremada en polvo 2 cdas · Leche líquida 1 tz (200 cc) · Yogurt diet 1 und</td></tr>
+        <tr><td class="label">Aceites y grasas</td><td><input class="field" type="number" value="3" data-k="g-ag"></td><td class="num">45</td>
+            <td contenteditable="true" data-k="ga-ag">Aceite oliva, canola 1 cdta (5 cc) · Mayonesa light 1 cda · Palta 1 cda</td></tr>
+        <tr><td class="label">Frutos secos</td><td><input class="field" type="number" value="3" data-k="g-fs"></td><td class="num">175</td>
+            <td contenteditable="true" data-k="ga-fs">Almendras 10 und · Nuez 3 und · Maní 15 und · Palta 3 cdas · Aceitunas 6 und</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Planificación alimentaria —</span>
+      <span>06</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 7 — Distribución diaria
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="distribucion">
+    <div class="section-title">
+      <span class="num">07</span>
+      <h2>Distribución diaria</h2>
+    </div>
+    <p style="color:var(--ink-soft);max-width:540px;">Define cuántas porciones de cada grupo corresponden a cada tiempo de comida. Los totales se calculan automáticamente.</p>
+
+    <table id="dist-table" class="nice" style="font-size:10pt;">
+      <thead><tr>
+        <th>Tiempo de comida</th>
+        <th class="num" data-col="cer"><span contenteditable="true">Cereales</span></th>
+        <th class="num" data-col="vcg"><span contenteditable="true">Verduras</span></th>
+        <th class="num" data-col="fru"><span contenteditable="true">Frutas</span></th>
+        <th class="num" data-col="car"><span contenteditable="true">Carnes</span></th>
+        <th class="num" data-col="lac"><span contenteditable="true">Lácteos</span></th>
+        <th class="num" data-col="arl"><span contenteditable="true">Frutos s.</span></th>
+        <th class="dist-actions-col" aria-hidden="true"></th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="label" contenteditable="true">Desayuno · 8:00</td>
+          <td><input class="field" type="number" data-dist="cer" value="2"></td>
+          <td><input class="field" type="number" data-dist="vcg"></td>
+          <td><input class="field" type="number" data-dist="fru" value="1"></td>
+          <td><input class="field" type="number" data-dist="car" value="4"></td>
+          <td><input class="field" type="number" data-dist="lac"></td>
+          <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
+        </tr>
+        <tr>
+          <td class="label" contenteditable="true">Almuerzo · 14:00</td>
+          <td><input class="field" type="number" data-dist="cer" value="1"></td>
+          <td><input class="field" type="number" data-dist="vcg" value="1"></td>
+          <td><input class="field" type="number" data-dist="fru" value="1"></td>
+          <td><input class="field" type="number" data-dist="car" value="4"></td>
+          <td><input class="field" type="number" data-dist="lac"></td>
+          <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
+        </tr>
+        <tr>
+          <td class="label" contenteditable="true">Colación · 17:00</td>
+          <td><input class="field" type="number" data-dist="cer" value="1"></td>
+          <td><input class="field" type="number" data-dist="vcg"></td>
+          <td><input class="field" type="number" data-dist="fru"></td>
+          <td><input class="field" type="number" data-dist="car" value="2"></td>
+          <td><input class="field" type="number" data-dist="lac" value="1"></td>
+          <td><input class="field" type="number" data-dist="arl"></td>
+          <td class="dist-actions-col"></td>
+        </tr>
+        <tr>
+          <td class="label" contenteditable="true">Once · 20:00</td>
+          <td><input class="field" type="number" data-dist="cer" value="1"></td>
+          <td><input class="field" type="number" data-dist="vcg" value="1"></td>
+          <td><input class="field" type="number" data-dist="fru"></td>
+          <td><input class="field" type="number" data-dist="car" value="4"></td>
+          <td><input class="field" type="number" data-dist="lac" value="1"></td>
+          <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Total diario</td>
+          <td class="num" data-col="cer" id="tot-cer">—</td>
+          <td class="num" data-col="vcg" id="tot-vcg">—</td>
+          <td class="num" data-col="fru" id="tot-fru">—</td>
+          <td class="num" data-col="car" id="tot-car">—</td>
+          <td class="num" data-col="lac" id="tot-lac">—</td>
+          <td class="num" data-col="arl" id="tot-arl">—</td>
+          <td class="dist-actions-col"></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p contenteditable="true" data-k="legumbres-note" style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">El día de legumbres disminuye 1 porción de cereales.</p>
+    </div>
+
+    <div class="section-block" data-section="ejemplos">
+    <div class="section-title" style="margin-top:18px;">
+      <span class="num">08</span>
+      <h2>Ejemplos de comidas</h2>
+    </div>
+
+    <div class="meals">
+      <div class="meal-col">
+        <h4 contenteditable="true">Opción 1</h4>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
+          <div class="desc" contenteditable="true" data-k="o1-d">1 pan integral con 2 huevos + ½ palta · 1 yogurt descremado · café o té</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
+          <div class="desc" contenteditable="true" data-k="o1-a">100 g de arroz cocido + 150 g pollo a la plancha + ensalada verde con limón</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
+          <div class="desc" contenteditable="true" data-k="o1-c">1 fruta + 10 almendras + 1 té de hierbas</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
+          <div class="desc" contenteditable="true" data-k="o1-o">1 pan integral con pasta de pollo + 1 yogurt + 1 fruta</div></div>
+      </div>
+      <div class="meal-col">
+        <h4 contenteditable="true">Opción 2</h4>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
+          <div class="desc" contenteditable="true" data-k="o2-d">½ tz avena cocida + 1 yogurt + 1 fruta + 15 g frutos secos · café</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
+          <div class="desc" contenteditable="true" data-k="o2-a">Tallarines integrales (100 g) + 150 g carne molida magra + ensalada de tomate</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
+          <div class="desc" contenteditable="true" data-k="o2-c">1 yogurt diet + 1 fruta + 5 nueces</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
+          <div class="desc" contenteditable="true" data-k="o2-o">Tortilla de claras con espinaca + 1 pan integral + ensalada verde</div></div>
+      </div>
+      <div class="meal-col">
+        <h4 contenteditable="true">Opción 3</h4>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
+          <div class="desc" contenteditable="true" data-k="o3-d">2 fajitas integrales con 3 huevos y palta + 1 yogurt + 1 fruta + café</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
+          <div class="desc" contenteditable="true" data-k="o3-a">2 tazas de legumbres (porotos, lentejas o garbanzos) + ensalada verde</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
+          <div class="desc" contenteditable="true" data-k="o3-c">1 yogurt + 1 pan integral con pasta de ave · 1 fruta</div></div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
+          <div class="desc" contenteditable="true" data-k="o3-o">1 tz puré de zapallo + 150 g pollo al jugo + ensalada</div></div>
+      </div>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Distribución y ejemplos —</span>
+      <span>07</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 8 — Tips & cierre
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+    <svg class="ornament br"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="tips">
+    <div class="section-title">
+      <span class="num">09</span>
+      <h2>Tips para ir de compras</h2>
+    </div>
+
+    <div class="tips">
+      <div class="tip"><div class="num">i</div><p contenteditable="true" data-k="tip-1"><strong>Haz una lista</strong> de los elementos básicos que necesitas: frutas, verduras, cereales, legumbres, semillas o frutos secos, aceite y pan.</p></div>
+      <div class="tip"><div class="num">ii</div><p contenteditable="true" data-k="tip-2"><strong>Compra solo lo de la lista.</strong> No te tientes con las ofertas del pasillo de snacks y dulces.</p></div>
+      <div class="tip"><div class="num">iii</div><p contenteditable="true" data-k="tip-3"><strong>Revisa los ingredientes:</strong> que el 90% sean familiares y naturales. El primero que aparece es el que está en mayor cantidad.</p></div>
+      <div class="tip"><div class="num">iv</div><p contenteditable="true" data-k="tip-4"><strong>Disminuye los procesados.</strong> Prefiere materias primas: harina de trigo, leche, yogurt natural, granos enteros.</p></div>
+      <div class="tip"><div class="num">v</div><p contenteditable="true" data-k="tip-5"><strong>Come antes de ir al súper.</strong> El hambre será tu peor consejera al momento de elegir.</p></div>
+      <div class="tip"><div class="num">vi</div><p contenteditable="true" data-k="tip-6"><strong>Lleva agua contigo.</strong> Mantén la hidratación constante; muchas veces confundimos sed con hambre.</p></div>
+    </div>
+    </div>
+
+    <div class="closing-quote">
+      <div class="q">« Cambiar hábitos requiere tiempo y constancia.<br>No todo ocurre de la noche a la mañana,<br>no te presiones — sé amable contigo. »</div>
+      <div class="signature">— <span data-bind="brandName">Angélica Pinilla</span> · <span data-bind="brandTitle">Nutricionista</span></div>
+    </div>
+
+    <div style="margin-top:22px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:6px;">
+      <h4 style="margin-bottom:6px;">Notas y próximo control</h4>
+      <p contenteditable="true" data-k="notes" style="min-height:54px;color:var(--ink-soft);font-style:italic;">Escribe aquí observaciones, adherencia, suplementación o próximos pasos…</p>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;font-size:9pt;color:var(--sage-deep);letter-spacing:0.18em;text-transform:uppercase;">
+        <span>Próximo control: <input class="field sm" data-k="next-date" placeholder="dd/mm/aaaa" style="width:140px;display:inline-block"></span>
+        <span>Firma profesional ✿</span>
+      </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Con cariño · <span data-bind="brandName">Angélica</span> —</span>
+      <span>08</span>
+    </footer>
+  </section>
+
+</div>
+
+<!-- ========== STRIPE CHECKOUT MODAL ========== -->
+<div id="stripe-checkout-overlay" class="stripe-overlay" style="display:none;">
+  <div class="stripe-modal">
+    <button class="stripe-close" id="stripe-close" type="button">&times;</button>
+    <div class="stripe-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#8E3B52" stroke-width="1.5" width="32" height="32"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+    </div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22pt;color:var(--rose-deep);margin:12px 0 6px;text-align:center;">Descargar Plan en PDF</h3>
+    <p style="color:var(--ink-soft);font-size:10.5pt;text-align:center;margin-bottom:18px;">Para descargar el plan nutricional necesitas una suscripcion activa.</p>
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:18px;">
+      <div style="font-size:8.5pt;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage-deep);font-weight:600;margin-bottom:4px;">Plan Profesional</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:28pt;color:var(--rose-deep);font-weight:600;">$9.990 <span style="font-size:12pt;color:var(--ink-soft);font-family:'Karla',sans-serif;">CLP/mes</span></div>
+      <ul style="list-style:none;padding:0;margin:12px 0 0;">
+        <li style="padding:3px 0 3px 20px;font-size:10pt;position:relative;"><span style="position:absolute;left:0;color:var(--sage-deep);font-weight:700;">&#10003;</span>Descarga ilimitada de PDFs</li>
+        <li style="padding:3px 0 3px 20px;font-size:10pt;position:relative;"><span style="position:absolute;left:0;color:var(--sage-deep);font-weight:700;">&#10003;</span>Marca personal</li>
+        <li style="padding:3px 0 3px 20px;font-size:10pt;position:relative;"><span style="position:absolute;left:0;color:var(--sage-deep);font-weight:700;">&#10003;</span>Graficos de evolucion</li>
+      </ul>
+    </div>
+    <button id="btn-stripe-checkout" type="button" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--rose-deep);color:#fff;border:none;border-radius:999px;padding:14px 24px;font-family:'Karla',sans-serif;font-size:14pt;font-weight:600;letter-spacing:0.04em;cursor:pointer;transition:all 0.2s;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+      Pagar con Stripe
+    </button>
+    <p style="font-size:9pt;color:var(--ink-soft);text-align:center;margin-top:12px;">Pago seguro procesado por Stripe. Puedes cancelar en cualquier momento.</p>
+    <button id="btn-back-landing" type="button" style="display:block;width:100%;background:transparent;border:1px solid var(--line);border-radius:999px;padding:10px;font-family:'Karla',sans-serif;font-size:10.5pt;color:var(--ink-soft);cursor:pointer;margin-top:10px;transition:all 0.2s;">Volver a la pagina principal</button>
+  </div>
+</div>
+
+<style>
+.stripe-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(58,42,47,0.55);
+  backdrop-filter: blur(6px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.stripe-modal {
+  background: var(--paper);
+  border: 1px solid var(--rose-soft);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 24px 72px rgba(0,0,0,0.2);
+  position: relative;
+  animation: stripe-in 0.25s ease-out;
+}
+@keyframes stripe-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.stripe-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 26pt;
+  color: var(--ink-soft);
+  cursor: pointer;
+  line-height: 1;
+}
+.stripe-close:hover { color: var(--rose-deep); }
+.stripe-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--rose-blush);
+  border: 1px solid var(--rose-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+#btn-stripe-checkout:hover { background: #732e42; }
+#btn-back-landing:hover { background: var(--rose-blush); color: var(--rose-deep); border-color: var(--rose-soft); }
+</style>
+
+<script src="app.js"></script>
+</body>
+</html>
