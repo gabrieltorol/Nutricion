@@ -1,11 +1,8 @@
 /* ============================================
    Landing Page — Plan Nutricional
-   Registration, Auth & Stripe Checkout
+   Registration & Auth
    ============================================ */
 
-// ===== CONFIGURATION =====
-// Replace with your Stripe Payment Link URL from Stripe Dashboard
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_XXXXXXXXXX';
 const PLAN_PAGE_URL = 'plan.html';
 const AUTH_KEY = 'nutri-auth';
 const USERS_KEY = 'nutri-users';
@@ -36,6 +33,15 @@ function setCurrentUser(user) {
 
 function isLoggedIn() {
   return !!getCurrentUser();
+}
+
+function goToPlan() {
+  if (isLoggedIn()) {
+    window.location.href = PLAN_PAGE_URL;
+  } else {
+    switchTab('register');
+    openModal('auth-modal');
+  }
 }
 
 // ===== TOAST =====
@@ -161,46 +167,6 @@ function switchTab(tab) {
   $('#form-login').style.display = tab === 'login' ? 'block' : 'none';
 }
 
-// ===== STRIPE CHECKOUT =====
-function openStripeCheckout() {
-  if (!isLoggedIn()) {
-    switchTab('register');
-    openModal('auth-modal');
-    showToast('Registrate primero para continuar', 'error');
-    return;
-  }
-  openModal('checkout-modal');
-}
-
-function redirectToStripe() {
-  const user = getCurrentUser();
-  if (!user) return;
-
-  // In production, this would create a Stripe Checkout Session via your backend
-  // For now, redirect to a Stripe Payment Link
-  const successUrl = encodeURIComponent(window.location.origin + '/' + PLAN_PAGE_URL + '?payment=success');
-  const url = STRIPE_PAYMENT_LINK + '?prefilled_email=' + encodeURIComponent(user.email) + '&success_url=' + successUrl;
-
-  // Mark payment as pending
-  user.plan = 'pro';
-  setCurrentUser(user);
-
-  // Update users array
-  const users = getUsers();
-  const idx = users.findIndex(u => u.id === user.id);
-  if (idx >= 0) {
-    users[idx].plan = 'pro';
-    saveUsers(users);
-  }
-
-  showToast('Redirigiendo a Stripe...');
-
-  // Redirect after a short delay
-  setTimeout(() => {
-    window.location.href = url;
-  }, 1000);
-}
-
 // ===== NAV SCROLL =====
 function handleScroll() {
   const nav = $('#nav');
@@ -209,33 +175,21 @@ function handleScroll() {
 
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
-  // Check for payment success from Stripe redirect
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('payment') === 'success') {
-    showToast('Pago exitoso! Ya puedes descargar tus planes');
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-
-  // Update UI based on auth state
   updateUI();
 
-  // Nav scroll effect
   window.addEventListener('scroll', handleScroll);
   handleScroll();
 
-  // Mobile menu
   $('#mobile-toggle')?.addEventListener('click', () => {
     $('#mobile-menu')?.classList.toggle('open');
   });
 
-  // Close mobile menu on link click
   $$('#mobile-menu a').forEach(a => {
     a.addEventListener('click', () => {
       $('#mobile-menu')?.classList.remove('open');
     });
   });
 
-  // Auth modal triggers
   const openRegister = () => { switchTab('register'); openModal('auth-modal'); };
   const openLogin = () => { switchTab('login'); openModal('auth-modal'); };
 
@@ -250,9 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     openRegister();
   });
 
-  // Close modals
   $('#modal-close')?.addEventListener('click', () => closeModal('auth-modal'));
-  $('#checkout-close')?.addEventListener('click', () => closeModal('checkout-modal'));
 
   $$('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
@@ -260,12 +212,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Tab switching
   $$('.modal-tab').forEach(tab => {
     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
   });
 
-  // Registration form
   $('#form-register')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = $('#reg-name').value.trim();
@@ -280,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Login form
   $('#form-login')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = $('#login-email').value.trim();
@@ -294,29 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Logout
   $('#btn-logout')?.addEventListener('click', logout);
 
-  // Pricing buttons
-  $('#btn-free')?.addEventListener('click', () => {
-    if (isLoggedIn()) {
-      window.location.href = PLAN_PAGE_URL;
-    } else {
-      openRegister();
-    }
-  });
-
-  $('#btn-pro')?.addEventListener('click', () => {
-    openStripeCheckout();
-  });
-
-  // CTA button
+  $('#btn-free')?.addEventListener('click', goToPlan);
+  $('#btn-pro')?.addEventListener('click', goToPlan);
   $('#btn-cta')?.addEventListener('click', openRegister);
 
-  // Stripe pay button
-  $('#btn-stripe-pay')?.addEventListener('click', redirectToStripe);
-
-  // Smooth scroll for anchor links
   $$('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
       const target = document.querySelector(a.getAttribute('href'));

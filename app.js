@@ -1057,64 +1057,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (o) o.remove();
   }
 
-  /* ---------- Stripe checkout gate ---------- */
-  const STRIPE_LINK = 'https://buy.stripe.com/test_XXXXXXXXXX';
-  const AUTH_KEY_PLAN = 'nutri-auth';
-
-  function getUserPlan() {
-    try {
-      const auth = JSON.parse(localStorage.getItem(AUTH_KEY_PLAN));
-      return auth?.plan || 'free';
-    } catch { return 'free'; }
-  }
-
-  function hasPaid() {
-    return getUserPlan() === 'pro' || localStorage.getItem('nutri-payment-success') === 'true';
-  }
-
-  function showStripeCheckout() {
-    const overlay = $('#stripe-checkout-overlay');
-    if (overlay) overlay.style.display = 'flex';
-  }
-
-  function hideStripeCheckout() {
-    const overlay = $('#stripe-checkout-overlay');
-    if (overlay) overlay.style.display = 'none';
-  }
-
-  // Check URL for payment success on page load
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('payment') === 'success') {
-    localStorage.setItem('nutri-payment-success', 'true');
-    try {
-      const auth = JSON.parse(localStorage.getItem(AUTH_KEY_PLAN));
-      if (auth) { auth.plan = 'pro'; localStorage.setItem(AUTH_KEY_PLAN, JSON.stringify(auth)); }
-    } catch {}
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-
   $('#btn-print').addEventListener('click', () => {
-    if (hasPaid()) {
-      downloadPDF();
-    } else {
-      showStripeCheckout();
-    }
-  });
-
-  $('#stripe-close')?.addEventListener('click', hideStripeCheckout);
-  $('#stripe-checkout-overlay')?.addEventListener('click', (e) => {
-    if (e.target.id === 'stripe-checkout-overlay') hideStripeCheckout();
-  });
-
-  $('#btn-stripe-checkout')?.addEventListener('click', () => {
-    const auth = (() => { try { return JSON.parse(localStorage.getItem(AUTH_KEY_PLAN)); } catch { return null; } })();
-    const email = auth?.email || '';
-    const successUrl = encodeURIComponent(window.location.origin + window.location.pathname + '?payment=success');
-    window.location.href = STRIPE_LINK + '?prefilled_email=' + encodeURIComponent(email) + '&success_url=' + successUrl;
-  });
-
-  $('#btn-back-landing')?.addEventListener('click', () => {
-    window.location.href = 'index.html';
+    downloadPDF();
   });
 
   $('#btn-preview').addEventListener('click', () => {
