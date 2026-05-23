@@ -19,14 +19,41 @@
   --ink-soft:    #6E5D62;
   --line:        #E4D3CC;
   --gold:        #B7945A;
+  --bg-stage:    #ECE2D2;
 }
+
+/* ===== Template B: Tierra Cálida (terracota · oliva · crema) ===== */
+body.template-tierra {
+  --rose-deep:   #A04A2B;
+  --rose:        #C97350;
+  --rose-soft:   #E8B89A;
+  --rose-mist:   #F5DDC8;
+  --rose-blush:  #FCEFE3;
+  --sage:        #8FA070;
+  --sage-deep:   #5C6E4A;
+  --sage-mist:   #E4E5CC;
+  --cream:       #F7EFDA;
+  --paper:       #FCF6EA;
+  --paper-deep:  #F2E4C7;
+  --ink:         #3D2A1E;
+  --ink-soft:    #6E5A47;
+  --line:        #E8D8C0;
+  --gold:        #B58A4A;
+  --bg-stage:    #E8D9BD;
+}
+body.template-tierra { background: var(--bg-stage); }
+body.template-tierra .seg.prot { background: #A04A2B; }
+body.template-tierra .seg.cho  { background: #C97350; }
+body.template-tierra .seg.gra  { background: #8FA070; }
+body.template-tierra h1, body.template-tierra h2 { color: var(--rose-deep); }
+body.template-tierra h3 { color: var(--sage-deep); }
 
 * { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
-  background: #ECE2D2;
+  background: var(--bg-stage);
   color: var(--ink);
   font-family: 'Karla', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 11pt;
@@ -67,6 +94,314 @@ html, body {
   color: #fff;
 }
 .tb-btn.primary:hover { background: #732e42; }
+
+/* ============================================
+   Settings panel (Plantilla, marca, secciones)
+   ============================================ */
+#settings-panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 380px;
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--paper);
+  border: 1px solid var(--rose-soft);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(60, 20, 35, 0.25);
+  padding: 20px 22px;
+  z-index: 1000;
+  font-family: 'Karla', sans-serif;
+}
+#settings-panel[hidden] { display: none; }
+
+.sp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+.sp-header h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18pt;
+  color: var(--rose-deep);
+  margin: 0;
+}
+.sp-close {
+  background: transparent;
+  border: none;
+  font-size: 24pt;
+  line-height: 1;
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 0 4px;
+}
+.sp-close:hover { color: var(--rose-deep); }
+
+.sp-section {
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--line);
+}
+.sp-section:last-of-type { border-bottom: none; }
+.sp-label {
+  font-size: 8.5pt;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.sp-templates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.sp-template input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.sp-template-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: #fff;
+}
+.sp-template input[type="radio"]:checked + .sp-template-card {
+  border-color: var(--rose-deep);
+  box-shadow: 0 0 0 2px var(--rose-mist);
+}
+.sp-swatches {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.sp-swatches span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.sp-template-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  color: var(--rose-deep);
+}
+.sp-template-sub {
+  font-size: 8.5pt;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.sp-field {
+  display: block;
+  margin-bottom: 10px;
+}
+.sp-field > span {
+  display: block;
+  font-size: 8.5pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-bottom: 4px;
+}
+.sp-field input[type="text"] {
+  width: 100%;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13pt;
+  color: var(--rose-deep);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 10px;
+  outline: none;
+}
+.sp-field input[type="text"]:focus { border-color: var(--rose); }
+
+.sp-logo-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.sp-logo-preview {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sp-logo-preview img { max-width: 100%; max-height: 100%; }
+
+.sp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--rose-mist);
+  color: var(--rose-deep);
+  border: 1px solid var(--rose-soft);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-family: 'Karla', sans-serif;
+  font-size: 9.5pt;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.sp-btn:hover { background: var(--rose-soft); }
+.sp-btn.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+.sp-btn.ghost:hover { background: var(--paper-deep); color: var(--rose-deep); }
+.sp-btn.primary {
+  background: var(--rose-deep);
+  color: #fff;
+  border-color: var(--rose-deep);
+  width: 100%;
+  padding: 10px;
+  font-size: 11pt;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+.sp-btn.primary:hover { background: #732e42; }
+
+.sp-help {
+  font-size: 9pt;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: -4px 0 10px 0;
+  line-height: 1.4;
+}
+
+.sp-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sp-toggle:hover { background: var(--rose-blush); }
+.sp-toggle input[type="checkbox"] {
+  accent-color: var(--rose-deep);
+  width: 16px;
+  height: 16px;
+}
+.sp-toggle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12pt;
+  color: var(--ink);
+}
+
+/* ---------- Section toggles ---------- */
+.section-block { /* wrapper for toggleable sections */ }
+body.no-section-objetivos [data-section="objetivos"],
+body.no-section-grupos [data-section="grupos"],
+body.no-section-distribucion [data-section="distribucion"],
+body.no-section-ejemplos [data-section="ejemplos"],
+body.no-section-tips [data-section="tips"] {
+  display: none !important;
+}
+/* Empty page (all sections hidden) gets hidden too */
+.page-empty { display: none !important; }
+
+/* ---------- Editable lists: delete & add buttons ---------- */
+.objectives li,
+.meal-row,
+.tip,
+.benefit {
+  position: relative;
+}
+.objectives li {
+  padding-right: 36px;
+}
+.meal-row { padding-right: 30px; }
+
+.row-delete {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--rose-soft);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--rose);
+  font-size: 14pt;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-family: serif;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 2;
+}
+.objectives li:hover .row-delete,
+.meal-row:hover .row-delete,
+.tip:hover .row-delete,
+.benefit:hover .row-delete { opacity: 1; }
+.row-delete:hover {
+  background: var(--rose-deep);
+  color: #fff;
+  border-color: var(--rose-deep);
+}
+
+.add-row {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1.5px dashed var(--rose-soft);
+  color: var(--rose-deep);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: 'Karla', sans-serif;
+  font-size: 9.5pt;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.15s;
+}
+.add-row:hover {
+  background: var(--rose-blush);
+  border-color: var(--rose);
+  border-style: solid;
+}
+.meal-col .add-row {
+  margin: 8px 12px 12px;
+  width: calc(100% - 24px);
+  padding: 6px 8px;
+  font-size: 8.5pt;
+}
+
+/* Hide all edit affordances in client view and PDF */
+body.client-view .row-delete,
+body.client-view .add-row,
+body.exporting .row-delete,
+body.exporting .add-row {
+  display: none !important;
+}
+@media print {
+  .row-delete, .add-row { display: none !important; }
+}
 
 /* ---------- Page (A4) ---------- */
 .doc {

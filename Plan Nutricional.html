@@ -158,13 +158,76 @@
     <button data-g="F" type="button"><span class="ico">♀</span> Mujer</button>
     <button data-g="M" type="button"><span class="ico">♂</span> Hombre</button>
   </div>
-  <label class="tb-btn" style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:9.5pt;">
-    <input type="checkbox" id="chk-include-chart" checked style="accent-color:var(--rose-deep);"> incluir gráfico
-  </label>
+  <button class="tb-btn" id="btn-settings" type="button">⚙ Plantilla</button>
   <button class="tb-btn" id="btn-preview" type="button">👁 Vista cliente</button>
   <button class="tb-btn" id="btn-reset" type="button">Reiniciar</button>
   <button class="tb-btn primary" id="btn-print" type="button">↓ Descargar PDF</button>
 </div>
+
+<!-- Settings panel (Plantilla, marca, secciones) -->
+<aside id="settings-panel" hidden>
+  <div class="sp-header">
+    <h3>Configuración</h3>
+    <button class="sp-close" id="sp-close" type="button" aria-label="Cerrar">×</button>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Plantilla</div>
+    <div class="sp-templates">
+      <label class="sp-template">
+        <input type="radio" name="template" value="rose" checked>
+        <div class="sp-template-card rose">
+          <div class="sp-swatches"><span style="background:#8E3B52"></span><span style="background:#C98AA0"></span><span style="background:#A8B89E"></span><span style="background:#FBF7EE"></span></div>
+          <div class="sp-template-name">Rosé Garden</div>
+          <div class="sp-template-sub">Rosa empolvado · salvia</div>
+        </div>
+      </label>
+      <label class="sp-template">
+        <input type="radio" name="template" value="tierra">
+        <div class="sp-template-card tierra">
+          <div class="sp-swatches"><span style="background:#A04A2B"></span><span style="background:#C97350"></span><span style="background:#8FA070"></span><span style="background:#FCF6EA"></span></div>
+          <div class="sp-template-name">Tierra Cálida</div>
+          <div class="sp-template-sub">Terracota · oliva · crema</div>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Marca personal</div>
+    <label class="sp-field"><span>Nombre nutricionista</span>
+      <input id="sp-brand-name" type="text" placeholder="Angélica Pinilla">
+    </label>
+    <label class="sp-field"><span>Título / subtítulo</span>
+      <input id="sp-brand-title" type="text" placeholder="Nutricionista">
+    </label>
+    <div class="sp-field">
+      <span>Logo personalizado</span>
+      <div class="sp-logo-row">
+        <div class="sp-logo-preview"><img id="sp-logo-preview" src="assets/logo-angelica.png" alt=""></div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex:1;">
+          <label class="sp-btn">Subir nuevo
+            <input id="sp-logo-input" type="file" accept="image/*" hidden>
+          </label>
+          <button class="sp-btn ghost" id="sp-logo-reset" type="button">Logo original</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-label">Secciones en el PDF</div>
+    <p class="sp-help">Marca las secciones que quieras incluir. Cuando una página queda vacía, se oculta automáticamente.</p>
+    <label class="sp-toggle"><input type="checkbox" id="chk-include-chart" checked><span>Gráfico de evolución</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="objetivos" checked><span>Objetivos y metas</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="grupos" checked><span>Grupos de alimentos</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="distribucion" checked><span>Distribución diaria</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="ejemplos" checked><span>Ejemplos de comidas</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="tips" checked><span>Tips de compras</span></label>
+  </div>
+
+  <button class="sp-btn primary" id="sp-apply" type="button">Listo</button>
+</aside>
 
 <div class="doc">
 
@@ -181,7 +244,7 @@
     <div class="cover">
       <div class="cover-frame"></div>
 
-      <img class="cover-logo" src="assets/logo-angelica.png" alt="Angélica Pinilla — Nutricionista">
+      <img class="cover-logo brand-logo" src="assets/logo-angelica.png" alt="Logo">
 
       <div class="eyebrow">consulta nutricional · 2026</div>
       <h1>Plan Nutricional</h1>
@@ -222,8 +285,8 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
@@ -269,7 +332,7 @@
     </div>
 
     <footer class="page-footer">
-      <span>Angélica Pinilla · Nutricionista</span>
+      <span><span data-bind="brandName">Angélica Pinilla</span> · <span data-bind="brandTitle">Nutricionista</span></span>
       <span class="center">— Bienestar femenino —</span>
       <span>02</span>
     </footer>
@@ -283,8 +346,8 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
@@ -314,7 +377,7 @@
           <td class="label">Peso</td>
           <td><input id="in-peso" class="field" type="number" step="0.1" placeholder="0,0"></td>
           <td>kg</td>
-          <td style="color:var(--ink-soft);font-style:italic">Peso ideal: <span id="out-peso-ideal">— kg</span></td>
+          <td></td>
         </tr>
         <tr>
           <td class="label">Talla</td>
@@ -323,10 +386,10 @@
           <td style="color:var(--ink-soft);font-style:italic">Estatura en metros (ej. 1,65)</td>
         </tr>
         <tr>
-          <td class="label">IMC <span class="formula pro-only">peso ÷ talla²</span></td>
+          <td class="label">IMC</td>
           <td><input id="out-imc" class="field calc" readonly></td>
           <td>kg/m²</td>
-          <td><span id="imc-interpret" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose-deep);">—</span></td>
+          <td><span id="imc-interpret"></span></td>
         </tr>
       </tbody>
     </table>
@@ -337,25 +400,25 @@
         <div class="label">IMC</div>
         <div class="value" id="card-imc">—</div>
         <div class="unit">kg/m²</div>
-        <div class="interpret" id="card-imc-i">Esperando datos</div>
+        <div class="interpret" id="card-imc-i">—</div>
       </div>
       <div class="metric sage">
         <div class="label">% Grasa</div>
         <div class="value" id="card-grasa">—</div>
-        <div class="unit">Yuhasz</div>
-        <div class="interpret" id="card-grasa-i">Ver pliegues</div>
+        <div class="unit">corporal</div>
+        <div class="interpret" id="card-grasa-i"></div>
       </div>
       <div class="metric">
         <div class="label">Masa Magra</div>
         <div class="value" id="card-magra">—</div>
         <div class="unit">kg</div>
-        <div class="interpret">A preservar</div>
+        <div class="interpret">a preservar</div>
       </div>
       <div class="metric sage">
         <div class="label">ICC</div>
         <div class="value" id="card-icc">—</div>
         <div class="unit">cintura/cadera</div>
-        <div class="interpret" id="card-icc-i">—</div>
+        <div class="interpret" id="card-icc-i"></div>
       </div>
     </div>
 
@@ -378,8 +441,8 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
@@ -429,7 +492,7 @@
       <div class="metric sage">
         <div class="label">Masa Magra</div>
         <div class="value" id="out-masa-magra">— kg</div>
-        <div class="interpret" id="grasa-interpret">—</div>
+        <div class="interpret" id="grasa-interpret"></div>
       </div>
     </div>
     </div><!-- /mode-pliegues -->
@@ -451,7 +514,7 @@
             <td class="label">% Grasa corporal</td>
             <td><input id="bia-grasa" class="field" type="number" step="0.1" placeholder="0,0"></td>
             <td>%</td>
-            <td><span id="bia-grasa-i" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose-deep);">—</span></td>
+            <td></td>
           </tr>
           <tr>
             <td class="label">Masa muscular</td>
@@ -463,7 +526,7 @@
             <td class="label">Grasa visceral</td>
             <td><input id="bia-visc" class="field" type="number" step="0.1" placeholder="0"></td>
             <td>nivel</td>
-            <td><span id="bia-visc-i" style="font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--rose-deep);">—</span></td>
+            <td></td>
           </tr>
           <tr>
             <td class="label">% Agua corporal</td>
@@ -491,7 +554,7 @@
           <div class="label">% Grasa</div>
           <div class="value" id="bia-card-grasa">—</div>
           <div class="unit">corporal total</div>
-          <div class="interpret" id="bia-card-grasa-i">—</div>
+          <div class="interpret" id="bia-card-grasa-i"></div>
         </div>
         <div class="metric sage">
           <div class="label">Masa muscular</div>
@@ -502,7 +565,7 @@
           <div class="label">Grasa visceral</div>
           <div class="value" id="bia-card-visc">—</div>
           <div class="unit">nivel</div>
-          <div class="interpret" id="bia-card-visc-i">—</div>
+          <div class="interpret" id="bia-card-visc-i"></div>
         </div>
       </div>
     </div>
@@ -548,8 +611,8 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
@@ -670,8 +733,8 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
@@ -862,19 +925,20 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
 
+    <div class="section-block" data-section="objetivos">
     <div class="section-title">
       <span class="num">05</span>
       <h2>Objetivos y metas nutricionales</h2>
     </div>
 
     <div class="objectives">
-      <ul>
+      <ul id="objectives-list">
         <li contenteditable="true" data-k="obj-1">Buscaremos pérdida de grasa corporal mediante un déficit calórico no invasivo (300 cal), medido a través de pliegues corporales.</li>
         <li contenteditable="true" data-k="obj-2">Lograr la mantención de la masa muscular y tono femenino.</li>
         <li contenteditable="true" data-k="obj-3">Priorizar en todas las comidas el aporte de proteínas y disminuir el consumo de grasas saturadas.</li>
@@ -884,7 +948,9 @@
         <li contenteditable="true" data-k="obj-7">Hidratación: mínimo 2 litros de agua al día.</li>
       </ul>
     </div>
+    </div>
 
+    <div class="section-block" data-section="grupos">
     <div class="section-title" style="margin-top:18px;">
       <span class="num">06</span>
       <h2>Grupos de alimentos · porciones diarias</h2>
@@ -915,6 +981,7 @@
             <td contenteditable="true" data-k="ga-fs">Almendras 10 und · Nuez 3 und · Maní 15 und · Palta 3 cdas · Aceitunas 6 und</td></tr>
       </tbody>
     </table>
+    </div>
 
     <footer class="page-footer">
       <span>Paciente · <span data-bind="name">—</span></span>
@@ -931,12 +998,13 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
 
+    <div class="section-block" data-section="distribucion">
     <div class="section-title">
       <span class="num">07</span>
       <h2>Distribución diaria</h2>
@@ -1007,7 +1075,9 @@
     <p style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">
       El día de legumbres disminuye 1 porción de cereales.
     </p>
+    </div>
 
+    <div class="section-block" data-section="ejemplos">
     <div class="section-title" style="margin-top:18px;">
       <span class="num">08</span>
       <h2>Ejemplos de comidas</h2>
@@ -1016,37 +1086,38 @@
     <div class="meals">
       <div class="meal-col">
         <h4>Opción 1</h4>
-        <div class="meal-row"><div class="time">Desayuno · 8 am</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o1-d">1 pan integral con 2 huevos + ½ palta · 1 yogurt descremado · café o té</div></div>
-        <div class="meal-row"><div class="time">Almuerzo · 2 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
           <div class="desc" contenteditable="true" data-k="o1-a">100 g de arroz cocido + 150 g pollo a la plancha + ensalada verde con limón</div></div>
-        <div class="meal-row"><div class="time">Colación · 5 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
           <div class="desc" contenteditable="true" data-k="o1-c">1 fruta + 10 almendras + 1 té de hierbas</div></div>
-        <div class="meal-row"><div class="time">Once · 8 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
           <div class="desc" contenteditable="true" data-k="o1-o">1 pan integral con pasta de pollo + 1 yogurt + 1 fruta</div></div>
       </div>
       <div class="meal-col">
         <h4>Opción 2</h4>
-        <div class="meal-row"><div class="time">Desayuno · 8 am</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o2-d">½ tz avena cocida + 1 yogurt + 1 fruta + 15 g frutos secos · café</div></div>
-        <div class="meal-row"><div class="time">Almuerzo · 2 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
           <div class="desc" contenteditable="true" data-k="o2-a">Tallarines integrales (100 g) + 150 g carne molida magra + ensalada de tomate</div></div>
-        <div class="meal-row"><div class="time">Colación · 5 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
           <div class="desc" contenteditable="true" data-k="o2-c">1 yogurt diet + 1 fruta + 5 nueces</div></div>
-        <div class="meal-row"><div class="time">Once · 8 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
           <div class="desc" contenteditable="true" data-k="o2-o">Tortilla de claras con espinaca + 1 pan integral + ensalada verde</div></div>
       </div>
       <div class="meal-col legumbres">
         <h4>Opción 3 · Legumbres</h4>
-        <div class="meal-row"><div class="time">Desayuno · 8 am</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o3-d">2 fajitas integrales con 3 huevos y palta + 1 yogurt + 1 fruta + café</div></div>
-        <div class="meal-row"><div class="time">Almuerzo · 2 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
           <div class="desc" contenteditable="true" data-k="o3-a">2 tazas de legumbres (porotos, lentejas o garbanzos) + ensalada verde</div></div>
-        <div class="meal-row"><div class="time">Colación · 5 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
           <div class="desc" contenteditable="true" data-k="o3-c">1 yogurt + 1 pan integral con pasta de ave · 1 fruta</div></div>
-        <div class="meal-row"><div class="time">Once · 8 pm</div>
+        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
           <div class="desc" contenteditable="true" data-k="o3-o">1 tz puré de zapallo + 150 g pollo al jugo + ensalada</div></div>
       </div>
+    </div>
     </div>
 
     <footer class="page-footer">
@@ -1065,12 +1136,13 @@
 
     <header class="page-header">
       <div class="brand-mini">
-        <img src="assets/logo-angelica.png" alt="">
-        <div class="brand-text">Angélica Pinilla<div class="small">Nutricionista</div></div>
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
       </div>
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
 
+    <div class="section-block" data-section="tips">
     <div class="section-title">
       <span class="num">09</span>
       <h2>Tips para ir de compras</h2>
@@ -1084,10 +1156,11 @@
       <div class="tip"><div class="num">v</div><p contenteditable="true" data-k="tip-5"><strong>Come antes de ir al súper.</strong> El hambre será tu peor consejera al momento de elegir.</p></div>
       <div class="tip"><div class="num">vi</div><p contenteditable="true" data-k="tip-6"><strong>Lleva agua contigo.</strong> Mantén la hidratación constante; muchas veces confundimos sed con hambre.</p></div>
     </div>
+    </div>
 
     <div class="closing-quote">
       <div class="q">« Cambiar hábitos requiere tiempo y constancia.<br>No todo ocurre de la noche a la mañana,<br>no te presiones — sé amable contigo. »</div>
-      <div class="signature">— Angélica Pinilla · Nutricionista</div>
+      <div class="signature">— <span data-bind="brandName">Angélica Pinilla</span> · <span data-bind="brandTitle">Nutricionista</span></div>
     </div>
 
     <div style="margin-top:22px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:6px;">
@@ -1101,7 +1174,7 @@
 
     <footer class="page-footer">
       <span>Paciente · <span data-bind="name">—</span></span>
-      <span class="center">— Con cariño · Angélica —</span>
+      <span class="center">— Con cariño · <span data-bind="brandName">Angélica</span> —</span>
       <span>08</span>
     </footer>
   </section>

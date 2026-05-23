@@ -55,22 +55,11 @@ function calcIMC() {
   const imc = (peso && talla) ? peso / (talla * talla) : 0;
   $('#out-imc').value = imc ? fmt(imc, 1) : '';
 
-  let interp = '—';
-  if (imc) {
-    if (imc < 18.5) interp = 'Bajo peso';
-    else if (imc < 25) interp = 'Peso normal';
-    else if (imc < 30) interp = 'Sobrepeso';
-    else if (imc < 35) interp = 'Obesidad I';
-    else if (imc < 40) interp = 'Obesidad II';
-    else interp = 'Obesidad III';
-  }
-  $('#imc-interpret').textContent = interp;
-
-  const pesoIdeal = talla ? 22 * talla * talla : 0;
-  $('#out-peso-ideal').textContent = pesoIdeal ? fmt(pesoIdeal, 1) + ' kg' : '— kg';
+  // No clinical labels (no "obesidad", "sobrepeso") to avoid TCA triggers.
+  $('#imc-interpret').textContent = '';
 
   const cardImc = $('#card-imc'); if (cardImc) cardImc.textContent = imc ? fmt(imc, 1) : '—';
-  const cardImcI = $('#card-imc-i'); if (cardImcI) cardImcI.textContent = interp;
+  const cardImcI = $('#card-imc-i'); if (cardImcI) cardImcI.textContent = imc ? 'kg/m²' : '—';
 }
 
 /* ---------- Skinfolds — Yuhasz ----------
@@ -94,27 +83,11 @@ function calcGrasa() {
   $('#out-masa-grasa').textContent = masaGrasa ? fmt(masaGrasa, 1) + ' kg' : '— kg';
   $('#out-masa-magra').textContent = masaMagra ? fmt(masaMagra, 1) + ' kg' : '— kg';
 
-  // Body fat interpretation by gender
-  let g = '—';
-  if (grasaPct) {
-    if (GENDER === 'F') {
-      if (grasaPct < 14) g = 'Esencial';
-      else if (grasaPct < 21) g = 'Atlética';
-      else if (grasaPct < 25) g = 'Fitness';
-      else if (grasaPct < 32) g = 'Aceptable';
-      else g = 'Sobre rango';
-    } else {
-      if (grasaPct < 6) g = 'Esencial';
-      else if (grasaPct < 14) g = 'Atlético';
-      else if (grasaPct < 18) g = 'Fitness';
-      else if (grasaPct < 25) g = 'Aceptable';
-      else g = 'Sobre rango';
-    }
-  }
-  $('#grasa-interpret').textContent = g;
+  // No labels — just show numerical value
+  $('#grasa-interpret').textContent = '';
 
   const cardG = $('#card-grasa'); if (cardG) cardG.textContent = grasaPct ? fmt(grasaPct,1) : '—';
-  const cardGI = $('#card-grasa-i'); if (cardGI) cardGI.textContent = g;
+  const cardGI = $('#card-grasa-i'); if (cardGI) cardGI.textContent = '';
   const cardM = $('#card-magra'); if (cardM) cardM.textContent = masaMagra ? fmt(masaMagra,1) : '—';
 }
 
@@ -128,18 +101,11 @@ function calcICC() {
   const icc = (cin && cad) ? cin / cad : 0;
   $('#out-icc').value = icc ? fmt(icc, 2) : '';
 
-  let r = '—';
-  if (icc) {
-    const t1 = GENDER === 'F' ? 0.80 : 0.90;
-    const t2 = GENDER === 'F' ? 0.85 : 0.95;
-    if (icc < t1) r = 'Bajo riesgo';
-    else if (icc < t2) r = 'Riesgo moderado';
-    else r = 'Riesgo elevado';
-  }
-  $('#icc-interpret').textContent = r;
+  // No risk labels — only numerical value
+  $('#icc-interpret').textContent = '';
 
   const cardIcc = $('#card-icc'); if (cardIcc) cardIcc.textContent = icc ? fmt(icc,2) : '—';
-  const cardIccI = $('#card-icc-i'); if (cardIccI) cardIccI.textContent = r;
+  const cardIccI = $('#card-icc-i'); if (cardIccI) cardIccI.textContent = '';
 }
 
 /* ---------- TMB & GET — Mifflin-St Jeor ----------
@@ -220,44 +186,20 @@ function calcBIA() {
   const musc  = num($('#bia-musc')?.value);
   const visc  = num($('#bia-visc')?.value);
 
-  // Body fat interpretation by gender (same scale as Yuhasz cards)
-  let gi = '—';
-  if (grasa) {
-    if (GENDER === 'F') {
-      if (grasa < 14) gi = 'Esencial';
-      else if (grasa < 21) gi = 'Atlética';
-      else if (grasa < 25) gi = 'Fitness';
-      else if (grasa < 32) gi = 'Aceptable';
-      else gi = 'Sobre rango';
-    } else {
-      if (grasa < 6) gi = 'Esencial';
-      else if (grasa < 14) gi = 'Atlético';
-      else if (grasa < 18) gi = 'Fitness';
-      else if (grasa < 25) gi = 'Aceptable';
-      else gi = 'Sobre rango';
-    }
-  }
-  // visceral fat ref (Tanita/InBody scale 1-59): <=9 saludable, 10-14 alto, >=15 muy alto
-  let vi = '—';
-  if (visc) {
-    if (visc <= 9) vi = 'Saludable';
-    else if (visc <= 14) vi = 'Elevada';
-    else vi = 'Muy elevada';
-  }
-  set('#bia-grasa-i', gi);
-  set('#bia-visc-i', vi);
+  // No labels (no "sobre rango" etc) — just show numerical values
+  set('#bia-grasa-i', '');
+  set('#bia-visc-i', '');
   set('#bia-card-grasa', grasa ? fmt(grasa,1) : '—');
-  set('#bia-card-grasa-i', gi);
+  set('#bia-card-grasa-i', '');
   set('#bia-card-musc',  musc  ? fmt(musc,1) + ' kg' : '— kg');
   set('#bia-card-visc',  visc  ? fmt(visc,0) : '—');
-  set('#bia-card-visc-i', vi);
+  set('#bia-card-visc-i', '');
 
-  // When in BIA mode, mirror values to the main results cards
   if (BODY_MODE === 'bia') {
     const peso = num($('#in-peso').value);
     const masaMagra = peso && grasa ? peso * (1 - grasa/100) : (musc || 0);
     const cardG  = $('#card-grasa');  if (cardG)  cardG.textContent  = grasa ? fmt(grasa,1) : '—';
-    const cardGI = $('#card-grasa-i'); if (cardGI) cardGI.textContent = gi;
+    const cardGI = $('#card-grasa-i'); if (cardGI) cardGI.textContent = '';
     const cardM  = $('#card-magra');  if (cardM)  cardM.textContent  = masaMagra ? fmt(masaMagra,1) : '—';
   }
 }
@@ -388,12 +330,256 @@ function toggleSeries(key) {
 }
 
 /* ============================================
+   SETTINGS (template, brand, sections, logo)
+   ============================================ */
+const TOGGLEABLE_SECTIONS = ['objetivos', 'grupos', 'distribucion', 'ejemplos', 'tips'];
+
+let TEMPLATE = 'rose';       // 'rose' | 'tierra'
+let BRAND_NAME = 'Angélica Pinilla';
+let BRAND_TITLE = 'Nutricionista';
+let CUSTOM_LOGO = null;      // dataURL or null = use original
+const ORIGINAL_LOGO = 'assets/logo-angelica.png';
+const SECTIONS_ON = {};
+TOGGLEABLE_SECTIONS.forEach(s => SECTIONS_ON[s] = true);
+
+function applyTemplate(name) {
+  TEMPLATE = name;
+  document.body.classList.toggle('template-tierra', name === 'tierra');
+  document.body.classList.toggle('template-rose', name === 'rose');
+}
+
+function applyBrand() {
+  $$('[data-bind="brandName"]').forEach(el => el.textContent = BRAND_NAME);
+  $$('[data-bind="brandTitle"]').forEach(el => el.textContent = BRAND_TITLE);
+}
+
+function applyLogo() {
+  const src = CUSTOM_LOGO || ORIGINAL_LOGO;
+  $$('.brand-logo').forEach(img => img.src = src);
+  const prev = $('#sp-logo-preview');
+  if (prev) prev.src = src;
+}
+
+function applySections() {
+  TOGGLEABLE_SECTIONS.forEach(key => {
+    document.body.classList.toggle('no-section-' + key, !SECTIONS_ON[key]);
+  });
+  // Hide pages whose all .section-block children are off
+  $$('.page').forEach(p => {
+    const blocks = p.querySelectorAll('.section-block');
+    if (blocks.length === 0) { p.classList.remove('page-empty'); return; }
+    const anyOn = Array.from(blocks).some(b => SECTIONS_ON[b.dataset.section] !== false);
+    p.classList.toggle('page-empty', !anyOn);
+  });
+}
+
+function setSection(key, on) {
+  SECTIONS_ON[key] = !!on;
+  applySections();
+  saveState();
+}
+
+function setBrand(name, title) {
+  if (name !== undefined) BRAND_NAME = name || 'Nutricionista';
+  if (title !== undefined) BRAND_TITLE = title || '';
+  applyBrand();
+  saveState();
+}
+
+function setCustomLogo(dataUrl) {
+  CUSTOM_LOGO = dataUrl || null;
+  applyLogo();
+  saveState();
+}
+
+/* ============================================
+   EDITABLE LISTS (objectives + meal rows)
+   ============================================ */
+function attachDeleteBtn(item, onRemove) {
+  if (item.querySelector(':scope > .row-delete')) return;
+  const btn = document.createElement('button');
+  btn.className = 'row-delete';
+  btn.type = 'button';
+  btn.title = 'Eliminar';
+  btn.innerHTML = '×';
+  // Crucial: contenteditable="false" prevents the parent's contenteditable
+  // from hijacking clicks on this button.
+  btn.setAttribute('contenteditable', 'false');
+  // mousedown fires earlier than click and avoids contenteditable focus shift
+  btn.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    item.remove();
+    if (onRemove) onRemove();
+    saveStructure();
+  });
+  item.appendChild(btn);
+}
+
+function addObjective() {
+  const ul = $('#objectives-list');
+  if (!ul) return;
+  const li = document.createElement('li');
+  const span = document.createElement('span');
+  span.setAttribute('contenteditable', 'true');
+  span.className = 'editable';
+  span.textContent = 'Nuevo objetivo…';
+  li.appendChild(span);
+  ul.appendChild(li);
+  attachDeleteBtn(li);
+  span.focus();
+  // Select only the span text (not the button which is a sibling)
+  const range = document.createRange();
+  range.selectNodeContents(span);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  saveStructure();
+}
+
+function addMealRow(col) {
+  const row = document.createElement('div');
+  row.className = 'meal-row';
+  row.innerHTML = `
+    <div class="time" contenteditable="true">Comida · hora</div>
+    <div class="desc" contenteditable="true">Descripción de la comida…</div>
+  `;
+  const addBtn = col.querySelector('.add-meal-btn');
+  col.insertBefore(row, addBtn);
+  attachDeleteBtn(row);
+  const desc = row.querySelector('.desc');
+  desc.focus();
+  const range = document.createRange();
+  range.selectNodeContents(desc);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  saveStructure();
+}
+
+function initEditableLists() {
+  // Migrate legacy <li contenteditable="true" data-k="obj-N"> structure to
+  // <li><span contenteditable="true" data-k="obj-N"></span></li> so the
+  // delete button can live outside the editable area.
+  $$('#objectives-list li[contenteditable="true"]').forEach(li => {
+    const k = li.dataset.k;
+    // Strip any leftover dead buttons from earlier loads
+    li.querySelectorAll('.row-delete').forEach(b => b.remove());
+    const inner = li.innerHTML.trim();
+    const span = document.createElement('span');
+    span.setAttribute('contenteditable', 'true');
+    span.className = 'editable';
+    if (k) span.dataset.k = k;
+    span.innerHTML = inner;
+    li.removeAttribute('contenteditable');
+    li.removeAttribute('data-k');
+    li.innerHTML = '';
+    li.appendChild(span);
+  });
+
+  // Objectives list — strip stale buttons and re-attach with fresh listeners
+  const ul = $('#objectives-list');
+  if (ul) {
+    ul.querySelectorAll('li').forEach(li => {
+      li.querySelectorAll(':scope > .row-delete').forEach(b => b.remove());
+      attachDeleteBtn(li);
+    });
+    if (!$('#add-objective-btn')) {
+      const btn = document.createElement('button');
+      btn.id = 'add-objective-btn';
+      btn.className = 'add-row';
+      btn.type = 'button';
+      btn.textContent = '+ Agregar objetivo';
+      btn.addEventListener('click', addObjective);
+      ul.parentNode.appendChild(btn);
+    }
+  }
+  // Meal columns — strip stale buttons too
+  $$('.meal-col').forEach((col, i) => {
+    col.dataset.col = i;
+    col.querySelectorAll('.meal-row').forEach(row => {
+      row.querySelectorAll(':scope > .row-delete').forEach(b => b.remove());
+      attachDeleteBtn(row);
+    });
+    if (!col.querySelector('.add-meal-btn')) {
+      const btn = document.createElement('button');
+      btn.className = 'add-row add-meal-btn';
+      btn.type = 'button';
+      btn.textContent = '+ Agregar comida';
+      btn.addEventListener('click', () => addMealRow(col));
+      col.appendChild(btn);
+    }
+  });
+}
+
+function saveStructure() {
+  // Saves the dynamic structure of objectives list + meal columns into localStorage
+  try {
+    const struct = {};
+    const ul = $('#objectives-list');
+    if (ul) {
+      // Strip delete buttons before saving
+      const clean = ul.cloneNode(true);
+      clean.querySelectorAll('.row-delete').forEach(b => b.remove());
+      struct.objectives = clean.innerHTML;
+    }
+    $$('.meal-col').forEach((col, i) => {
+      const rows = col.querySelectorAll('.meal-row');
+      const cleanRows = Array.from(rows).map(r => {
+        const c = r.cloneNode(true);
+        c.querySelectorAll('.row-delete').forEach(b => b.remove());
+        return c.outerHTML;
+      });
+      struct['meals-' + i] = cleanRows.join('');
+    });
+    localStorage.setItem(KEY + '-struct', JSON.stringify(struct));
+  } catch(e) { console.warn('saveStructure failed', e); }
+}
+
+function loadStructure() {
+  try {
+    const struct = JSON.parse(localStorage.getItem(KEY + '-struct') || '{}');
+    if (typeof struct.objectives === 'string') {
+      const ul = $('#objectives-list');
+      if (ul) ul.innerHTML = struct.objectives;
+    }
+    $$('.meal-col').forEach((col, i) => {
+      if (typeof struct['meals-' + i] !== 'string') return;
+      // Remove existing meal-rows
+      col.querySelectorAll('.meal-row').forEach(r => r.remove());
+      // Parse saved HTML and insert each row after the h4 in order
+      const wrap = document.createElement('div');
+      wrap.innerHTML = struct['meals-' + i];
+      const h4 = col.querySelector('h4');
+      // Move add-button (if exists) out of the way first
+      const addBtn = col.querySelector('.add-meal-btn');
+      const insertAfter = node => {
+        if (addBtn) col.insertBefore(node, addBtn);
+        else col.appendChild(node);
+      };
+      Array.from(wrap.children).forEach(insertAfter);
+      // Make sure h4 is first
+      if (h4) col.insertBefore(h4, col.firstChild);
+    });
+  } catch(e) { console.warn('loadStructure failed', e); }
+}
+
+/* ============================================
    STATE
    ============================================ */
 const KEY = 'plan-nutricional-state-v2';
 
 function saveState() {
-  const state = { gender: GENDER, bodymode: BODY_MODE, chart: [...CHART_ACTIVE] };
+  const state = {
+    gender: GENDER,
+    bodymode: BODY_MODE,
+    chart: [...CHART_ACTIVE],
+    template: TEMPLATE,
+    brandName: BRAND_NAME,
+    brandTitle: BRAND_TITLE,
+    customLogo: CUSTOM_LOGO,
+    sections: SECTIONS_ON,
+  };
   $$('input.field, [contenteditable="true"]').forEach(el => {
     const id = el.id || el.dataset.k;
     if (!id) return;
@@ -413,8 +599,17 @@ function loadState() {
     if (state.gender) GENDER = state.gender;
     if (state.bodymode) BODY_MODE = state.bodymode;
     if (Array.isArray(state.chart)) CHART_ACTIVE = new Set(state.chart);
+    if (state.template) TEMPLATE = state.template;
+    if (typeof state.brandName === 'string') BRAND_NAME = state.brandName;
+    if (typeof state.brandTitle === 'string') BRAND_TITLE = state.brandTitle;
+    if (typeof state.customLogo === 'string') CUSTOM_LOGO = state.customLogo;
+    if (state.sections && typeof state.sections === 'object') {
+      TOGGLEABLE_SECTIONS.forEach(s => {
+        if (typeof state.sections[s] === 'boolean') SECTIONS_ON[s] = state.sections[s];
+      });
+    }
     Object.keys(state).forEach(id => {
-      if (['gender','bodymode','chart'].includes(id)) return;
+      if (['gender','bodymode','chart','template','brandName','brandTitle','customLogo','sections'].includes(id)) return;
       const el = document.getElementById(id) || $(`[data-k="${id}"]`);
       if (!el) return;
       if (el.tagName === 'INPUT' || el.tagName === 'SELECT') el.value = state[id];
@@ -428,8 +623,14 @@ function loadState() {
    ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
+  loadStructure();
+  initEditableLists();
   setGender(GENDER);
   setBodyMode(BODY_MODE);
+  applyTemplate(TEMPLATE);
+  applyBrand();
+  applyLogo();
+  applySections();
   $$('#chart-controls .chip').forEach(c => c.classList.toggle('on', CHART_ACTIVE.has(c.dataset.k)));
 
   // Inputs
@@ -440,6 +641,10 @@ document.addEventListener('DOMContentLoaded', () => {
       saveState();
     }
     if (t.id === 'patient-name' || t.id === 'patient-date') syncIdentity();
+    // Persist structure when user edits any contenteditable in dynamic lists
+    if (t.closest && (t.closest('#objectives-list') || t.closest('.meal-col'))) {
+      saveStructure();
+    }
   });
 
   // Gender toggle
@@ -667,6 +872,47 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem(KEY);
       location.reload();
     }
+  });
+
+  /* ----- Settings panel ----- */
+  const panel = $('#settings-panel');
+  $('#btn-settings').addEventListener('click', () => {
+    panel.hidden = !panel.hidden;
+    if (!panel.hidden) {
+      $('#sp-brand-name').value = BRAND_NAME;
+      $('#sp-brand-title').value = BRAND_TITLE;
+      $$('input[name="template"]').forEach(r => r.checked = r.value === TEMPLATE);
+      $$('input[data-section-toggle]').forEach(c => c.checked = SECTIONS_ON[c.dataset.sectionToggle] !== false);
+    }
+  });
+  $('#sp-close').addEventListener('click', () => { panel.hidden = true; });
+  $('#sp-apply').addEventListener('click', () => { panel.hidden = true; });
+
+  $$('input[name="template"]').forEach(r => {
+    r.addEventListener('change', () => { applyTemplate(r.value); saveState(); });
+  });
+
+  $('#sp-brand-name').addEventListener('input', e => setBrand(e.target.value, undefined));
+  $('#sp-brand-title').addEventListener('input', e => setBrand(undefined, e.target.value));
+
+  $('#sp-logo-input').addEventListener('change', e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      alert('La imagen es muy grande (máximo 4 MB).');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setCustomLogo(reader.result);
+    reader.readAsDataURL(file);
+  });
+  $('#sp-logo-reset').addEventListener('click', () => {
+    setCustomLogo(null);
+    $('#sp-logo-input').value = '';
+  });
+
+  $$('input[data-section-toggle]').forEach(chk => {
+    chk.addEventListener('change', e => setSection(chk.dataset.sectionToggle, e.target.checked));
   });
 
   $('#chk-include-chart')?.addEventListener('change', () => {
