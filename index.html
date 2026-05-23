@@ -1011,70 +1011,74 @@
     </div>
     <p style="color:var(--ink-soft);max-width:540px;">Define cuántas porciones de cada grupo corresponden a cada tiempo de comida. Los totales se calculan automáticamente.</p>
 
-    <table class="nice" style="font-size:10pt;">
+    <table id="dist-table" class="nice" style="font-size:10pt;">
       <thead><tr>
         <th>Tiempo de comida</th>
-        <th class="num">Cereales</th>
-        <th class="num">Verduras</th>
-        <th class="num">Frutas</th>
-        <th class="num">Carnes</th>
-        <th class="num">Lácteos</th>
-        <th class="num">Frutos s.</th>
+        <th class="num" data-col="cer"><span contenteditable="true">Cereales</span></th>
+        <th class="num" data-col="vcg"><span contenteditable="true">Verduras</span></th>
+        <th class="num" data-col="fru"><span contenteditable="true">Frutas</span></th>
+        <th class="num" data-col="car"><span contenteditable="true">Carnes</span></th>
+        <th class="num" data-col="lac"><span contenteditable="true">Lácteos</span></th>
+        <th class="num" data-col="arl"><span contenteditable="true">Frutos s.</span></th>
+        <th class="dist-actions-col" aria-hidden="true"></th>
       </tr></thead>
       <tbody>
         <tr>
-          <td class="label">Desayuno · 8:00</td>
+          <td class="label" contenteditable="true">Desayuno · 8:00</td>
           <td><input class="field" type="number" data-dist="cer" value="2"></td>
           <td><input class="field" type="number" data-dist="vcg"></td>
           <td><input class="field" type="number" data-dist="fru" value="1"></td>
           <td><input class="field" type="number" data-dist="car" value="4"></td>
           <td><input class="field" type="number" data-dist="lac"></td>
           <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
         </tr>
         <tr>
-          <td class="label">Almuerzo · 14:00</td>
+          <td class="label" contenteditable="true">Almuerzo · 14:00</td>
           <td><input class="field" type="number" data-dist="cer" value="1"></td>
           <td><input class="field" type="number" data-dist="vcg" value="1"></td>
           <td><input class="field" type="number" data-dist="fru" value="1"></td>
           <td><input class="field" type="number" data-dist="car" value="4"></td>
           <td><input class="field" type="number" data-dist="lac"></td>
           <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
         </tr>
         <tr>
-          <td class="label">Colación · 17:00</td>
+          <td class="label" contenteditable="true">Colación · 17:00</td>
           <td><input class="field" type="number" data-dist="cer" value="1"></td>
           <td><input class="field" type="number" data-dist="vcg"></td>
           <td><input class="field" type="number" data-dist="fru"></td>
           <td><input class="field" type="number" data-dist="car" value="2"></td>
           <td><input class="field" type="number" data-dist="lac" value="1"></td>
           <td><input class="field" type="number" data-dist="arl"></td>
+          <td class="dist-actions-col"></td>
         </tr>
         <tr>
-          <td class="label">Once · 20:00</td>
+          <td class="label" contenteditable="true">Once · 20:00</td>
           <td><input class="field" type="number" data-dist="cer" value="1"></td>
           <td><input class="field" type="number" data-dist="vcg" value="1"></td>
           <td><input class="field" type="number" data-dist="fru"></td>
           <td><input class="field" type="number" data-dist="car" value="4"></td>
           <td><input class="field" type="number" data-dist="lac" value="1"></td>
           <td><input class="field" type="number" data-dist="arl" value="1"></td>
+          <td class="dist-actions-col"></td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <td>Total diario</td>
-          <td class="num" id="tot-cer">—</td>
-          <td class="num" id="tot-vcg">—</td>
-          <td class="num" id="tot-fru">—</td>
-          <td class="num" id="tot-car">—</td>
-          <td class="num" id="tot-lac">—</td>
-          <td class="num" id="tot-arl">—</td>
+          <td class="num" data-col="cer" id="tot-cer">—</td>
+          <td class="num" data-col="vcg" id="tot-vcg">—</td>
+          <td class="num" data-col="fru" id="tot-fru">—</td>
+          <td class="num" data-col="car" id="tot-car">—</td>
+          <td class="num" data-col="lac" id="tot-lac">—</td>
+          <td class="num" data-col="arl" id="tot-arl">—</td>
+          <td class="dist-actions-col"></td>
         </tr>
       </tfoot>
     </table>
 
-    <p style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">
-      El día de legumbres disminuye 1 porción de cereales.
-    </p>
+    <p contenteditable="true" data-k="legumbres-note" style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">El día de legumbres disminuye 1 porción de cereales.</p>
     </div>
 
     <div class="section-block" data-section="ejemplos">
@@ -1085,7 +1089,7 @@
 
     <div class="meals">
       <div class="meal-col">
-        <h4>Opción 1</h4>
+        <h4 contenteditable="true">Opción 1</h4>
         <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o1-d">1 pan integral con 2 huevos + ½ palta · 1 yogurt descremado · café o té</div></div>
         <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
@@ -1096,7 +1100,7 @@
           <div class="desc" contenteditable="true" data-k="o1-o">1 pan integral con pasta de pollo + 1 yogurt + 1 fruta</div></div>
       </div>
       <div class="meal-col">
-        <h4>Opción 2</h4>
+        <h4 contenteditable="true">Opción 2</h4>
         <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o2-d">½ tz avena cocida + 1 yogurt + 1 fruta + 15 g frutos secos · café</div></div>
         <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
@@ -1106,8 +1110,8 @@
         <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
           <div class="desc" contenteditable="true" data-k="o2-o">Tortilla de claras con espinaca + 1 pan integral + ensalada verde</div></div>
       </div>
-      <div class="meal-col legumbres">
-        <h4>Opción 3 · Legumbres</h4>
+      <div class="meal-col">
+        <h4 contenteditable="true">Opción 3</h4>
         <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
           <div class="desc" contenteditable="true" data-k="o3-d">2 fajitas integrales con 3 huevos y palta + 1 yogurt + 1 fruta + café</div></div>
         <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
