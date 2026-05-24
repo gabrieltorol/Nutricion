@@ -1057,7 +1057,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (o) o.remove();
   }
 
-  $('#btn-print').addEventListener('click', downloadPDF);
+  $('#btn-print').addEventListener('click', () => {
+    downloadPDF();
+  });
 
   $('#btn-preview').addEventListener('click', () => {
     document.body.classList.toggle('client-view');
