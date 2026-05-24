@@ -1557,10 +1557,23 @@ body[data-bodymode="bia"] .mode-pliegues { display: none !important; }
   #chart-controls .chip:not(.on) { display: none !important; }
   #chart-controls .chip {
     pointer-events: none;
-    background: transparent !important;
-    border-color: transparent !important;
+    background: rgba(255,255,255,0.6) !important;
+    border: 1px solid currentColor !important;
   }
-  #chart-controls > span:first-child { display: none !important; }
+  #chart-controls {
+    background: var(--rose-blush);
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  #chart-controls > span:first-child { font-size: 0 !important; }
+  #chart-controls > span:first-child::before {
+    content: 'Leyenda:';
+    font-family: 'Karla', sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+  }
   /* Tighten spacing on print so 3 objective sections fit on requirements page */
   .macros-table { margin-bottom: 6px; }
   .req-card { padding: 12px 16px; margin-bottom: 8px; }
@@ -1571,32 +1584,50 @@ body.client-view .macro-bar[data-for]:not([data-active]) { display: none !import
 
 /* Legend mode: in client/exporting/print, keep chart-controls visible but show
    only active chips as a non-interactive legend so the client knows which color
-   corresponds to which series. */
+   corresponds to which series. Each chip keeps its color so the swatch + label
+   match the line in the chart. */
 body.client-view #chart-controls .chip:not(.on),
 body.exporting   #chart-controls .chip:not(.on) { display: none !important; }
 body.client-view #chart-controls .chip,
 body.exporting   #chart-controls .chip {
-  pointer-events: none;
-  cursor: default;
-  background: transparent;
-  border-color: transparent;
+  pointer-events: none !important;
+  cursor: default !important;
+  /* Subtle pill background tinted to the chip's color so the legend is clearly
+     visible against the white chart-card. */
+  background: rgba(255,255,255,0.6) !important;
+  border: 1px solid currentColor !important;
+  font-size: 9.5pt !important;
+  padding: 4px 12px !important;
+  font-weight: 500;
 }
-body.client-view #chart-controls .chip-label-edit,
-body.exporting   #chart-controls .chip-label-edit { display: none !important; }
-body.client-view #chart-controls::before,
-body.exporting   #chart-controls::before {
+body.client-view #chart-controls .chip .swatch,
+body.exporting   #chart-controls .chip .swatch {
+  width: 10px;
+  height: 10px;
+}
+/* Replace the original interactive "Series:" label with a "Leyenda:" prefix. */
+body.client-view #chart-controls > span:first-child,
+body.exporting   #chart-controls > span:first-child {
+  /* Override the inline style so it reads "Leyenda:" — use a wrapper via
+     CSS variables. We hide the text and inject our own via ::before below. */
+  font-size: 0 !important;
+}
+body.client-view #chart-controls > span:first-child::before,
+body.exporting   #chart-controls > span:first-child::before {
   content: 'Leyenda:';
   font-family: 'Karla', sans-serif;
   font-size: 8.5pt;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--sage-deep);
-  margin-right: 6px;
 }
-/* Hide the original interactive "Series:" label in those modes (it's the first
-   child span inside #chart-controls). */
-body.client-view #chart-controls > span:first-child,
-body.exporting   #chart-controls > span:first-child { display: none !important; }
+body.client-view #chart-controls,
+body.exporting   #chart-controls {
+  margin-bottom: 14px;
+  padding: 6px 10px;
+  background: var(--rose-blush);
+  border-radius: 8px;
+}
 
 /* ---------- PDF export mode ---------- */
 body.exporting .toolbar,
@@ -1735,10 +1766,23 @@ body.exporting.no-chart .page.chart-page { display: none !important; }
   #chart-controls .chip:not(.on) { display: none !important; }
   #chart-controls .chip {
     pointer-events: none;
-    background: transparent !important;
-    border-color: transparent !important;
+    background: rgba(255,255,255,0.6) !important;
+    border: 1px solid currentColor !important;
   }
-  #chart-controls > span:first-child { display: none !important; }
+  #chart-controls {
+    background: var(--rose-blush);
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  #chart-controls > span:first-child { font-size: 0 !important; }
+  #chart-controls > span:first-child::before {
+    content: 'Leyenda:';
+    font-family: 'Karla', sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+  }
 
   /* Ensure all SVGs and colored backgrounds print */
   * {
