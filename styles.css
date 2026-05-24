@@ -1553,23 +1553,56 @@ body[data-bodymode="bia"] .mode-pliegues { display: none !important; }
   /* Only print the active macro table + bar */
   .macros-table[data-for]:not([data-active]),
   .macro-bar[data-for]:not([data-active]) { display: none !important; }
-  /* Hide chart controls in PDF */
-  #chart-controls { display: none !important; }
+  /* Print: show only active chips as legend (non-interactive); hide the rest */
+  #chart-controls .chip:not(.on) { display: none !important; }
+  #chart-controls .chip {
+    pointer-events: none;
+    background: transparent !important;
+    border-color: transparent !important;
+  }
+  #chart-controls > span:first-child { display: none !important; }
   /* Tighten spacing on print so 3 objective sections fit on requirements page */
   .macros-table { margin-bottom: 6px; }
   .req-card { padding: 12px 16px; margin-bottom: 8px; }
   .req-row { padding: 6px 0; }
 }
 body.client-view .macros-table[data-for]:not([data-active]),
-body.client-view .macro-bar[data-for]:not([data-active]),
-body.client-view #chart-controls { display: none !important; }
+body.client-view .macro-bar[data-for]:not([data-active]) { display: none !important; }
+
+/* Legend mode: in client/exporting/print, keep chart-controls visible but show
+   only active chips as a non-interactive legend so the client knows which color
+   corresponds to which series. */
+body.client-view #chart-controls .chip:not(.on),
+body.exporting   #chart-controls .chip:not(.on) { display: none !important; }
+body.client-view #chart-controls .chip,
+body.exporting   #chart-controls .chip {
+  pointer-events: none;
+  cursor: default;
+  background: transparent;
+  border-color: transparent;
+}
+body.client-view #chart-controls .chip-label-edit,
+body.exporting   #chart-controls .chip-label-edit { display: none !important; }
+body.client-view #chart-controls::before,
+body.exporting   #chart-controls::before {
+  content: 'Leyenda:';
+  font-family: 'Karla', sans-serif;
+  font-size: 8.5pt;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  margin-right: 6px;
+}
+/* Hide the original interactive "Series:" label in those modes (it's the first
+   child span inside #chart-controls). */
+body.client-view #chart-controls > span:first-child,
+body.exporting   #chart-controls > span:first-child { display: none !important; }
 
 /* ---------- PDF export mode ---------- */
 body.exporting .toolbar,
 body.exporting .formula,
 body.exporting .pro-only,
 body.exporting .field-config,
-body.exporting #chart-controls,
 body.exporting .objective-tab:not(.active),
 body.exporting .macros-table[data-for]:not([data-active]),
 body.exporting .macro-bar[data-for]:not([data-active]) {
@@ -1698,7 +1731,14 @@ body.exporting.no-chart .page.chart-page { display: none !important; }
   .objective-tabs { grid-template-columns: 1fr; }
   .macros-table[data-for]:not([data-active]),
   .macro-bar[data-for]:not([data-active]) { display: none !important; }
-  #chart-controls { display: none !important; }
+  /* Show only active chips as legend in @page print fallback */
+  #chart-controls .chip:not(.on) { display: none !important; }
+  #chart-controls .chip {
+    pointer-events: none;
+    background: transparent !important;
+    border-color: transparent !important;
+  }
+  #chart-controls > span:first-child { display: none !important; }
 
   /* Ensure all SVGs and colored backgrounds print */
   * {
