@@ -977,6 +977,39 @@
     </div>
     <p style="color:var(--ink-soft);max-width:560px;">Cada casilla indica las <strong>porciones de intercambio</strong> por tiempo de comida. Elige los alimentos de cada código según la tabla de equivalencias.</p>
 
+    <div class="ai-box" id="ai-box">
+      <div class="ai-box-head">
+        <span class="ai-title">✨ Generar plan con IA</span>
+        <button type="button" class="ai-config-btn" id="ai-config-btn" title="Configurar conexión">⚙</button>
+      </div>
+      <div class="ai-config" id="ai-config" hidden>
+        <label>URL del servidor (proxy)
+          <input type="url" id="ai-proxy-url" placeholder="https://nutri-ai-proxy.tu-usuario.workers.dev">
+        </label>
+        <label style="margin-top:8px;">Clave de acceso
+          <input type="password" id="ai-app-token" placeholder="la misma que pusiste en APP_TOKEN" autocomplete="off">
+        </label>
+        <p class="ai-hint">Pegá la URL y la clave de tu Cloudflare Worker (ver <code>ai-proxy/README.md</code>). Se guardan solo en este navegador, nunca en el código.</p>
+      </div>
+      <div class="ai-fields">
+        <label>Calorías diarias<input type="number" id="ai-kcal" placeholder="1850"></label>
+        <label>Objetivo
+          <select id="ai-goal">
+            <option value="bajar grasa">Bajar grasa</option>
+            <option value="mantener">Mantener</option>
+            <option value="subir masa muscular">Subir masa muscular</option>
+          </select>
+        </label>
+        <label>Comidas por día<input type="number" id="ai-meals" value="5" min="2" max="8"></label>
+        <label>Días de entrenamiento<input type="text" id="ai-training" placeholder="Lun, Mié, Vie"></label>
+        <label class="ai-full">Preferencias / alergias / notas<input type="text" id="ai-notes" placeholder="Vegetariana, sin lácteos, etc."></label>
+      </div>
+      <div class="ai-actions">
+        <button type="button" class="ai-generate" id="ai-generate">✨ Generar plan</button>
+        <span class="ai-status" id="ai-status"></span>
+      </div>
+    </div>
+
     <div class="week-wrap">
       <table class="week-table">
         <thead><tr>
@@ -1328,5 +1361,6 @@ Gel deportivo (GU, Power honey) — 1 sachet</div>
 </div>
 
 <script src="app.js"></script>
+<script src="plan-ai.js"></script>
 </body>
 </html>

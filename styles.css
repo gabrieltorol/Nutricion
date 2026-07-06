@@ -1994,3 +1994,120 @@ body.exporting.no-chart .page.chart-page { display: none !important; }
 .code-legend b { color: var(--rose-deep); }
 
 /* Nada de esto muestra afford. de edición en cliente/PDF (heredan de contenteditable) */
+
+/* ============================================
+   Cuadro "Generar plan con IA" (solo edición)
+   ============================================ */
+.ai-box {
+  background: linear-gradient(180deg, var(--rose-blush), #fff);
+  border: 1px solid var(--rose-soft);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 10px 0 14px;
+}
+.ai-box-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.ai-title {
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 10.5pt;
+  letter-spacing: 0.04em;
+  color: var(--rose-deep);
+}
+.ai-config-btn {
+  border: 1px solid var(--rose-soft);
+  background: #fff;
+  color: var(--rose-deep);
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 13pt;
+  line-height: 1;
+}
+.ai-config-btn:hover { background: var(--rose-mist); }
+.ai-config {
+  background: #fff;
+  border: 1px dashed var(--rose-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.ai-config label { display: block; font-size: 9pt; color: var(--sage-deep); font-weight: 600; letter-spacing: 0.04em; }
+.ai-config input {
+  width: 100%;
+  margin-top: 4px;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: 'Karla', sans-serif;
+  font-size: 10pt;
+}
+.ai-hint { font-size: 8.5pt; color: var(--ink-soft); margin: 6px 0 0; }
+.ai-hint code { background: var(--paper-deep); padding: 1px 5px; border-radius: 4px; font-size: 8pt; }
+
+.ai-fields {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.ai-fields label {
+  display: flex;
+  flex-direction: column;
+  font-size: 8.5pt;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+  font-weight: 600;
+  gap: 4px;
+}
+.ai-fields label.ai-full { grid-column: 1 / -1; }
+.ai-fields input,
+.ai-fields select {
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  font-family: 'Karla', sans-serif;
+  font-size: 10pt;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: normal;
+}
+.ai-fields input:focus,
+.ai-fields select:focus { outline: none; border-color: var(--rose); }
+
+.ai-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+.ai-generate {
+  background: var(--rose-deep);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 9px 20px;
+  font-family: 'Karla', sans-serif;
+  font-size: 10pt;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ai-generate:hover { background: #732e42; }
+.ai-generate:disabled { opacity: 0.6; cursor: wait; }
+.ai-status { font-size: 9.5pt; color: var(--ink-soft); }
+.ai-status.loading { color: var(--rose-deep); }
+.ai-status.ok { color: var(--sage-deep); }
+.ai-status.err { color: #B3453E; }
+
+/* Se oculta en vista cliente y PDF */
+body.client-view .ai-box,
+body.exporting .ai-box { display: none !important; }
+@media print { .ai-box { display: none !important; } }

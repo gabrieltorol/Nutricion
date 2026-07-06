@@ -1,0 +1,6 @@
+name = "nutri-ai-proxy"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# La API key NO va acá. Se guarda como secreto con:
+#   wrangler secret put ANTHROPIC_API_KEY
