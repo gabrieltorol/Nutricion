@@ -220,9 +220,8 @@
     <p class="sp-help">Marca las secciones que quieras incluir. Cuando una página queda vacía, se oculta automáticamente.</p>
     <label class="sp-toggle"><input type="checkbox" id="chk-include-chart" checked><span>Gráfico de evolución</span></label>
     <label class="sp-toggle"><input type="checkbox" data-section-toggle="objetivos" checked><span>Objetivos y metas</span></label>
-    <label class="sp-toggle"><input type="checkbox" data-section-toggle="grupos" checked><span>Grupos de alimentos</span></label>
-    <label class="sp-toggle"><input type="checkbox" data-section-toggle="distribucion" checked><span>Distribución diaria</span></label>
-    <label class="sp-toggle"><input type="checkbox" data-section-toggle="ejemplos" checked><span>Ejemplos de comidas</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="plansemanal" checked><span>Plan semanal</span></label>
+    <label class="sp-toggle"><input type="checkbox" data-section-toggle="equivalencias" checked><span>Equivalencias</span></label>
     <label class="sp-toggle"><input type="checkbox" data-section-toggle="tips" checked><span>Tips de compras</span></label>
   </div>
 
@@ -526,7 +525,7 @@
             <td class="label">Grasa visceral</td>
             <td><input id="bia-visc" class="field" type="number" step="0.1" placeholder="0"></td>
             <td>nivel</td>
-            <td></td>
+            <td id="bia-visc-i"></td>
           </tr>
           <tr>
             <td class="label">% Agua corporal</td>
@@ -950,43 +949,10 @@
     </div>
     </div>
 
-    <div class="section-block" data-section="grupos">
-    <div class="section-title" style="margin-top:18px;">
-      <span class="num">06</span>
-      <h2>Grupos de alimentos · porciones diarias</h2>
-    </div>
-
-    <table class="nice" style="font-size:9pt;">
-      <thead><tr>
-        <th>Grupo</th><th class="num">Porc.</th><th class="num">Kcal</th><th>Alimentos y equivalencias</th>
-      </tr></thead>
-      <tbody>
-        <tr><td class="label">Cereales</td><td><input class="field" type="number" value="5" data-k="g-cer"></td><td class="num">140</td>
-            <td contenteditable="true" data-k="ga-cer">Arroz, fideos, quínoa, choclo ¾ tz cocido (100 g) · Avena ½ tz (40 g) · Papa cocida 1 und (150 g)</td></tr>
-        <tr><td class="label">Verduras G.</td><td><input class="field" type="number" value="2" data-k="g-vg"></td><td class="num">30</td>
-            <td contenteditable="true" data-k="ga-vg">Betarraga ½ tz · Brócoli 1 tz · Coliflor 1 tz · Zanahoria ½ tz · Zapallo italiano ½ tz</td></tr>
-        <tr><td class="label">Verduras libres</td><td>libre</td><td class="num">10</td>
-            <td contenteditable="true" data-k="ga-vl">Apio, pepino, lechuga, repollo, espinaca, rabanito · 1 taza</td></tr>
-        <tr><td class="label">Frutas</td><td><input class="field" type="number" value="2" data-k="g-fr"></td><td class="num">65</td>
-            <td contenteditable="true" data-k="ga-fr">Manzana, pera 1 und chica · Durazno, naranja 1 und reg. · Frutilla, frambuesa 1 tz · Uvas 15 und</td></tr>
-        <tr><td class="label">Carnes magras</td><td><input class="field" type="number" value="14" data-k="g-cm"></td><td class="num">65</td>
-            <td contenteditable="true" data-k="ga-cm">Vacuno magro, pollo o pavo sin piel (50 g) · Reineta, merluza (80 g) · Huevo 1 und · ½ lata atún</td></tr>
-        <tr><td class="label">Leguminosas</td><td>1 cereal</td><td class="num">175</td>
-            <td contenteditable="true" data-k="ga-lg">Arveja, poroto, garbanzo, habas, lentejas · 1 tz cocida (200 g) · reemplaza 1 cereal</td></tr>
-        <tr><td class="label">Lácteos descr.</td><td><input class="field" type="number" value="2" data-k="g-ld"></td><td class="num">70</td>
-            <td contenteditable="true" data-k="ga-ld">Leche descremada en polvo 2 cdas · Leche líquida 1 tz (200 cc) · Yogurt diet 1 und</td></tr>
-        <tr><td class="label">Aceites y grasas</td><td><input class="field" type="number" value="3" data-k="g-ag"></td><td class="num">45</td>
-            <td contenteditable="true" data-k="ga-ag">Aceite oliva, canola 1 cdta (5 cc) · Mayonesa light 1 cda · Palta 1 cda</td></tr>
-        <tr><td class="label">Frutos secos</td><td><input class="field" type="number" value="3" data-k="g-fs"></td><td class="num">175</td>
-            <td contenteditable="true" data-k="ga-fs">Almendras 10 und · Nuez 3 und · Maní 15 und · Palta 3 cdas · Aceitunas 6 und</td></tr>
-      </tbody>
-    </table>
-    </div>
-
     <footer class="page-footer">
       <span>Paciente · <span data-bind="name">—</span></span>
-      <span class="center">— Planificación alimentaria —</span>
-      <span>06</span>
+      <span class="center">— Objetivos del plan —</span>
+      <span>05</span>
     </footer>
   </section>
 
@@ -1004,83 +970,87 @@
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
 
-    <div class="section-block" data-section="distribucion">
+    <div class="section-block" data-section="plansemanal">
     <div class="section-title">
-      <span class="num">07</span>
-      <h2>Distribución diaria</h2>
+      <span class="num">06</span>
+      <h2>Plan semanal</h2>
     </div>
-    <p style="color:var(--ink-soft);max-width:540px;">Define cuántas porciones de cada grupo corresponden a cada tiempo de comida. Los totales se calculan automáticamente.</p>
+    <p style="color:var(--ink-soft);max-width:560px;">Cada casilla indica las <strong>porciones de intercambio</strong> por tiempo de comida. Elige los alimentos de cada código según la tabla de equivalencias.</p>
 
-    <table id="dist-table" class="nice" style="font-size:10pt;">
-      <thead><tr>
-        <th>Tiempo de comida</th>
-        <th class="num" data-col="cer"><span contenteditable="true">Cereales</span></th>
-        <th class="num" data-col="vcg"><span contenteditable="true">Verduras</span></th>
-        <th class="num" data-col="fru"><span contenteditable="true">Frutas</span></th>
-        <th class="num" data-col="car"><span contenteditable="true">Carnes</span></th>
-        <th class="num" data-col="lac"><span contenteditable="true">Lácteos</span></th>
-        <th class="num" data-col="arl"><span contenteditable="true">Frutos s.</span></th>
-        <th class="dist-actions-col" aria-hidden="true"></th>
-      </tr></thead>
-      <tbody>
-        <tr>
-          <td class="label" contenteditable="true">Desayuno · 8:00</td>
-          <td><input class="field" type="number" data-dist="cer" value="2"></td>
-          <td><input class="field" type="number" data-dist="vcg"></td>
-          <td><input class="field" type="number" data-dist="fru" value="1"></td>
-          <td><input class="field" type="number" data-dist="car" value="4"></td>
-          <td><input class="field" type="number" data-dist="lac"></td>
-          <td><input class="field" type="number" data-dist="arl" value="1"></td>
-          <td class="dist-actions-col"></td>
-        </tr>
-        <tr>
-          <td class="label" contenteditable="true">Almuerzo · 14:00</td>
-          <td><input class="field" type="number" data-dist="cer" value="1"></td>
-          <td><input class="field" type="number" data-dist="vcg" value="1"></td>
-          <td><input class="field" type="number" data-dist="fru" value="1"></td>
-          <td><input class="field" type="number" data-dist="car" value="4"></td>
-          <td><input class="field" type="number" data-dist="lac"></td>
-          <td><input class="field" type="number" data-dist="arl" value="1"></td>
-          <td class="dist-actions-col"></td>
-        </tr>
-        <tr>
-          <td class="label" contenteditable="true">Colación · 17:00</td>
-          <td><input class="field" type="number" data-dist="cer" value="1"></td>
-          <td><input class="field" type="number" data-dist="vcg"></td>
-          <td><input class="field" type="number" data-dist="fru"></td>
-          <td><input class="field" type="number" data-dist="car" value="2"></td>
-          <td><input class="field" type="number" data-dist="lac" value="1"></td>
-          <td><input class="field" type="number" data-dist="arl"></td>
-          <td class="dist-actions-col"></td>
-        </tr>
-        <tr>
-          <td class="label" contenteditable="true">Once · 20:00</td>
-          <td><input class="field" type="number" data-dist="cer" value="1"></td>
-          <td><input class="field" type="number" data-dist="vcg" value="1"></td>
-          <td><input class="field" type="number" data-dist="fru"></td>
-          <td><input class="field" type="number" data-dist="car" value="4"></td>
-          <td><input class="field" type="number" data-dist="lac" value="1"></td>
-          <td><input class="field" type="number" data-dist="arl" value="1"></td>
-          <td class="dist-actions-col"></td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Total diario</td>
-          <td class="num" data-col="cer" id="tot-cer">—</td>
-          <td class="num" data-col="vcg" id="tot-vcg">—</td>
-          <td class="num" data-col="fru" id="tot-fru">—</td>
-          <td class="num" data-col="car" id="tot-car">—</td>
-          <td class="num" data-col="lac" id="tot-lac">—</td>
-          <td class="num" data-col="arl" id="tot-arl">—</td>
-          <td class="dist-actions-col"></td>
-        </tr>
-      </tfoot>
-    </table>
+    <div class="week-wrap">
+      <table class="week-table">
+        <thead><tr>
+          <th class="wk-time">Tiempo</th>
+          <th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th><th>Domingo</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r1-t">Desayuno<span class="wk-hour" contenteditable="true" data-k="ws-r1-h">8:00</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-lun">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-mar">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-mie">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-jue">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-vie">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-sab">3 CBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r1-dom">3 CBG · 1 CER · 1 FRT</div></td>
+          </tr>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r2-t">Colación AM<span class="wk-hour" contenteditable="true" data-k="ws-r2-h">11:00</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-lun">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-mar">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-mie">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-jue">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-vie">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-sab">1 FRT · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r2-dom">1 FRT · 1 AC</div></td>
+          </tr>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r3-t">Almuerzo<span class="wk-hour" contenteditable="true" data-k="ws-r3-h">13:30</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-lun">5 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-mar">4 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-mie">5 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-jue">4 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-vie">5 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-sab">5 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r3-dom">5 CBG · 1 CER · 1 VG · 1 VLC · 1 AC</div></td>
+          </tr>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r4-t">Colación PM<span class="wk-hour" contenteditable="true" data-k="ws-r4-h">17:00</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-lun">1 LBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-mar">2 CBG · 1 CER</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-mie">1 LBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-jue">2 CBG · 1 CER</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-vie">1 LBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-sab">1 LBG · 1 CER · 1 FRT</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r4-dom">1 LBG · 1 CER · 1 FRT</div></td>
+          </tr>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r5-t">Cena<span class="wk-hour" contenteditable="true" data-k="ws-r5-h">20:30</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-lun">4 CBG · 1 CER · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-mar">4 CBG · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-mie">4 CBG · 1 CER · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-jue">4 CBG · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-vie">4 CBG · 1 CER · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-sab">4 CBG · 1 CER · 1 VG · 1 VLC · 1 ARL</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r5-dom">4 CBG · 1 CER · 1 VG · 1 VLC · 1 ARL</div></td>
+          </tr>
+          <tr>
+            <td class="wk-time" contenteditable="true" data-k="ws-r6-t">Entreno<span class="wk-hour" contenteditable="true" data-k="ws-r6-h">—</span></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-lun">GYM</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-mar">Descanso</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-mie">GYM</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-jue">Descanso</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-vie">GYM</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-sab">GYM</div></td>
+            <td><div class="week-cell" contenteditable="true" data-k="ws-r6-dom">Libre</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <p contenteditable="true" data-k="legumbres-note" style="font-size:9.5pt;color:var(--ink-soft);font-style:italic;text-align:center;">El día de legumbres disminuye 1 porción de cereales.</p>
+    <p class="week-note" contenteditable="true" data-k="week-note">El día de legumbres reemplaza 1 porción de cereales (CER). Ajusta las porciones según tu nivel de actividad.</p>
 
-    <div class="closing-quote" style="margin-top:40px;">
+    <div class="closing-quote" style="margin-top:26px;">
       <div class="q" contenteditable="true" data-k="dist-quote">« Pequeños cambios sostenidos en el tiempo<br>se convierten en grandes transformaciones. »</div>
       <div class="signature">— Con cariño, <span data-bind="brandName">Angélica</span></div>
     </div>
@@ -1088,8 +1058,8 @@
 
     <footer class="page-footer">
       <span>Paciente · <span data-bind="name">—</span></span>
-      <span class="center">— Distribución diaria —</span>
-      <span>07</span>
+      <span class="center">— Plan semanal —</span>
+      <span>06</span>
     </footer>
   </section>
 
@@ -1108,52 +1078,197 @@
       <div class="page-tag">Plan para <span data-bind="name">—</span></div>
     </header>
 
-    <div class="section-block" data-section="ejemplos">
+    <div class="section-block" data-section="equivalencias">
     <div class="section-title">
-      <span class="num">08</span>
-      <h2>Ejemplos de comidas</h2>
+      <span class="num">07</span>
+      <h2>Equivalencias · grupos de intercambio</h2>
+    </div>
+    <p style="color:var(--ink-soft);max-width:560px;">Cada porción indicada en el plan semanal equivale a una de estas opciones. Elige libremente dentro de cada grupo.</p>
+
+    <div class="medidas-bar">
+      <span>1 taza (chica, de té) = <b>200 ml</b></span>
+      <span>1 vaso = <b>300 ml</b></span>
+      <span>1 cda sopera = <b>10 ml</b></span>
+      <span>1 cdta de té = <b>5 ml</b></span>
     </div>
 
-    <div class="meals">
-      <div class="meal-col">
-        <h4 contenteditable="true">Opción 1</h4>
-        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
-          <div class="desc" contenteditable="true" data-k="o1-d">1 pan integral con 2 huevos + ½ palta · 1 yogurt descremado · café o té</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
-          <div class="desc" contenteditable="true" data-k="o1-a">100 g de arroz cocido + 150 g pollo a la plancha + ensalada verde con limón</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
-          <div class="desc" contenteditable="true" data-k="o1-c">1 fruta + 10 almendras + 1 té de hierbas</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
-          <div class="desc" contenteditable="true" data-k="o1-o">1 pan integral con pasta de pollo + 1 yogurt + 1 fruta</div></div>
+    <div class="equiv-grid">
+      <div class="equiv-group">
+        <h4>Cereales, tubérculos y leguminosas <span class="code">CER</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-cer">Arroz cocido — ¾ tz (80 g)
+Fideos / cuscús cocido — ¾ tz (100 g)
+Quinoa cocida — ½ tz (100 g)
+Papa cocida / camote — 1 und (150 g)
+Choclo, habas cocido — 1 tz (150 g)
+Avena — ½ tz (35 g)
+Pan molde integral — 2 reb (50 g)
+Marraqueta / hallulla — ½ und (50 g)
+Legumbres cocidas — ½ tz (50 g)
+Tortillas / fajitas — 1 grande (50 g)</div>
       </div>
-      <div class="meal-col">
-        <h4 contenteditable="true">Opción 2</h4>
-        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
-          <div class="desc" contenteditable="true" data-k="o2-d">½ tz avena cocida + 1 yogurt + 1 fruta + 15 g frutos secos · café</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
-          <div class="desc" contenteditable="true" data-k="o2-a">Tallarines integrales (100 g) + 150 g carne molida magra + ensalada de tomate</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
-          <div class="desc" contenteditable="true" data-k="o2-c">1 yogurt diet + 1 fruta + 5 nueces</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
-          <div class="desc" contenteditable="true" data-k="o2-o">Tortilla de claras con espinaca + 1 pan integral + ensalada verde</div></div>
+      <div class="equiv-group sage">
+        <h4>Carnes y proteicos bajos en grasa <span class="code">CBG</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-cbg">Pollo / pavo sin piel — 40 g (½ palma)
+Vacuno magro cocido — 40 g (½ palma)
+Merluza, reineta, salmón — 50 g (½ palma)
+Atún en agua — 60 g (½ lata)
+Jamón de pavo — 60 g (2 reb)
+Camarón / jaiba — ½ tz (60 g)
+Huevo — 1 und (o 3 claras)
+Tofu firme — 1 reb (50 g)
+Seitán — 60 g · Soya hidratada — 70 g</div>
       </div>
-      <div class="meal-col">
-        <h4 contenteditable="true">Opción 3</h4>
-        <div class="meal-row"><div class="time" contenteditable="true">Desayuno · 8 am</div>
-          <div class="desc" contenteditable="true" data-k="o3-d">2 fajitas integrales con 3 huevos y palta + 1 yogurt + 1 fruta + café</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Almuerzo · 2 pm</div>
-          <div class="desc" contenteditable="true" data-k="o3-a">2 tazas de legumbres (porotos, lentejas o garbanzos) + ensalada verde</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Colación · 5 pm</div>
-          <div class="desc" contenteditable="true" data-k="o3-c">1 yogurt + 1 pan integral con pasta de ave · 1 fruta</div></div>
-        <div class="meal-row"><div class="time" contenteditable="true">Once · 8 pm</div>
-          <div class="desc" contenteditable="true" data-k="o3-o">1 tz puré de zapallo + 150 g pollo al jugo + ensalada</div></div>
+      <div class="equiv-group">
+        <h4>Lácteos altos en grasa <span class="code">LAG</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-lag">Leche entera — 1 tz (200 ml)
+Yogurt normal — 1 und (125 g)
+Queso gauda / chanco — 2 reb (30 g)</div>
+      </div>
+      <div class="equiv-group sage">
+        <h4>Lácteos medios en grasa <span class="code">LMG</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-lmg">Leche semidescremada — 1 tz (200 ml)
+Queso fresco — 1 reb (30 g)
+Quesillo — 1 rodela (60 g)
+Ricota — 2 cdas (25 g)</div>
+      </div>
+      <div class="equiv-group">
+        <h4>Lácteos bajos en grasa <span class="code">LBG</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-lbg">Leche descremada — 1 tz (200 ml)
+Leche en caja light — 1 und (200 ml)
+Yogurt light / soya — 1 und (125 g)
+Yogurt protein — ½ cajita (100 ml)</div>
+      </div>
+      <div class="equiv-group sage">
+        <h4>Verduras de consumo general <span class="code">VG</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-vg">Alcachofa — 1 und chica (50 g)
+Betarraga, berenjena — ½ tz (90 g)
+Brócoli, coliflor — 1 tz (100 g)
+Cebolla — ¾ tz (60 g)
+Zanahoria — ½ tz (50 g)
+Zapallo camote — ½ tz (70 g)
+Tomate — 1 und chica (120 g)</div>
+      </div>
+      <div class="equiv-group">
+        <h4>Verduras de libre consumo <span class="code">VLC</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-vlc">Apio — 1 tz (70 g)
+Espinaca, lechuga, repollo — 1 tz (50 g)
+Pepino — 1 tz (100 g)
+Pimentón — ½ tz (60 g)
+Kale — 1 tz (50 g)
+Zapallo italiano — 1 tz (100 g)</div>
       </div>
     </div>
     </div>
 
     <footer class="page-footer">
       <span>Paciente · <span data-bind="name">—</span></span>
-      <span class="center">— Ejemplos de comidas —</span>
+      <span class="center">— Equivalencias —</span>
+      <span>07</span>
+    </footer>
+  </section>
+
+  <!-- ================================
+       PAGE 8 — Equivalencias (cont.) + leyenda
+  ================================= -->
+  <section class="page">
+    <svg class="ornament tr"><use href="#leaf-corner"/></svg>
+    <svg class="ornament bl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="equivalencias">
+    <div class="section-title">
+      <span class="num">07</span>
+      <h2>Equivalencias · frutas, lípidos y extras</h2>
+    </div>
+
+    <div class="equiv-grid">
+      <div class="equiv-group">
+        <h4>Frutas <span class="code">FRT</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-frt">Cerezas — 15 und (90 g)
+Ciruela, damasco — 3 und (110 g)
+Durazno — 1 und (130 g)
+Arándanos, frambuesa — 1 tz (130 g)
+Frutilla, sandía — 1 tz (200 g)
+Kiwi — 2 und chicas (100 g)
+Manzana, pera — 1 und (100 g)
+Mango — ½ und (110 g)
+Naranja — 1 und (120 g)
+Plátano — ½ und (60 g)
+Uvas — 10 und (90 g)</div>
+      </div>
+      <div class="equiv-group sage">
+        <h4>Alimentos ricos en lípidos <span class="code">ARL</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-arl">Aceitunas — 11 und (115 g)
+Avellanas — 50 und (30 g)
+Chocolate amargo >70% — 3-4 cuad (30 g)
+Chía / linaza — 3 cdas (35 g)
+Sésamo — 3 cdas (30 g)
+Maní, almendra, nueces — 25 g (1 puñado)
+Pistacho — 40 und (30 g)
+Palta — 100 g (½ palta)</div>
+      </div>
+      <div class="equiv-group">
+        <h4>Aceites y grasas <span class="code">AC</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-ac">Aceite oliva / canola — 1 cdta (5 ml)
+Coco rallado — 4 cdtas (20 g)
+Mayonesa light — 1 cda (10 ml)
+Margarina / mantequilla — 1 cdta (7 g)</div>
+      </div>
+      <div class="equiv-group sage">
+        <h4>Azúcar <span class="code">AZ</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-az">Jugo con azúcar — 1 vaso (200 ml)
+Ketchup, salsa de tomate — 2 cdas (20 g)
+Azúcar / mermelada light — 2 cdtas (15 g)
+Manjar — 1 cda (30 g)</div>
+      </div>
+      <div class="equiv-group">
+        <h4>Extra <span class="code">EX</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-ex">Papas fritas, doritos — ½ tz (25 g)
+Chocolate — 3-4 cuad (20-30 g)
+Helado — ½ tz (50 g)
+Galletas — 3 und (35 g)
+Alfajor — 1 chico (50 g)
+Queque / muffin — 1 trozo (100 g)</div>
+      </div>
+      <div class="equiv-group sage">
+        <h4>Intraentrenamiento <span class="code">INT</span></h4>
+        <div class="equiv-list" contenteditable="true" data-k="eq-int">Powerade / Gatorade — 500 ml
+Go Zuko — 500 ml
+Gel deportivo (GU, Power honey) — 1 sachet</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;">
+      <span class="num">✿</span>
+      <h2>Leyenda de códigos</h2>
+    </div>
+    <div class="code-legend">
+      <div><b>CER</b> · Cereales, tubérculos y leguminosas</div>
+      <div><b>CBG</b> · Carnes y proteicos bajos en grasa</div>
+      <div><b>VG</b> · Verduras de consumo general</div>
+      <div><b>VLC</b> · Verduras de libre consumo</div>
+      <div><b>FRT</b> · Frutas</div>
+      <div><b>LBG</b> · Lácteos bajos en grasa</div>
+      <div><b>LMG</b> · Lácteos medios en grasa</div>
+      <div><b>LAG</b> · Lácteos altos en grasa</div>
+      <div><b>ARL</b> · Alimentos ricos en lípidos</div>
+      <div><b>AC</b> · Aceites y grasas</div>
+      <div><b>AZ</b> · Azúcar</div>
+      <div><b>INT</b> · Intraentrenamiento</div>
+      <div><b>EX</b> · Extra</div>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Equivalencias —</span>
       <span>08</span>
     </footer>
   </section>

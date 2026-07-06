@@ -187,14 +187,28 @@ function calcBIA() {
   const musc  = num($('#bia-musc')?.value);
   const visc  = num($('#bia-visc')?.value);
 
-  // No labels (no "sobre rango" etc) — just show numerical values
+  // Interpretación de grasa visceral (nivel Tanita/Omron):
+  // 1–9 saludable · 10–14 alto · 15+ muy alto
+  const viscInterpret = (v) => {
+    if (!v) return { text: '', color: '' };
+    if (v <= 9)  return { text: 'Saludable', color: '#6E8B5B' };
+    if (v <= 14) return { text: 'Alto',      color: '#C9820A' };
+    return               { text: 'Muy alto', color: '#B3453E' };
+  };
+  const setI = (sel, { text, color }) => {
+    const el = $(sel);
+    if (el) { el.textContent = text; el.style.color = color; }
+  };
+  const vi = viscInterpret(visc);
+
+  // No labels (no "sobre rango" etc) for % grasa — just show numerical values
   set('#bia-grasa-i', '');
-  set('#bia-visc-i', '');
+  setI('#bia-visc-i', vi);
   set('#bia-card-grasa', grasa ? fmt(grasa,1) : '—');
   set('#bia-card-grasa-i', '');
   set('#bia-card-musc',  musc  ? fmt(musc,1) + ' kg' : '— kg');
   set('#bia-card-visc',  visc  ? fmt(visc,0) : '—');
-  set('#bia-card-visc-i', '');
+  setI('#bia-card-visc-i', vi);
 
   if (BODY_MODE === 'bia') {
     const peso = num($('#in-peso').value);
@@ -333,7 +347,7 @@ function toggleSeries(key) {
 /* ============================================
    SETTINGS (template, brand, sections, logo)
    ============================================ */
-const TOGGLEABLE_SECTIONS = ['objetivos', 'grupos', 'distribucion', 'ejemplos', 'tips'];
+const TOGGLEABLE_SECTIONS = ['objetivos', 'plansemanal', 'equivalencias', 'tips'];
 
 let TEMPLATE = 'rose';       // 'rose' | 'tierra'
 let BRAND_NAME = 'Angélica Pinilla';
@@ -417,6 +431,61 @@ function attachDeleteBtn(item, onRemove) {
   item.appendChild(btn);
 }
 
+/* --- Drag & drop para reordenar objetivos por importancia --- */
+function attachDragHandle(li) {
+  if (li.querySelector(':scope > .drag-handle')) return;
+  const handle = document.createElement('span');
+  handle.className = 'drag-handle';
+  handle.title = 'Arrastrar para reordenar';
+  handle.innerHTML = '⠿';
+  // contenteditable=false evita que el li/span capture el foco al agarrar
+  handle.setAttribute('contenteditable', 'false');
+  // El li sólo es arrastrable mientras se agarra la manija; así el texto
+  // del span editable no se arrastra como texto por accidente.
+  handle.addEventListener('mousedown', () => { li.draggable = true; });
+  handle.addEventListener('mouseup',   () => { li.draggable = false; });
+  li.insertBefore(handle, li.firstChild);
+}
+
+function objDragAfter(ul, y) {
+  const els = [...ul.querySelectorAll('li:not(.dragging)')];
+  let closest = { offset: -Infinity, el: null };
+  for (const child of els) {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) closest = { offset, el: child };
+  }
+  return closest.el;
+}
+
+function initObjectivesDnD() {
+  const ul = $('#objectives-list');
+  if (!ul || ul.dataset.dnd) return;
+  ul.dataset.dnd = '1';
+  let dragEl = null;
+  ul.addEventListener('dragstart', (e) => {
+    const li = e.target.closest('li');
+    if (!li || !li.draggable) return;
+    dragEl = li;
+    li.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', ''); } catch (_) {}
+  });
+  ul.addEventListener('dragover', (e) => {
+    if (!dragEl) return;
+    e.preventDefault();
+    const after = objDragAfter(ul, e.clientY);
+    if (after == null) ul.appendChild(dragEl);
+    else ul.insertBefore(dragEl, after);
+  });
+  ul.addEventListener('drop', (e) => { if (dragEl) e.preventDefault(); });
+  ul.addEventListener('dragend', () => {
+    if (dragEl) { dragEl.classList.remove('dragging'); dragEl.draggable = false; }
+    dragEl = null;
+    saveStructure();
+  });
+}
+
 function addObjective() {
   const ul = $('#objectives-list');
   if (!ul) return;
@@ -428,6 +497,7 @@ function addObjective() {
   li.appendChild(span);
   ul.appendChild(li);
   attachDeleteBtn(li);
+  attachDragHandle(li);
   span.focus();
   // Select only the span text (not the button which is a sibling)
   const range = document.createRange();
@@ -483,8 +553,11 @@ function initEditableLists() {
   if (ul) {
     ul.querySelectorAll('li').forEach(li => {
       li.querySelectorAll(':scope > .row-delete').forEach(b => b.remove());
+      li.querySelectorAll(':scope > .drag-handle').forEach(h => h.remove());
       attachDeleteBtn(li);
+      attachDragHandle(li);
     });
+    initObjectivesDnD();
     if (!$('#add-objective-btn')) {
       const btn = document.createElement('button');
       btn.id = 'add-objective-btn';
@@ -713,9 +786,9 @@ function saveStructure() {
     const struct = {};
     const ul = $('#objectives-list');
     if (ul) {
-      // Strip delete buttons before saving
+      // Strip delete buttons and drag handles before saving
       const clean = ul.cloneNode(true);
-      clean.querySelectorAll('.row-delete').forEach(b => b.remove());
+      clean.querySelectorAll('.row-delete, .drag-handle').forEach(b => b.remove());
       struct.objectives = clean.innerHTML;
     }
     $$('.meal-col').forEach((col, i) => {
@@ -762,7 +835,10 @@ function loadStructure() {
 /* ============================================
    STATE
    ============================================ */
-const KEY = 'plan-nutricional-state-v2';
+// Si se abre desde la plataforma con ?cliente=<id>, el plan se guarda
+// bajo una clave propia de ese cliente. Si no, usa la clave global de siempre.
+const CLIENT_ID = new URLSearchParams(location.search).get('cliente');
+const KEY = CLIENT_ID ? ('nutri-plan-' + CLIENT_ID) : 'plan-nutricional-state-v2';
 
 function saveState() {
   const state = {
@@ -816,7 +892,35 @@ function loadState() {
 /* ============================================
    WIRE UP
    ============================================ */
+// Barra de contexto cuando el plan se abre desde la plataforma (?cliente=<id>)
+function mountClientBar() {
+  if (!CLIENT_ID) return;
+  let client = null;
+  try {
+    const list = JSON.parse(localStorage.getItem('nutri-clients') || '[]');
+    client = list.find(c => c.id === CLIENT_ID);
+  } catch (e) {}
+
+  const bar = document.createElement('div');
+  bar.className = 'client-bar';
+  bar.innerHTML =
+    '<a href="app.html#cliente/' + CLIENT_ID + '" class="cb-back">‹ Volver a la plataforma</a>' +
+    '<span class="cb-name">' + (client ? ('Plan de ' + client.name) : 'Plan de cliente') + '</span>';
+  document.body.appendChild(bar);
+  document.body.classList.add('has-client-bar');
+
+  // Prefill nombre del paciente si está vacío
+  if (client) {
+    const nameInput = document.querySelector('#patient-name');
+    if (nameInput && !nameInput.value) {
+      nameInput.value = client.name;
+      nameInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  mountClientBar();
   loadState();
   loadDistTable();
   loadStructure();
@@ -844,6 +948,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Persist distribution table edits (labels + values)
     if (t.closest && t.closest('#dist-table tbody')) {
       saveDistTable();
+    }
+    // Persist edits in the weekly plan + equivalences (contenteditable cells)
+    if (t.closest && t.closest('[data-section="plansemanal"], [data-section="equivalencias"]')) {
+      saveState();
     }
   });
 

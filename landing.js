@@ -3,7 +3,7 @@
    Registration & Auth
    ============================================ */
 
-const PLAN_PAGE_URL = 'plan.html';
+const PLAN_PAGE_URL = 'app.html';
 const AUTH_KEY = 'nutri-auth';
 const USERS_KEY = 'nutri-users';
 
@@ -138,7 +138,7 @@ function updateUI() {
     }
     if (navActions) {
       navActions.innerHTML = `
-        <a href="${PLAN_PAGE_URL}" class="btn-primary">Ir al plan</a>
+        <a href="${PLAN_PAGE_URL}" class="btn-primary">Ir a la plataforma</a>
       `;
     }
   } else {
@@ -225,8 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (register(name, email, password)) {
       closeAllModals();
       showToast('Cuenta creada exitosamente!');
-      updateUI();
       $('#form-register').reset();
+      setTimeout(() => { window.location.href = PLAN_PAGE_URL; }, 600);
     }
   });
 
@@ -238,8 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (login(email, password)) {
       closeAllModals();
       showToast('Bienvenido/a de vuelta!');
-      updateUI();
       $('#form-login').reset();
+      setTimeout(() => { window.location.href = PLAN_PAGE_URL; }, 600);
     }
   });
 

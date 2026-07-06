@@ -62,6 +62,39 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
+/* ---------- Barra de cliente (desde la plataforma, off-print) ---------- */
+.client-bar {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 18px 7px 14px;
+  box-shadow: 0 6px 24px rgba(90, 40, 60, 0.12);
+}
+.client-bar .cb-back {
+  color: var(--rose-deep);
+  font-weight: 600;
+  font-size: 10.5pt;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.client-bar .cb-back:hover { text-decoration: underline; }
+.client-bar .cb-name {
+  font-size: 10pt;
+  color: var(--ink-soft);
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+  white-space: nowrap;
+}
+@media print { .client-bar { display: none !important; } }
+
 /* ---------- Toolbar (off-print) ---------- */
 .toolbar {
   position: fixed;
@@ -310,9 +343,8 @@ html, body {
 /* ---------- Section toggles ---------- */
 .section-block { /* wrapper for toggleable sections */ }
 body.no-section-objetivos [data-section="objetivos"],
-body.no-section-grupos [data-section="grupos"],
-body.no-section-distribucion [data-section="distribucion"],
-body.no-section-ejemplos [data-section="ejemplos"],
+body.no-section-plansemanal [data-section="plansemanal"],
+body.no-section-equivalencias [data-section="equivalencias"],
 body.no-section-tips [data-section="tips"] {
   display: none !important;
 }
@@ -493,6 +525,32 @@ body.exporting .dist-col-actions {
   border-color: var(--rose-deep);
 }
 
+/* Manija para arrastrar objetivos y reordenarlos por importancia */
+.drag-handle {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 22px;
+  color: var(--rose);
+  font-size: 13pt;
+  line-height: 1.1;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 2;
+}
+.objectives li:hover .drag-handle { opacity: 1; }
+/* Al pasar el mouse, la manija ocupa el lugar de la florcita ❀ */
+.objectives li:hover::before { opacity: 0; }
+.drag-handle:active { cursor: grabbing; }
+.objectives li.dragging {
+  opacity: 0.55;
+  background: var(--rose-blush);
+  border-radius: 6px;
+}
+
 .add-row {
   display: block;
   width: 100%;
@@ -523,12 +581,17 @@ body.exporting .dist-col-actions {
 /* Hide all edit affordances in client view and PDF */
 body.client-view .row-delete,
 body.client-view .add-row,
+body.client-view .drag-handle,
 body.exporting .row-delete,
-body.exporting .add-row {
+body.exporting .add-row,
+body.exporting .drag-handle {
   display: none !important;
 }
+/* En vista cliente/PDF la florcita vuelve siempre (no hay hover) */
+body.client-view .objectives li::before,
+body.exporting .objectives li::before { opacity: 1 !important; }
 @media print {
-  .row-delete, .add-row { display: none !important; }
+  .row-delete, .add-row, .drag-handle { display: none !important; }
 }
 
 /* ---------- Page (A4) ---------- */
@@ -1662,8 +1725,8 @@ body.exporting .meal-row { padding: 7px 10px; }
 body.exporting .meal-row .desc { font-size: 10pt; line-height: 1.3; }
 body.exporting .meal-col h4 { padding: 7px 10px; font-size: 11pt; }
 /* Leave breathing room above the absolute-positioned footer */
-body.exporting .section-block[data-section="ejemplos"] { margin-bottom: 22mm; }
-body.exporting .section-block[data-section="distribucion"] { margin-bottom: 22mm; }
+body.exporting .section-block[data-section="plansemanal"] { margin-bottom: 22mm; }
+body.exporting .section-block[data-section="equivalencias"] { margin-bottom: 22mm; }
 body.exporting table.nice tbody td,
 body.exporting table.nice thead th { padding: 5px 10px; }
 body.exporting .section-title { margin-bottom: 4px; }
@@ -1796,3 +1859,138 @@ body.exporting.no-chart .page.chart-page { display: none !important; }
   size: A4;
   margin: 0;
 }
+
+/* ============================================
+   PLAN SEMANAL · sistema de intercambios
+   (mantiene la paleta rosa/salvia)
+   ============================================ */
+.week-wrap { margin: 6px 0 4px; overflow-x: auto; }
+.week-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: 'Karla', sans-serif;
+  font-size: 8pt;
+}
+.week-table th,
+.week-table td {
+  border: 1px solid var(--line);
+  padding: 5px 4px;
+  vertical-align: top;
+}
+.week-table thead th {
+  background: var(--rose-deep);
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.03em;
+  font-size: 8.5pt;
+}
+.week-table thead th.wk-time { background: var(--sage-deep); width: 78px; }
+.week-table td.wk-time {
+  background: var(--rose-blush);
+  color: var(--rose-deep);
+  font-weight: 600;
+  font-size: 8pt;
+  width: 78px;
+}
+.week-table td.wk-time .wk-hour {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-size: 7.5pt;
+}
+.week-table tbody tr:nth-child(odd)  td:not(.wk-time) { background: var(--paper); }
+.week-table tbody tr:nth-child(even) td:not(.wk-time) { background: #fff; }
+.week-cell {
+  min-height: 34px;
+  color: var(--ink);
+  line-height: 1.55;
+  font-weight: 500;
+}
+.week-cell:focus { outline: 2px solid var(--rose-soft); outline-offset: -2px; border-radius: 3px; }
+.week-note {
+  margin-top: 8px;
+  font-size: 8.5pt;
+  font-style: italic;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ============================================
+   EQUIVALENCIAS · grupos de intercambio
+   ============================================ */
+.medidas-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  justify-content: center;
+  align-items: center;
+  background: var(--sage-mist);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 8.5pt;
+  color: var(--ink-soft);
+}
+.medidas-bar b { color: var(--sage-deep); }
+.equiv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.equiv-group {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  break-inside: avoid;
+}
+.equiv-group h4 {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  background: var(--rose-deep);
+  color: #fff;
+  font-family: 'Karla', sans-serif;
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 5px 9px;
+}
+.equiv-group.sage h4 { background: var(--sage-deep); }
+.equiv-group h4 .code {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-size: 8pt;
+  letter-spacing: 0.04em;
+}
+.equiv-list {
+  padding: 6px 9px;
+  font-size: 8pt;
+  color: var(--ink);
+  line-height: 1.75;
+  white-space: pre-line;
+}
+.equiv-list:focus { outline: 2px solid var(--rose-soft); outline-offset: -2px; }
+.equiv-portion { color: var(--ink-soft); }
+
+.code-legend {
+  columns: 2;
+  column-gap: 26px;
+  margin-top: 8px;
+  font-size: 8.5pt;
+  color: var(--ink);
+}
+.code-legend > div {
+  break-inside: avoid;
+  margin-bottom: 3px;
+}
+.code-legend b { color: var(--rose-deep); }
+
+/* Nada de esto muestra afford. de edición en cliente/PDF (heredan de contenteditable) */
