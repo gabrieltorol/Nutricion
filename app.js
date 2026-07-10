@@ -347,7 +347,19 @@ function toggleSeries(key) {
 /* ============================================
    SETTINGS (template, brand, sections, logo)
    ============================================ */
-const TOGGLEABLE_SECTIONS = ['objetivos', 'plansemanal', 'equivalencias', 'tips'];
+const TOGGLEABLE_SECTIONS = ['objetivos', 'grupos', 'distribucion', 'ejemplos', 'plansemanal', 'equivalencias', 'tips'];
+
+// A qué formato pertenece cada sección. Las que no aparecen aquí (objetivos,
+// tips) se muestran en ambos formatos.
+const SECTION_FORMAT = {
+  grupos: 'clasico',
+  distribucion: 'clasico',
+  ejemplos: 'clasico',
+  plansemanal: 'semanal',
+  equivalencias: 'semanal',
+};
+const FORMAT_LABEL = { semanal: 'Plan semanal', clasico: 'Clásico' };
+let FORMAT = 'semanal';      // 'semanal' | 'clasico'
 
 let TEMPLATE = 'rose';       // 'rose' | 'tierra'
 let BRAND_NAME = 'Angélica Pinilla';
@@ -375,17 +387,44 @@ function applyLogo() {
   if (prev) prev.src = src;
 }
 
+// Una sección se ve si el usuario la dejó activa Y pertenece al formato actual
+// (o no pertenece a ninguno, como objetivos y tips).
+function sectionVisible(key) {
+  if (SECTIONS_ON[key] === false) return false;
+  const fmt = SECTION_FORMAT[key];
+  return !fmt || fmt === FORMAT;
+}
+
 function applySections() {
   TOGGLEABLE_SECTIONS.forEach(key => {
-    document.body.classList.toggle('no-section-' + key, !SECTIONS_ON[key]);
+    document.body.classList.toggle('no-section-' + key, !sectionVisible(key));
   });
   // Hide pages whose all .section-block children are off
   $$('.page').forEach(p => {
     const blocks = p.querySelectorAll('.section-block');
     if (blocks.length === 0) { p.classList.remove('page-empty'); return; }
-    const anyOn = Array.from(blocks).some(b => SECTIONS_ON[b.dataset.section] !== false);
+    const anyOn = Array.from(blocks).some(b => sectionVisible(b.dataset.section));
     p.classList.toggle('page-empty', !anyOn);
   });
+}
+
+function applyFormat() {
+  document.body.classList.toggle('format-semanal', FORMAT === 'semanal');
+  document.body.classList.toggle('format-clasico', FORMAT === 'clasico');
+  // Botón de la toolbar muestra el formato activo
+  const lbl = $('#btn-format-label');
+  if (lbl) lbl.textContent = FORMAT_LABEL[FORMAT];
+  // Segmento del panel de plantilla
+  $$('#format-switch button').forEach(b =>
+    b.classList.toggle('active', b.dataset.format === FORMAT));
+  applySections();
+}
+
+function setFormat(fmt) {
+  if (fmt !== 'semanal' && fmt !== 'clasico') return;
+  FORMAT = fmt;
+  applyFormat();
+  saveState();
 }
 
 function setSection(key, on) {
@@ -850,6 +889,7 @@ function saveState() {
     brandTitle: BRAND_TITLE,
     customLogo: CUSTOM_LOGO,
     sections: SECTIONS_ON,
+    format: FORMAT,
   };
   $$('input.field, [contenteditable="true"]').forEach(el => {
     const id = el.id || el.dataset.k;
@@ -874,13 +914,14 @@ function loadState() {
     if (typeof state.brandName === 'string') BRAND_NAME = state.brandName;
     if (typeof state.brandTitle === 'string') BRAND_TITLE = state.brandTitle;
     if (typeof state.customLogo === 'string') CUSTOM_LOGO = state.customLogo;
+    if (state.format === 'semanal' || state.format === 'clasico') FORMAT = state.format;
     if (state.sections && typeof state.sections === 'object') {
       TOGGLEABLE_SECTIONS.forEach(s => {
         if (typeof state.sections[s] === 'boolean') SECTIONS_ON[s] = state.sections[s];
       });
     }
     Object.keys(state).forEach(id => {
-      if (['gender','bodymode','chart','template','brandName','brandTitle','customLogo','sections'].includes(id)) return;
+      if (['gender','bodymode','chart','template','brandName','brandTitle','customLogo','sections','format'].includes(id)) return;
       const el = document.getElementById(id) || $(`[data-k="${id}"]`);
       if (!el) return;
       if (el.tagName === 'INPUT' || el.tagName === 'SELECT') el.value = state[id];
@@ -930,7 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyTemplate(TEMPLATE);
   applyBrand();
   applyLogo();
-  applySections();
+  applyFormat();   // llama a applySections() internamente
   $$('#chart-controls .chip').forEach(c => c.classList.toggle('on', CHART_ACTIVE.has(c.dataset.k)));
 
   // Inputs
@@ -949,8 +990,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (t.closest && t.closest('#dist-table tbody')) {
       saveDistTable();
     }
-    // Persist edits in the weekly plan + equivalences (contenteditable cells)
-    if (t.closest && t.closest('[data-section="plansemanal"], [data-section="equivalencias"]')) {
+    // Persist any contenteditable edit (weekly cells, equivalences, food groups,
+    // meal examples, quotes…). saveState() ya recoge todo [contenteditable][data-k].
+    if (t.isContentEditable) {
       saveState();
     }
   });
@@ -1197,6 +1239,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('#sp-close').addEventListener('click', () => { panel.hidden = true; });
   $('#sp-apply').addEventListener('click', () => { panel.hidden = true; });
+
+  /* ----- Formato del plan de comidas (clásico / semanal) ----- */
+  $$('#format-switch button').forEach(b => {
+    b.addEventListener('click', () => setFormat(b.dataset.format));
+  });
+  $('#btn-format').addEventListener('click', () => {
+    setFormat(FORMAT === 'semanal' ? 'clasico' : 'semanal');
+  });
 
   $$('input[name="template"]').forEach(r => {
     r.addEventListener('change', () => { applyTemplate(r.value); saveState(); });
