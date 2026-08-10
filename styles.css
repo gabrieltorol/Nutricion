@@ -348,6 +348,12 @@ body.no-section-distribucion [data-section="distribucion"],
 body.no-section-ejemplos [data-section="ejemplos"],
 body.no-section-plansemanal [data-section="plansemanal"],
 body.no-section-equivalencias [data-section="equivalencias"],
+body.no-section-porc-doble [data-section="porc-doble"],
+body.no-section-porc-uno [data-section="porc-uno"],
+body.no-section-porc-fondo [data-section="porc-fondo"],
+body.no-section-pauta1 [data-section="pauta1"],
+body.no-section-pauta2 [data-section="pauta2"],
+body.no-section-pauta3 [data-section="pauta3"],
 body.no-section-tips [data-section="tips"] {
   display: none !important;
 }
@@ -392,6 +398,156 @@ body.format-clasico .sp-toggle[data-only-format="semanal"] {
 .format-switch button.active strong::after {
   content: ' ✓';
   color: var(--rose-deep);
+}
+
+/* ============================================================
+   FORMATO PORCIONES — tabla de círculos + pautas de comidas
+   ============================================================ */
+:root {
+  --pc-g1: #F2C94C; --pc-g1t: var(--ink);   /* cereales   */
+  --pc-g2: #F2994A; --pc-g2t: var(--ink);   /* proteína   */
+  --pc-g3: #17A47B; --pc-g3t: #fff;         /* lípidos    */
+  --pc-g4: #7BCDD3; --pc-g4t: var(--ink);   /* fruta      */
+  --pc-g5: #EF5350; --pc-g5t: #fff;         /* verd. gral */
+  --pc-g6: #F3A6B6; --pc-g6t: var(--ink);   /* verd. libre*/
+  --pc-g7: #9B59B6; --pc-g7t: #fff;         /* lácteo     */
+}
+
+.porc-wrap { width: 100%; overflow-x: auto; margin-top: 12px; }
+.porc-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+
+/* Cabecera principal (barra rosa de marca) */
+.porc-table thead .porc-head th {
+  background: var(--rose-deep);
+  color: #fff;
+  padding: 12px 8px;
+  font-size: 8.5pt;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  vertical-align: middle;
+}
+.porc-table thead .porc-head th.pc-subttl {
+  text-align: left;
+  font-size: 9.5pt;
+  width: 22%;
+  border-top-left-radius: 8px;
+}
+.porc-table thead .porc-head th.pc-subttl span { color: #fff; outline: none; }
+.porc-table thead .porc-head th.pc-tot { background: #7a3245; }
+.porc-table thead .porc-head th:last-child { border-top-right-radius: 8px; }
+
+.porc-table thead .porc-subhead th {
+  background: #2E2E4F;
+  color: #cfc9dd;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  text-align: left;
+}
+.porc-table thead .porc-subhead th[colspan] { text-align: center; }
+
+/* Filas de grupo */
+.porc-table td, .porc-table th.pc-group { padding: 5px 6px; }
+.porc-table th.pc-group {
+  position: relative;
+  text-align: left;
+  font-weight: 500;
+  font-size: 9pt;
+  color: var(--ink);
+  padding-left: 16px;
+  line-height: 1.2;
+}
+.pc-stripe {
+  position: absolute; left: 0; top: 6px; bottom: 6px;
+  width: 6px; border-radius: 3px;
+}
+.pc-group span[contenteditable] { outline: none; }
+
+/* Círculos de porciones */
+.pc {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; max-width: 62px; aspect-ratio: 1 / 1;
+  margin: 0 auto; border-radius: 50%;
+  font-weight: 700; font-size: 11pt;
+}
+.pc-num { outline: none; min-width: 12px; text-align: center; }
+td.pc-tot-cell .pc { box-shadow: 0 0 0 2px rgba(0,0,0,0.06) inset; }
+
+.pc-group.g1 .pc-stripe, .pc.g1 { background: var(--pc-g1); } .pc.g1 { color: var(--pc-g1t); }
+.pc-group.g2 .pc-stripe, .pc.g2 { background: var(--pc-g2); } .pc.g2 { color: var(--pc-g2t); }
+.pc-group.g3 .pc-stripe, .pc.g3 { background: var(--pc-g3); } .pc.g3 { color: var(--pc-g3t); }
+.pc-group.g4 .pc-stripe, .pc.g4 { background: var(--pc-g4); } .pc.g4 { color: var(--pc-g4t); }
+.pc-group.g5 .pc-stripe, .pc.g5 { background: var(--pc-g5); } .pc.g5 { color: var(--pc-g5t); }
+.pc-group.g6 .pc-stripe, .pc.g6 { background: var(--pc-g6); } .pc.g6 { color: var(--pc-g6t); }
+.pc-group.g7 .pc-stripe, .pc.g7 { background: var(--pc-g7); } .pc.g7 { color: var(--pc-g7t); }
+
+/* ---------- Pautas de comidas (tarjetas) ---------- */
+.pt-meals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.pt-meal, .pt-meal-empty {
+  background: #5E5E77;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 13px;
+  min-height: 120px;
+}
+.pt-meal-empty { background: #EFEAE0; border: 1px dashed var(--line); color: var(--ink-soft); }
+.pt-meal-h {
+  text-align: center;
+  font-weight: 700;
+  font-size: 10pt;
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+.pt-meal-empty .pt-meal-h { color: var(--rose-deep); }
+.pt-meal-sub {
+  text-align: center;
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: #EAD9E0;
+  margin-bottom: 8px;
+  outline: none;
+  min-height: 12px;
+}
+.pt-meal-empty .pt-meal-sub { color: var(--rose); }
+.pt-meal-items { margin: 0; padding-left: 16px; }
+.pt-meal-items li {
+  font-size: 8.5pt;
+  line-height: 1.35;
+  margin-bottom: 4px;
+  outline: none;
+}
+.pt-meal-items li.empty { list-style: none; margin-left: -12px; min-height: 12px; }
+
+.pt-notes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pt-note {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 13px;
+  background: var(--paper);
+}
+.pt-note:nth-child(1), .pt-note:nth-child(3) { background: #5E5E77; color: #fff; border-color: transparent; }
+.pt-note-h { font-weight: 700; font-size: 9.5pt; margin-bottom: 5px; }
+.pt-note:nth-child(2) .pt-note-h, .pt-note:nth-child(4) .pt-note-h { color: var(--rose-deep); }
+.pt-note ul { margin: 0; padding-left: 16px; }
+.pt-note li { font-size: 8.5pt; line-height: 1.35; margin-bottom: 4px; outline: none; }
+.pt-note li.empty { list-style: none; margin-left: -12px; min-height: 12px; }
+
+@media (max-width: 640px) {
+  .pt-meals { grid-template-columns: 1fr 1fr; }
+  .pt-notes { grid-template-columns: 1fr; }
 }
 
 /* ---------- Editable lists: delete & add buttons ---------- */

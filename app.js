@@ -347,19 +347,26 @@ function toggleSeries(key) {
 /* ============================================
    SETTINGS (template, brand, sections, logo)
    ============================================ */
-const TOGGLEABLE_SECTIONS = ['objetivos', 'grupos', 'distribucion', 'ejemplos', 'plansemanal', 'equivalencias', 'tips'];
+const TOGGLEABLE_SECTIONS = ['objetivos', 'grupos', 'distribucion', 'ejemplos', 'plansemanal', 'equivalencias', 'porc-doble', 'pauta1', 'porc-uno', 'pauta2', 'pauta3', 'porc-fondo', 'tips'];
 
 // A qué formato pertenece cada sección. Las que no aparecen aquí (objetivos,
-// tips) se muestran en ambos formatos.
+// tips) se muestran en todos los formatos.
 const SECTION_FORMAT = {
   grupos: 'clasico',
   distribucion: 'clasico',
   ejemplos: 'clasico',
   plansemanal: 'semanal',
   equivalencias: 'semanal',
+  'porc-doble': 'porciones',
+  'porc-uno': 'porciones',
+  'porc-fondo': 'porciones',
+  pauta1: 'porciones',
+  pauta2: 'porciones',
+  pauta3: 'porciones',
 };
-const FORMAT_LABEL = { semanal: 'Plan semanal', clasico: 'Clásico' };
-let FORMAT = 'semanal';      // 'semanal' | 'clasico'
+const FORMATS = ['semanal', 'clasico', 'porciones'];
+const FORMAT_LABEL = { semanal: 'Plan semanal', clasico: 'Clásico', porciones: 'Porciones' };
+let FORMAT = 'semanal';      // 'semanal' | 'clasico' | 'porciones'
 
 let TEMPLATE = 'rose';       // 'rose' | 'tierra'
 let BRAND_NAME = 'Angélica Pinilla';
@@ -421,7 +428,7 @@ function applyFormat() {
 }
 
 function setFormat(fmt) {
-  if (fmt !== 'semanal' && fmt !== 'clasico') return;
+  if (!FORMATS.includes(fmt)) return;
   FORMAT = fmt;
   applyFormat();
   saveState();
@@ -914,7 +921,7 @@ function loadState() {
     if (typeof state.brandName === 'string') BRAND_NAME = state.brandName;
     if (typeof state.brandTitle === 'string') BRAND_TITLE = state.brandTitle;
     if (typeof state.customLogo === 'string') CUSTOM_LOGO = state.customLogo;
-    if (state.format === 'semanal' || state.format === 'clasico') FORMAT = state.format;
+    if (FORMATS.includes(state.format)) FORMAT = state.format;
     if (state.sections && typeof state.sections === 'object') {
       TOGGLEABLE_SECTIONS.forEach(s => {
         if (typeof state.sections[s] === 'boolean') SECTIONS_ON[s] = state.sections[s];
@@ -1245,7 +1252,8 @@ document.addEventListener('DOMContentLoaded', () => {
     b.addEventListener('click', () => setFormat(b.dataset.format));
   });
   $('#btn-format').addEventListener('click', () => {
-    setFormat(FORMAT === 'semanal' ? 'clasico' : 'semanal');
+    const next = FORMATS[(FORMATS.indexOf(FORMAT) + 1) % FORMATS.length];
+    setFormat(next);
   });
 
   $$('input[name="template"]').forEach(r => {

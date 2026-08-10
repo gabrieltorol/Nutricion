@@ -228,6 +228,10 @@
         <strong>Clásico</strong>
         <small>Grupos de alimentos, distribución diaria y ejemplos de comidas</small>
       </button>
+      <button type="button" data-format="porciones">
+        <strong>Porciones</strong>
+        <small>Tablas de porciones por grupo (círculos de colores) + pautas de comidas</small>
+      </button>
     </div>
   </div>
 
@@ -241,6 +245,12 @@
     <label class="sp-toggle" data-only-format="clasico"><input type="checkbox" data-section-toggle="grupos" checked><span>Grupos de alimentos</span></label>
     <label class="sp-toggle" data-only-format="clasico"><input type="checkbox" data-section-toggle="distribucion" checked><span>Distribución diaria</span></label>
     <label class="sp-toggle" data-only-format="clasico"><input type="checkbox" data-section-toggle="ejemplos" checked><span>Ejemplos de comidas</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="porc-doble" checked><span>Porciones · días dobles</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="pauta1" checked><span>Pauta N°1</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="porc-uno" checked><span>Porciones · un entren./descanso</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="pauta2" checked><span>Pauta N°2</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="pauta3" checked><span>Pauta N°3</span></label>
+    <label class="sp-toggle" data-only-format="porciones"><input type="checkbox" data-section-toggle="porc-fondo" checked><span>Porciones · días de fondo</span></label>
     <label class="sp-toggle"><input type="checkbox" data-section-toggle="tips" checked><span>Tips de compras</span></label>
   </div>
 
@@ -1550,6 +1560,322 @@ Gel deportivo (GU, Power honey) — 1 sachet</div>
       <span>08</span>
     </footer>
   </section>
+
+  <!-- ================================================================
+       FORMATO PORCIONES — Tablas por grupo + Pautas de comidas
+       (sistema de Guillermo Varela) · visible sólo con body.format-porciones
+  ================================================================= -->
+  <!-- ===== Porciones: porc-doble ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="porc-doble">
+    <div class="section-title">
+      <span class="num">03</span>
+      <h2>Porciones por grupo de alimento</h2>
+    </div>
+
+    <div class="porc-wrap">
+    <table class="porc-table">
+      <thead>
+        <tr class="porc-head">
+          <th class="pc-subttl"><span contenteditable="true" data-k="pd-sub">PAUTA PARA TUS DÍAS DOBLES DE ENTRENAMIENTO</span></th>
+          <th class="pc-col pc-tot">PORCIONES TOTALES</th><th class="pc-col">DESAYUNO</th><th class="pc-col">½ MAÑANA</th><th class="pc-col">ALMUERZO</th><th class="pc-col">½ TARDE</th><th class="pc-col">ONCE</th><th class="pc-col">CENA</th>
+        </tr>
+        <tr class="porc-subhead">
+          <th>GRUPO DE ALIMENTO</th>
+          <th colspan="7">PORCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr><th class="pc-group g1"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g1">01- Cereales o alimentos ricos en carbohidrato</span></th><td class="pc-tot-cell"><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c0">7,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c1">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c2">1</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c3">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c4">0,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c5">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pd-r1c6">00</span></span></td></tr>
+      <tr><th class="pc-group g2"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g2">02- Alimentos ricos en proteína</span></th><td class="pc-tot-cell"><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c0">5</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c1">2</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c2">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c3">2</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c4">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c5">1</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pd-r2c6">00</span></span></td></tr>
+      <tr><th class="pc-group g3"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g3">03- Alimento rico en lípido o grasas</span></th><td class="pc-tot-cell"><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c0">7</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c1">2</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c2">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c3">1</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c4">2</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c5">2</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pd-r3c6">00</span></span></td></tr>
+      <tr><th class="pc-group g4"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g4">04- Fruta</span></th><td class="pc-tot-cell"><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c0">2</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c1">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c2">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c3">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c4">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c5">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pd-r4c6">00</span></span></td></tr>
+      <tr><th class="pc-group g5"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g5">05- Verduras general</span></th><td class="pc-tot-cell"><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c0">2</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c1">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c2">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c3">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c4">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c5">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pd-r5c6">00</span></span></td></tr>
+      <tr><th class="pc-group g6"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g6">06- Verduras consumo libre</span></th><td class="pc-tot-cell"><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c0">2</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c1">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c2">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c3">1</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c4">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c5">1</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pd-r6c6">00</span></span></td></tr>
+      <tr><th class="pc-group g7"><span class="pc-stripe"></span><span contenteditable="true" data-k="pd-g7">08- Lácteo baja en grasa</span></th><td class="pc-tot-cell"><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c0">2</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c1">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c2">1</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c3">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c4">1</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c5">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pd-r7c6">00</span></span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Porciones · días dobles de entrenamiento —</span>
+      <span>03</span>
+    </footer>
+  </section>
+
+  <!-- ===== Pauta de comidas: pauta1 ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="pauta1">
+    <div class="section-title">
+      <span class="num">04</span>
+      <h2>Pauta número 1</h2>
+    </div>
+
+    <div class="pt-meals">
+      <div class="pt-meal"><div class="pt-meal-h">DESAYUNO</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal0-sub">Sándwich con huevo y palta</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m1-meal0-i0">2 dientes de marraqueta</li>
+<li contenteditable="true" data-k="m1-meal0-i1">2 Huevos enteros</li>
+<li contenteditable="true" data-k="m1-meal0-i2">2 Cdas de palta o ½ palta</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ MAÑANA</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal1-sub">Leche proteica con fruta</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m1-meal1-i0">1 Taza de leche (descremada, saborizada o protein) o 1 Cajita de 200ml</li>
+<li contenteditable="true" data-k="m1-meal1-i1">1 Porción de fruta a elección</li>
+<li contenteditable="true" data-k="m1-meal1-i2">2 snack de galletas de arroz mizo</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ALMUERZO</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal2-sub">Ensalada mixta + Pechuga de pollo a la plancha con arroz primavera</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m1-meal2-i0">Entrada: Escoger 2 porciones de verduras a elección, aliñar con sal y limón.</li>
+<li contenteditable="true" data-k="m1-meal2-i1">Plato de fondo: 2 Trozos porte palma de la mano de pechuga de pollo a la plancha + 1 Taza y media de arroz primavera cocido</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ TARDE</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal3-sub">Yogurt con granola</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m1-meal3-i0">1 Yogurt (protein, light o saborizado)</li>
+<li contenteditable="true" data-k="m1-meal3-i1">¼ de taza de granola o muesli</li>
+<li contenteditable="true" data-k="m1-meal3-i2">1 Fruta a elección</li>
+<li contenteditable="true" data-k="m1-meal3-i3">½ puñado de frutos secos</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ONCE</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal4-sub">Fajitas de atún</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m1-meal4-i0">Plato de fondo: ½ Lata de atún en agua + 2 Tortilla mexicana grandes + 1 cdta de mayonesa light + ½ de palta</li></ul></div>
+      <div class="pt-meal pt-meal-empty"><div class="pt-meal-h">CENA</div><div class="pt-meal-sub" contenteditable="true" data-k="m1-meal5-sub"></div><ul class="pt-meal-items"><li class="empty" contenteditable="true" data-k="m1-meal5-i0"></li></ul></div>
+    </div>
+
+    <div class="pt-notes">
+      <div class="pt-note"><div class="pt-note-h">Anotaciones DESAYUNO</div><ul><li contenteditable="true" data-k="m1-note0-i0">Recuerda que puedes acompañar el desayuno con algún bebestible como té, café, mate o alguna infusión.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones COLACIONES</div><ul><li contenteditable="true" data-k="m1-note1-i0">Puedes utilizar las colaciones en cualquier momento del día.</li>
+<li contenteditable="true" data-k="m1-note1-i1">No dejes sin consumir esta comida.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ALMUERZO</div><ul><li contenteditable="true" data-k="m1-note2-i0">Recuerda elegir 2 verduras como mínimo de distintos colores.</li>
+<li contenteditable="true" data-k="m1-note2-i1">Recuerda que puedes realizar cremas, sopas, salteados, tortilla, al wok, asadas con tus verduras.</li>
+<li contenteditable="true" data-k="m1-note2-i2">Puedes utilizar especias como orégano, comino, ajo en polvo, cúrcuma, entre otros para dar sabor a estas mismas o a los distintos alimentos.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ONCE/CENA</div><ul><li contenteditable="true" data-k="m1-note3-i0">Puedes reemplazar esta comida por una muy similar a la del almuerzo o el desayuno.</li>
+<li contenteditable="true" data-k="m1-note3-i1">Lo ideal es que esta comida la utilices 1 hora antes de dormir para que no interfiera en tu descanso.</li></ul></div>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Pauta número 1 —</span>
+      <span>04</span>
+    </footer>
+  </section>
+
+  <!-- ===== Porciones: porc-uno ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="porc-uno">
+    <div class="section-title">
+      <span class="num">05</span>
+      <h2>Porciones por grupo de alimento</h2>
+    </div>
+
+    <div class="porc-wrap">
+    <table class="porc-table">
+      <thead>
+        <tr class="porc-head">
+          <th class="pc-subttl"><span contenteditable="true" data-k="pu-sub">PORCIONES PARA TODOS TUS DÍAS DE UN ENTRENAMIENTO O DESCANSO</span></th>
+          <th class="pc-col pc-tot">PORCIONES TOTALES</th><th class="pc-col">DESAYUNO</th><th class="pc-col">½ MAÑANA</th><th class="pc-col">ALMUERZO</th><th class="pc-col">½ TARDE</th><th class="pc-col">ONCE</th><th class="pc-col">CENA</th>
+        </tr>
+        <tr class="porc-subhead">
+          <th>GRUPO DE ALIMENTO</th>
+          <th colspan="7">PORCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr><th class="pc-group g1"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g1">01- Cereales o alimentos ricos en carbohidrato</span></th><td class="pc-tot-cell"><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c0">6</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c1">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c2">00</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c3">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c4">0,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c5">1,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pu-r1c6">00</span></span></td></tr>
+      <tr><th class="pc-group g2"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g2">02- Alimentos ricos en proteína</span></th><td class="pc-tot-cell"><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c0">6</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c1">2</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c2">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c3">1</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c4">1</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c5">2</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pu-r2c6">00</span></span></td></tr>
+      <tr><th class="pc-group g3"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g3">03- Alimento rico en lípido o grasas</span></th><td class="pc-tot-cell"><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c0">2</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c1">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c2">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c3">1</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c4">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c5">1</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pu-r3c6">00</span></span></td></tr>
+      <tr><th class="pc-group g4"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g4">04- Fruta</span></th><td class="pc-tot-cell"><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c0">2</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c1">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c2">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c3">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c4">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c5">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pu-r4c6">00</span></span></td></tr>
+      <tr><th class="pc-group g5"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g5">05- Verduras general</span></th><td class="pc-tot-cell"><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c0">2</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c1">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c2">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c3">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c4">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c5">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pu-r5c6">00</span></span></td></tr>
+      <tr><th class="pc-group g6"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g6">06- Verduras consumo libre</span></th><td class="pc-tot-cell"><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c0">2</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c1">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c2">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c3">1</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c4">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c5">1</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pu-r6c6">00</span></span></td></tr>
+      <tr><th class="pc-group g7"><span class="pc-stripe"></span><span contenteditable="true" data-k="pu-g7">08- Lácteo baja en grasa</span></th><td class="pc-tot-cell"><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c0">5</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c1">2</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c2">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c3">2</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c4">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c5">1</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pu-r7c6">00</span></span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Porciones · un entrenamiento o descanso —</span>
+      <span>05</span>
+    </footer>
+  </section>
+
+  <!-- ===== Pauta de comidas: pauta2 ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="pauta2">
+    <div class="section-title">
+      <span class="num">06</span>
+      <h2>Pauta número 2</h2>
+    </div>
+
+    <div class="pt-meals">
+      <div class="pt-meal"><div class="pt-meal-h">DESAYUNO</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal0-sub">Sándwich con Omelette</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m2-meal0-i0">4 Rebanadas de pan de molde INTEGRAL</li>
+<li contenteditable="true" data-k="m2-meal0-i1">2 Huevos enteros + verduras a elección</li>
+<li contenteditable="true" data-k="m2-meal0-i2">7 Unidades de aceitunas</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ MAÑANA</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal1-sub">Yogurt proteico con frutos secos</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m2-meal1-i0">1 Yogurt (protein, light o saborizado)</li>
+<li contenteditable="true" data-k="m2-meal1-i1">½ puñado de frutos secos</li>
+<li contenteditable="true" data-k="m2-meal1-i2">1 Fruta a elección</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ALMUERZO</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal2-sub">Ensalada mixta + bistec a la plancha + quinoa cocida</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m2-meal2-i0">Entrada: Escoger 2 porciones de verduras a elección, aliñar con sal y limón + 1 cucharadita de aceite.</li>
+<li contenteditable="true" data-k="m2-meal2-i1">Plato de fondo: 2 palmas de la mano de bistec a la plancha + 1 Taza y media de quinoa de fideos con salsa cocidos</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ TARDE</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal3-sub">Leche con fruta y frutos secos</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m2-meal3-i0">1 Taza de leche (descremada, saborizada o protein) o 1 Cajita de 200ml</li>
+<li contenteditable="true" data-k="m2-meal3-i1">1 Porción de fruta a elección</li>
+<li contenteditable="true" data-k="m2-meal3-i2">1 barrita de cereal bar</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ONCE</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal4-sub">Sándwich ave/mayo</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m2-meal4-i0">Plato de fondo: 1 Trozo porte palma de la mano de pechuga de pollo a la plancha + 3 Rebanadas de pan de molde o 2 diente de marraqueta sin miga + 2 cdtas de mayonesa light</li></ul></div>
+      <div class="pt-meal pt-meal-empty"><div class="pt-meal-h">CENA</div><div class="pt-meal-sub" contenteditable="true" data-k="m2-meal5-sub"></div><ul class="pt-meal-items"><li class="empty" contenteditable="true" data-k="m2-meal5-i0"></li></ul></div>
+    </div>
+
+    <div class="pt-notes">
+      <div class="pt-note"><div class="pt-note-h">Anotaciones DESAYUNO</div><ul><li contenteditable="true" data-k="m2-note0-i0">Recuerda que puedes acompañar el desayuno con algún bebestible como té, café, mate o alguna infusión.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones COLACIONES</div><ul><li contenteditable="true" data-k="m2-note1-i0">Puedes utilizar las colaciones en cualquier momento del día.</li>
+<li contenteditable="true" data-k="m2-note1-i1">No dejes sin consumir esta comida.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ALMUERZO</div><ul><li contenteditable="true" data-k="m2-note2-i0">Recuerda elegir 2 verduras como mínimo de distintos colores.</li>
+<li contenteditable="true" data-k="m2-note2-i1">Recuerda que puedes realizar cremas, sopas, salteados, tortilla, al wok, asadas con tus verduras.</li>
+<li contenteditable="true" data-k="m2-note2-i2">Puedes utilizar especias como orégano, comino, ajo en polvo, cúrcuma, entre otros para dar sabor a estas mismas o a los distintos alimentos.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ONCE/CENA</div><ul><li contenteditable="true" data-k="m2-note3-i0">Puedes reemplazar esta comida por una muy similar a la del almuerzo o el desayuno.</li>
+<li contenteditable="true" data-k="m2-note3-i1">Lo ideal es que esta comida la utilices 1 hora antes de dormir para que no interfiera en tu descanso.</li></ul></div>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Pauta número 2 —</span>
+      <span>06</span>
+    </footer>
+  </section>
+
+  <!-- ===== Pauta de comidas: pauta3 ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="pauta3">
+    <div class="section-title">
+      <span class="num">07</span>
+      <h2>Pauta número 3</h2>
+    </div>
+
+    <div class="pt-meals">
+      <div class="pt-meal"><div class="pt-meal-h">DESAYUNO</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal0-sub">Sándwich con huevos cremosos</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m3-meal0-i0">4 Rebanadas de pan de molde o 2 dientes de marraqueta</li>
+<li contenteditable="true" data-k="m3-meal0-i1">2 Huevos enteros</li>
+<li contenteditable="true" data-k="m3-meal0-i2">2 cdta de mantequilla light</li>
+<li contenteditable="true" data-k="m3-meal0-i3">1 Manzana entera o ½ vaso de jugo de naranja</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ MAÑANA</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal1-sub">Leche proteica con fruta</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m3-meal1-i0">1 Taza de leche (descremada, saborizada o protein) o 1 Cajita de 200ml</li>
+<li contenteditable="true" data-k="m3-meal1-i1">1 Porción de fruta a elección</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ALMUERZO</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal2-sub">Ensalada mixta + Bistec de vacuno a la plancha con puré de papas</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m3-meal2-i0">Entrada: Escoger 2 porciones de verduras a elección, aliñar con sal y limón.</li>
+<li contenteditable="true" data-k="m3-meal2-i1">Plato de fondo: 2 Trozos porte palma de la mano de bistec de vacuno a la plancha + 1 Taza y media de puré de papas</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">COLACIÓN ½ TARDE</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal3-sub">Yogurt con fruta y semillas</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m3-meal3-i0">1 Yogurt (protein, light o saborizado)</li>
+<li contenteditable="true" data-k="m3-meal3-i1">2 Cucharada de semillas a elección</li>
+<li contenteditable="true" data-k="m3-meal3-i2">1 barrita de cereal bar</li></ul></div>
+      <div class="pt-meal"><div class="pt-meal-h">ONCE</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal4-sub">Sándwich aliado/palta</div><ul class="pt-meal-items"><li contenteditable="true" data-k="m3-meal4-i0">Plato de fondo: 2 Láminas de jamón de pollo/pavo + 1 Lámina de queso amarillo + 3 Rebanadas de pan de molde o 2 diente de marraqueta sin miga + 2 cda de palta o ½ de palta</li></ul></div>
+      <div class="pt-meal pt-meal-empty"><div class="pt-meal-h">CENA</div><div class="pt-meal-sub" contenteditable="true" data-k="m3-meal5-sub"></div><ul class="pt-meal-items"><li class="empty" contenteditable="true" data-k="m3-meal5-i0"></li></ul></div>
+    </div>
+
+    <div class="pt-notes">
+      <div class="pt-note"><div class="pt-note-h">Anotaciones DESAYUNO</div><ul><li contenteditable="true" data-k="m3-note0-i0">Recuerda que puedes acompañar el desayuno con algún bebestible como té, café, mate o alguna infusión.</li>
+<li contenteditable="true" data-k="m3-note0-i1">Puedes guiarte con la preparación de huevos cremosos que se encuentra en el recetario.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones COLACIONES</div><ul><li contenteditable="true" data-k="m3-note1-i0">Puedes utilizar las colaciones en cualquier momento del día.</li>
+<li contenteditable="true" data-k="m3-note1-i1">No dejes sin consumir esta comida.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ALMUERZO</div><ul><li contenteditable="true" data-k="m3-note2-i0">Recuerda elegir 2 verduras como mínimo de distintos colores.</li>
+<li contenteditable="true" data-k="m3-note2-i1">Recuerda que puedes realizar cremas, sopas, salteados, tortilla, al wok, asadas con tus verduras.</li>
+<li contenteditable="true" data-k="m3-note2-i2">Puedes utilizar especias como orégano, comino, ajo en polvo, cúrcuma, entre otros para dar sabor a estas mismas o a los distintos alimentos.</li></ul></div>
+      <div class="pt-note"><div class="pt-note-h">Anotaciones ONCE/CENA</div><ul><li contenteditable="true" data-k="m3-note3-i0">Puedes reemplazar esta comida por una muy similar a la del almuerzo o el desayuno.</li>
+<li contenteditable="true" data-k="m3-note3-i1">Lo ideal es que esta comida la utilices 1 hora antes de dormir para que no interfiera en tu descanso.</li></ul></div>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Pauta número 3 —</span>
+      <span>07</span>
+    </footer>
+  </section>
+
+  <!-- ===== Porciones: porc-fondo ===== -->
+  <section class="page">
+    <svg class="ornament tl"><use href="#leaf-corner"/></svg>
+
+    <header class="page-header">
+      <div class="brand-mini">
+        <img class="brand-logo" src="assets/logo-angelica.png" alt="">
+        <div class="brand-text"><span data-bind="brandName">Angélica Pinilla</span><div class="small" data-bind="brandTitle">Nutricionista</div></div>
+      </div>
+      <div class="page-tag">Plan para <span data-bind="name">—</span></div>
+    </header>
+
+    <div class="section-block" data-section="porc-fondo">
+    <div class="section-title">
+      <span class="num">08</span>
+      <h2>Porciones por grupo de alimento</h2>
+    </div>
+
+    <div class="porc-wrap">
+    <table class="porc-table">
+      <thead>
+        <tr class="porc-head">
+          <th class="pc-subttl"><span contenteditable="true" data-k="pf-sub">PORCIONES PARA TODOS TUS DÍAS DE FONDO</span></th>
+          <th class="pc-col pc-tot">PORCIONES TOTALES</th><th class="pc-col">DESAYUNO</th><th class="pc-col">½ MAÑANA</th><th class="pc-col">ALMUERZO</th><th class="pc-col">½ TARDE</th><th class="pc-col">ONCE</th><th class="pc-col">CENA</th>
+        </tr>
+        <tr class="porc-subhead">
+          <th>GRUPO DE ALIMENTO</th>
+          <th colspan="7">PORCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr><th class="pc-group g1"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g1">01- Cereales o alimentos ricos en carbohidrato</span></th><td class="pc-tot-cell"><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c0">8,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c1">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c2">2</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c3">2,5</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c4">00</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c5">00</span></span></td><td class=""><span class="pc g1"><span class="pc-num" contenteditable="true" data-k="pf-r1c6">2</span></span></td></tr>
+      <tr><th class="pc-group g2"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g2">02- Alimentos ricos en proteína</span></th><td class="pc-tot-cell"><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c0">6</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c1">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c2">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c3">1</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c4">3</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c5">00</span></span></td><td class=""><span class="pc g2"><span class="pc-num" contenteditable="true" data-k="pf-r2c6">2</span></span></td></tr>
+      <tr><th class="pc-group g3"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g3">03- Alimento rico en lípido o grasas</span></th><td class="pc-tot-cell"><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c0">2</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c1">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c2">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c3">1</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c4">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c5">00</span></span></td><td class=""><span class="pc g3"><span class="pc-num" contenteditable="true" data-k="pf-r3c6">1</span></span></td></tr>
+      <tr><th class="pc-group g4"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g4">04- Fruta</span></th><td class="pc-tot-cell"><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c0">2</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c1">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c2">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c3">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c4">1</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c5">00</span></span></td><td class=""><span class="pc g4"><span class="pc-num" contenteditable="true" data-k="pf-r4c6">00</span></span></td></tr>
+      <tr><th class="pc-group g5"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g5">05- Verduras general</span></th><td class="pc-tot-cell"><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c0">2</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c1">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c2">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c3">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c4">1</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c5">00</span></span></td><td class=""><span class="pc g5"><span class="pc-num" contenteditable="true" data-k="pf-r5c6">00</span></span></td></tr>
+      <tr><th class="pc-group g6"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g6">06- Verduras consumo libre</span></th><td class="pc-tot-cell"><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c0">2</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c1">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c2">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c3">1</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c4">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c5">00</span></span></td><td class=""><span class="pc g6"><span class="pc-num" contenteditable="true" data-k="pf-r6c6">1</span></span></td></tr>
+      <tr><th class="pc-group g7"><span class="pc-stripe"></span><span contenteditable="true" data-k="pf-g7">08- Lácteo baja en grasa</span></th><td class="pc-tot-cell"><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c0">5</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c1">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c2">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c3">3</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c4">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c5">00</span></span></td><td class=""><span class="pc g7"><span class="pc-num" contenteditable="true" data-k="pf-r7c6">2</span></span></td></tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+
+    <footer class="page-footer">
+      <span>Paciente · <span data-bind="name">—</span></span>
+      <span class="center">— Porciones · días de fondo —</span>
+      <span>08</span>
+    </footer>
+  </section>
+
 
   <!-- ================================
        PAGE 9 — Tips & cierre
