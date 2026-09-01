@@ -894,6 +894,71 @@ const LOAD_KEY = (localStorage.getItem(KEY) != null)
   ? KEY
   : (localStorage.getItem(DEFAULT_KEY) != null ? DEFAULT_KEY : KEY);
 
+// ¿Debe sembrarse el plan de ejemplo? Sólo si NO hay plan propio guardado y el
+// usuario tampoco marcó uno como predeterminado con el botón.
+const SEED_DEFAULT = (localStorage.getItem(KEY) == null) && (localStorage.getItem(DEFAULT_KEY) == null);
+
+// Plan de ejemplo precargado (Josefa Corro). Rellena el editor cuando está en
+// blanco, para que "al entrar se vea este plan". Es totalmente editable: al
+// cambiar algo se guarda como el plan propio de ese editor.
+function applyJosefaDefault() {
+  const setV = (sel, val) => { const el = document.querySelector(sel); if (!el) return; el.value = val; el.dispatchEvent(new Event('input', { bubbles: true })); };
+  const setK = (k, v) => setV('[data-k="' + k + '"]', v);
+  const setId = (id, v) => setV('#' + id, v);
+
+  setGender('F'); setFormat('clasico'); setBodyMode('bia');
+
+  setId('patient-name', 'Josefa Corro'); setK('ev-nombre', 'Josefa Corro');
+  setId('patient-date', '25/06/26'); setK('ev-fecha', '25/06/26'); setK('ev-consulta', 'Control');
+  setId('in-edad', '28'); setK('ev-diag', 'Pérdida de grasa corporal');
+  setId('in-peso', '65.9'); setId('in-talla', '1.60');
+
+  setId('bia-grasa', '34.5'); setId('bia-musc', '39.6'); setId('bia-visc', '10'); setId('bia-agua', '22'); setId('bia-oso', '0.0');
+  setK('cir-br', '30'); setK('cir-bf', '30.2'); setId('cir-cin', '77'); setId('cir-cad', '108'); setK('cir-mu', '56.5'); setK('cir-pi', '39');
+
+  ['26/08/25', '05/11/25', '24/06/26'].forEach((v, i) => setK('evo-h-' + i, v));
+  const evo = { tri: [28, 28, 28], sub: [24, 25, 20], sup: [24, 24, 17], abd: [29, 23, 20], mus: [26, 30, 28], pie: [28, 30, 24] };
+  Object.keys(evo).forEach(m => evo[m].forEach((v, i) => setId('evo-' + m + '-' + i, v)));
+
+  const g = { 'g-cer': 4, 'g-vg': 2, 'g-fr': 2, 'g-cm': 7, 'g-ld': 3, 'g-ag': 1, 'g-fs': 1 };
+  Object.keys(g).forEach(k => setK(k, g[k]));
+
+  const objs = ['Priorizar en todas las comidas el aporte de proteínas y disminuir el consumo de grasas saturadas.',
+    'Requerimientos en Mantención de peso, para lograr mejor rendimiento en el entrenamiento.',
+    'Evitar picoteos entre comidas, solo snacks de pauta.'];
+  const ul = document.querySelector('#objectives-list');
+  if (ul) ul.innerHTML = objs.map((t, i) => '<li contenteditable="true" data-k="obj-' + (i + 1) + '">' + t + '</li>').join('');
+
+  const times = ['Desayuno · 9 am', 'Almuerzo · 1 pm', 'Colación · 5 pm', 'Once · 8 pm', 'Colación Nocturna · 22:00'];
+  const meals = [
+    ['1/2 marraqueta + 3 huevos revueltos + 1 taza de leche con café y 1 fruta', '1 taza y media de arroz + 100 g de bistec + ensalada', '1 Barrita de proteína + 1 leche 200cc', '1 lata de atún + 1/4 palta + 2 rebanadas pan molde + ensalada', '1 yogurt + 1 porción de frutos secos + 1 fruta'],
+    ['Panqueques avena con 2 huevos + 1 fruta + 1 cda mantequilla de maní + 1 taza de leche con café', '1 y 1/2 taza de fideos con carne (100g) + ensalada', '1 barra proteína + 1 yogurt', '3 huevos cocidos + 1 cereal (1 fajita o 2 rebanadas pan molde) + Ensalada con 1/4 palta', '1 yogurt + 1 fruta'],
+    ['2 rebanadas de pan molde + 3 huevos con 1/4 palta + 1 taza de leche con café', '1 y 1/2 taza puré + 100 g pollo al jugo + Ensalada y 1/4 palta', '1 leche 200 cc + 1 barra proteína', 'Ensalada de 1 lata atún + 1 tomate + 1 porción de galletas (cracker/arroz/club social)', '1 yogurt + 1 porción frutos secos + 1 fruta']
+  ];
+  const keys = [['o1-d', 'o1-a', 'o1-c', 'o1-o', 'o1-n'], ['o2-d', 'o2-a', 'o2-c', 'o2-o', 'o2-n'], ['o3-d', 'o3-a', 'o3-c', 'o3-o', 'o3-n']];
+  document.querySelectorAll('.meal-col').forEach((col, ci) => {
+    let h = '<h4 contenteditable="true">Opción ' + (ci + 1) + '</h4>';
+    for (let r = 0; r < 5; r++) h += '<div class="meal-row"><div class="time" contenteditable="true">' + times[r] + '</div><div class="desc" contenteditable="true" data-k="' + keys[ci][r] + '">' + meals[ci][r] + '</div></div>';
+    col.innerHTML = h;
+  });
+
+  const dcols = [['cer', 'Cereales'], ['vcg', 'Verduras'], ['fru', 'Frutas'], ['car', 'Carnes BG'], ['lac', 'Lácteos']];
+  const drows = [['Desayuno · 9 am', { cer: 1, fru: 1, car: 3, lac: 1 }], ['Almuerzo · 13:00', { cer: 2, vcg: 1, car: 2 }], ['Colación · 17:00', { lac: 1 }], ['Once · 20:00', { cer: 1, vcg: 1, car: 2 }], ['Colación Nocturna · 22:00', { fru: 1, lac: 1 }]];
+  const dt = document.querySelector('#dist-table');
+  if (dt) {
+    dt.querySelector('thead').innerHTML = '<tr><th>Tiempo de comida</th>' + dcols.map(c => '<th class="num" data-col="' + c[0] + '"><span contenteditable="true">' + c[1] + '</span></th>').join('') + '<th class="dist-actions-col" aria-hidden="true"></th></tr>';
+    dt.querySelector('tbody').innerHTML = drows.map(row => '<tr><td class="label" contenteditable="true">' + row[0] + '</td>' + dcols.map(c => { const v = row[1][c[0]]; return '<td><input class="field" type="number" data-dist="' + c[0] + '"' + (v != null ? (' value="' + v + '"') : '') + '></td>'; }).join('') + '<td class="dist-actions-col"></td></tr>').join('');
+    dt.querySelector('tfoot').innerHTML = '<tr><td>Total diario</td>' + dcols.map(c => '<td class="num" data-col="' + c[0] + '" id="tot-' + c[0] + '">—</td>').join('') + '<td class="dist-actions-col"></td></tr>';
+  }
+
+  // Re-inicializar listas/tabla dinámicas (botones +/borrar) y recalcular
+  if (typeof initEditableLists === 'function') initEditableLists();
+  if (typeof initDistTable === 'function') initDistTable();
+  if (typeof calcAll === 'function') calcAll();
+
+  saveState(); saveStructure(); saveDistTable();
+}
+
 // Guarda el plan actual como predeterminado para futuros editores en blanco.
 function setAsDefaultPlan() {
   saveState();
@@ -1000,6 +1065,10 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLogo();
   applyFormat();   // llama a applySections() internamente
   $$('#chart-controls .chip').forEach(c => c.classList.toggle('on', CHART_ACTIVE.has(c.dataset.k)));
+
+  // Editor en blanco → precargar el plan de ejemplo (Josefa) para que "al entrar
+  // se vea este plan". No pisa planes existentes ni el predeterminado del usuario.
+  if (SEED_DEFAULT) applyJosefaDefault();
 
   // Inputs
   document.addEventListener('input', (e) => {
