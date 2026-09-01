@@ -1317,7 +1317,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $('#btn-reset').addEventListener('click', () => {
     if (confirm('¿Borrar todos los datos del paciente y empezar de nuevo?')) {
-      localStorage.removeItem(KEY);
+      ['', '-dist', '-struct'].forEach(sfx => localStorage.removeItem(KEY + sfx));
       location.reload();
     }
   });
