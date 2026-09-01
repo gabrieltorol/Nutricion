@@ -813,7 +813,7 @@ function saveDistTable() {
 
 function loadDistTable() {
   try {
-    const raw = localStorage.getItem(KEY + '-dist');
+    const raw = localStorage.getItem(LOAD_KEY + '-dist');
     if (!raw) return;
     const table = $('#dist-table');
     if (!table) return;
@@ -852,7 +852,7 @@ function saveStructure() {
 
 function loadStructure() {
   try {
-    const struct = JSON.parse(localStorage.getItem(KEY + '-struct') || '{}');
+    const struct = JSON.parse(localStorage.getItem(LOAD_KEY + '-struct') || '{}');
     if (typeof struct.objectives === 'string') {
       const ul = $('#objectives-list');
       if (ul) ul.innerHTML = struct.objectives;
@@ -886,6 +886,26 @@ function loadStructure() {
 const CLIENT_ID = new URLSearchParams(location.search).get('cliente');
 const KEY = CLIENT_ID ? ('nutri-plan-' + CLIENT_ID) : 'plan-nutricional-state-v2';
 
+// Plan predeterminado: si este editor no tiene datos guardados todavía, se
+// carga el plan que el usuario haya marcado como "predeterminado". Así, al
+// entrar a un plan nuevo o en blanco, aparece ese plan por defecto.
+const DEFAULT_KEY = 'nutri-plan-default';
+const LOAD_KEY = (localStorage.getItem(KEY) != null)
+  ? KEY
+  : (localStorage.getItem(DEFAULT_KEY) != null ? DEFAULT_KEY : KEY);
+
+// Guarda el plan actual como predeterminado para futuros editores en blanco.
+function setAsDefaultPlan() {
+  saveState();
+  saveDistTable();
+  saveStructure();
+  ['', '-dist', '-struct'].forEach(sfx => {
+    const v = localStorage.getItem(KEY + sfx);
+    if (v != null) localStorage.setItem(DEFAULT_KEY + sfx, v);
+    else localStorage.removeItem(DEFAULT_KEY + sfx);
+  });
+}
+
 function saveState() {
   const state = {
     gender: GENDER,
@@ -913,7 +933,7 @@ function saveState() {
 
 function loadState() {
   try {
-    const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+    const state = JSON.parse(localStorage.getItem(LOAD_KEY) || '{}');
     if (state.gender) GENDER = state.gender;
     if (state.bodymode) BODY_MODE = state.bodymode;
     if (Array.isArray(state.chart)) CHART_ACTIVE = new Set(state.chart);
@@ -1246,6 +1266,16 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   $('#sp-close').addEventListener('click', () => { panel.hidden = true; });
   $('#sp-apply').addEventListener('click', () => { panel.hidden = true; });
+
+  /* ----- Guardar plan actual como predeterminado ----- */
+  $('#sp-set-default')?.addEventListener('click', (e) => {
+    setAsDefaultPlan();
+    const b = e.currentTarget;
+    const prev = b.textContent;
+    b.textContent = '✓ Guardado como predeterminado';
+    b.disabled = true;
+    setTimeout(() => { b.textContent = prev; b.disabled = false; }, 2200);
+  });
 
   /* ----- Formato del plan de comidas (clásico / semanal) ----- */
   $$('#format-switch button').forEach(b => {
